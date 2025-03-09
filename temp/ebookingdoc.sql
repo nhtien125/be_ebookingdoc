@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 09, 2025 at 07:36 AM
+-- Generation Time: Mar 09, 2025 at 09:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -97,22 +97,6 @@ CREATE TABLE `news` (
   `doctor_id` varchar(75) DEFAULT NULL,
   `title` varchar(75) DEFAULT NULL,
   `content` varchar(75) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `notifications`
---
-
-CREATE TABLE `notifications` (
-  `uuid` char(32) NOT NULL,
-  `doctor_id` char(32) DEFAULT NULL,
-  `patient_id` char(32) DEFAULT NULL,
-  `message` varchar(500) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -225,10 +209,23 @@ CREATE TABLE `specializations` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `uses`
+-- Table structure for table `token`
 --
 
-CREATE TABLE `uses` (
+CREATE TABLE `token` (
+  `uuid` char(32) NOT NULL,
+  `user_id` char(32) DEFAULT NULL,
+  `access_token` char(181) DEFAULT NULL,
+  `refresh_token` char(181) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
   `uuid` char(32) NOT NULL,
   `premission_id` tinyint(1) DEFAULT NULL,
   `doctor_id` char(32) DEFAULT NULL,
@@ -289,22 +286,19 @@ ALTER TABLE `news`
   ADD KEY `kk` (`doctor_id`);
 
 --
--- Indexes for table `notifications`
---
-ALTER TABLE `notifications`
-  ADD PRIMARY KEY (`uuid`);
-
---
 -- Indexes for table `packages`
 --
 ALTER TABLE `packages`
-  ADD PRIMARY KEY (`uuid`);
+  ADD PRIMARY KEY (`uuid`),
+  ADD KEY `jha` (`specialization_id`);
 
 --
 -- Indexes for table `patients`
 --
 ALTER TABLE `patients`
-  ADD PRIMARY KEY (`uuid`);
+  ADD PRIMARY KEY (`uuid`),
+  ADD KEY `hk` (`user_id`),
+  ADD KEY `ls` (`medical_record_id`);
 
 --
 -- Indexes for table `premission`
@@ -325,7 +319,8 @@ ALTER TABLE `results`
 --
 ALTER TABLE `reviews`
   ADD PRIMARY KEY (`uuid`),
-  ADD KEY `bbb` (`doctor_id`);
+  ADD KEY `bbb` (`doctor_id`),
+  ADD KEY `cds` (`patient_id`);
 
 --
 -- Indexes for table `schedules`
@@ -342,9 +337,16 @@ ALTER TABLE `specializations`
   ADD PRIMARY KEY (`uuid`);
 
 --
--- Indexes for table `uses`
+-- Indexes for table `token`
 --
-ALTER TABLE `uses`
+ALTER TABLE `token`
+  ADD PRIMARY KEY (`uuid`),
+  ADD KEY `akkkk` (`user_id`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
   ADD PRIMARY KEY (`uuid`),
   ADD KEY `hg` (`doctor_id`),
   ADD KEY `lk` (`patient_id`),
@@ -368,7 +370,7 @@ ALTER TABLE `appointments`
 -- Constraints for table `doctors`
 --
 ALTER TABLE `doctors`
-  ADD CONSTRAINT `a` FOREIGN KEY (`user_id`) REFERENCES `uses` (`uuid`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `a` FOREIGN KEY (`user_id`) REFERENCES `user` (`uuid`) ON UPDATE CASCADE,
   ADD CONSTRAINT `aa` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`uuid`) ON UPDATE CASCADE;
 
 --
@@ -384,6 +386,19 @@ ALTER TABLE `news`
   ADD CONSTRAINT `kk` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`uuid`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
+-- Constraints for table `packages`
+--
+ALTER TABLE `packages`
+  ADD CONSTRAINT `jha` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`uuid`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `patients`
+--
+ALTER TABLE `patients`
+  ADD CONSTRAINT `hk` FOREIGN KEY (`user_id`) REFERENCES `patients` (`uuid`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ls` FOREIGN KEY (`medical_record_id`) REFERENCES `patients` (`uuid`) ON UPDATE CASCADE;
+
+--
 -- Constraints for table `results`
 --
 ALTER TABLE `results`
@@ -393,7 +408,8 @@ ALTER TABLE `results`
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
-  ADD CONSTRAINT `bbb` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`uuid`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `bbb` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`uuid`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cds` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`uuid`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `schedules`
@@ -403,9 +419,15 @@ ALTER TABLE `schedules`
   ADD CONSTRAINT `ddd` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `uses`
+-- Constraints for table `token`
 --
-ALTER TABLE `uses`
+ALTER TABLE `token`
+  ADD CONSTRAINT `akkkk` FOREIGN KEY (`user_id`) REFERENCES `user` (`uuid`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user`
+--
+ALTER TABLE `user`
   ADD CONSTRAINT `hd` FOREIGN KEY (`premission_id`) REFERENCES `premission` (`uuid`) ON UPDATE CASCADE,
   ADD CONSTRAINT `hg` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `lk` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE;
