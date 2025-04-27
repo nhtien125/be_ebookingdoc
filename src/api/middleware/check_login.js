@@ -14,7 +14,6 @@ const checkLogin = async (req, res, next) => {
 
     req.payload = await verifyAccessToken(token);
 
-    // Kiểm tra token có đang trong DB hay không
     const [rows] = await db.execute(
       `SELECT * FROM \`token\` WHERE \`user_id\` = '${req.payload.id}'`
     );
