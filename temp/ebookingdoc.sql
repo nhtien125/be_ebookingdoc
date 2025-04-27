@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 09, 2025 at 09:01 AM
+-- Generation Time: Apr 27, 2025 at 06:28 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -144,6 +144,13 @@ CREATE TABLE `premission` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `premission`
+--
+
+INSERT INTO `premission` (`uuid`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Quản trị viên', '2025-04-27 04:03:55', '2025-04-27 04:04:28');
+
 -- --------------------------------------------------------
 
 --
@@ -219,6 +226,13 @@ CREATE TABLE `token` (
   `refresh_token` char(181) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `token`
+--
+
+INSERT INTO `token` (`uuid`, `user_id`, `access_token`, `refresh_token`) VALUES
+('767f0822-231f-11f0-bfc8-1062e5f6', '2be58449-231d-11f0-bd52-1062e5f6', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJiZTU4NDQ5LTIzMWQtMTFmMC1iZDUyLTEwNjJlNWY2IiwiaWF0IjoxNzQ1NzI3ODY1LCJleHAiOjE3NDU3Mjk2NjV9.PrjTR75yAvH3z4uZdsjxLvMpcfDz3RmbzXTNU_agDbc', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJiZTU4NDQ5LTIzMWQtMTFmMC1iZDUyLTEwNjJlNWY2IiwiaWF0IjoxNzQ1NzI3ODY1LCJleHAiOjE3NDgzMTk4NjV9.QqvEiviurDc9OweEWO3GaPon5iMg1k0p4VYxq0qclOk');
+
 -- --------------------------------------------------------
 
 --
@@ -241,6 +255,13 @@ CREATE TABLE `user` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`uuid`, `premission_id`, `doctor_id`, `patient_id`, `name`, `email`, `phone`, `gender`, `address`, `username`, `password`, `status`, `created_at`, `updated_at`) VALUES
+('2be58449-231d-11f0-bd52-1062e5f6', 1, NULL, NULL, 'Tài khoản hệ thống', 'admin@gmail.com', '0987654321', 1, 'Hà Nội', 'admin', '123456', 1, '2025-04-27 04:07:44', '2025-04-27 04:07:44');
 
 --
 -- Indexes for dumped tables

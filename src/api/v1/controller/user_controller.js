@@ -5,8 +5,7 @@ async function getDetailInfo(id) {
   try {
     const [data] = await db.execute(`
       SELECT
-        uuid, name, gender, birth_day, phone,
-        email, permission_id, create_at, update_at
+        *
       FROM 
         \`user\`
       WHERE 
@@ -26,7 +25,7 @@ async function login(user) {
   try {
     const [rows] = await db.execute(`
       SELECT  
-        uuid, name, permission_id
+        uuid, name, premission_id
       FROM \`user\` 
       WHERE 
         \`username\` = '${user.username}'

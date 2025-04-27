@@ -1,0 +1,18 @@
+### Đăng nhập
+POST http://localhost:3210/v1/user/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "123456"
+}
+
+### Lấy thông tin cá nhân
+GET http://localhost:3210/v1/user/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJiZTU4NDQ5LTIzMWQtMTFmMC1iZDUyLTEwNjJlNWY2IiwiaWF0IjoxNzQ1NzI3ODY1LCJleHAiOjE3NDU3Mjk2NjV9.PrjTR75yAvH3z4uZdsjxLvMpcfDz3RmbzXTNU_agDbc
+
+{
+    "username": "admin",
+    "password": "123456"
+}
