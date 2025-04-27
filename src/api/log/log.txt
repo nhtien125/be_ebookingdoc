@@ -1,0 +1,339 @@
+============================================================================
+        Sun Apr 27 2025 12:52:21 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 12:58:59 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 12:59:27 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 13:05:14 GMT+0700 (GMT+07:00)
+        message: Bạn chưa đăng nhập!
+        stack: Error: Bạn chưa đăng nhập!
+    at checkLogin (D:\progaming\back_end\be_ebookingdoc\src\api\middleware\check_login.js:6:15)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:175:3)
+    at router (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:47:12)
+============================================================================
+        Sun Apr 27 2025 13:30:59 GMT+0700 (GMT+07:00)
+        message: Bạn chưa đăng nhập!
+        stack: Error: Bạn chưa đăng nhập!
+    at checkLogin (D:\progaming\back_end\be_ebookingdoc\src\api\middleware\check_login.js:6:15)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:175:3)
+    at router (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:47:12)
+============================================================================
+        Sun Apr 27 2025 13:45:03 GMT+0700 (GMT+07:00)
+        message: Bạn chưa đăng nhập!
+        stack: Error: Bạn chưa đăng nhập!
+    at checkLogin (D:\progaming\back_end\be_ebookingdoc\src\api\middleware\check_login.js:6:15)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:175:3)
+    at router (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:47:12)
+============================================================================
+        Sun Apr 27 2025 13:45:53 GMT+0700 (GMT+07:00)
+        message: jwt expired
+        stack: TokenExpiredError: jwt expired
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\progaming\back_end\be_ebookingdoc\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\progaming\back_end\be_ebookingdoc\node_modules\jsonwebtoken\verify.js:101:10)
+    at D:\progaming\back_end\be_ebookingdoc\src\api\utils\token.js:29:9
+    at new Promise (<anonymous>)
+    at verifyAccessToken (D:\progaming\back_end\be_ebookingdoc\src\api\utils\token.js:27:10)
+    at checkLogin (D:\progaming\back_end\be_ebookingdoc\src\api\middleware\check_login.js:15:25)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+============================================================================
+        Sun Apr 27 2025 13:46:09 GMT+0700 (GMT+07:00)
+        message: id is not defined
+        stack: ReferenceError: id is not defined
+    at Object.getPermission (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\permission_controller.js:12:31)
+    at D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\permission.js:8:33
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at checkLogin (D:\progaming\back_end\be_ebookingdoc\src\api\middleware\check_login.js:28:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+============================================================================
+        Sun Apr 27 2025 14:09:36 GMT+0700 (GMT+07:00)
+        message: Bạn chưa đăng nhập!
+        stack: Error: Bạn chưa đăng nhập!
+    at checkLogin (D:\progaming\back_end\be_ebookingdoc\src\api\middleware\check_login.js:6:15)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:175:3)
+    at router (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:47:12)
+============================================================================
+        Sun Apr 27 2025 16:08:29 GMT+0700 (GMT+07:00)
+        message: jwt expired
+        stack: TokenExpiredError: jwt expired
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\progaming\back_end\be_ebookingdoc\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\progaming\back_end\be_ebookingdoc\node_modules\jsonwebtoken\verify.js:101:10)
+    at D:\progaming\back_end\be_ebookingdoc\src\api\utils\token.js:29:9
+    at new Promise (<anonymous>)
+    at verifyAccessToken (D:\progaming\back_end\be_ebookingdoc\src\api\utils\token.js:27:10)
+    at checkLogin (D:\progaming\back_end\be_ebookingdoc\src\api\middleware\check_login.js:15:25)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+============================================================================
+        Sun Apr 27 2025 16:40:28 GMT+0700 (GMT+07:00)
+        message: jwt expired
+        stack: TokenExpiredError: jwt expired
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\progaming\back_end\be_ebookingdoc\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\progaming\back_end\be_ebookingdoc\node_modules\jsonwebtoken\verify.js:101:10)
+    at D:\progaming\back_end\be_ebookingdoc\src\api\utils\token.js:29:9
+    at new Promise (<anonymous>)
+    at verifyAccessToken (D:\progaming\back_end\be_ebookingdoc\src\api\utils\token.js:27:10)
+    at checkLogin (D:\progaming\back_end\be_ebookingdoc\src\api\middleware\check_login.js:15:25)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+============================================================================
+        Sun Apr 27 2025 16:40:37 GMT+0700 (GMT+07:00)
+        message: Unknown column 'birth_day' in 'field list'
+        stack: Error: Unknown column 'birth_day' in 'field list'
+    at PromisePool.execute (D:\progaming\back_end\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\progaming\back_end\be_ebookingdoc\src\api\utils\database.js:14:32)
+    at Object.getDetailInfo (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:6:29)
+    at D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:8:31
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at checkLogin (D:\progaming\back_end\be_ebookingdoc\src\api\middleware\check_login.js:28:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+============================================================================
+        Sun Apr 27 2025 16:41:11 GMT+0700 (GMT+07:00)
+        message: Unknown column 'avatar' in 'field list'
+        stack: Error: Unknown column 'avatar' in 'field list'
+    at PromisePool.execute (D:\progaming\back_end\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\progaming\back_end\be_ebookingdoc\src\api\utils\database.js:14:32)
+    at Object.getDetailInfo (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:6:29)
+    at D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:8:31
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at checkLogin (D:\progaming\back_end\be_ebookingdoc\src\api\middleware\check_login.js:28:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+============================================================================
+        Sun Apr 27 2025 16:42:13 GMT+0700 (GMT+07:00)
+        message: Unknown column 'deleted_at' in 'field list'
+        stack: Error: Unknown column 'deleted_at' in 'field list'
+    at PromisePool.execute (D:\progaming\back_end\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\progaming\back_end\be_ebookingdoc\src\api\utils\database.js:14:32)
+    at Object.getDetailInfo (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:6:29)
+    at D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:8:31
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at checkLogin (D:\progaming\back_end\be_ebookingdoc\src\api\middleware\check_login.js:28:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+============================================================================
+        Sun Apr 27 2025 17:04:18 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 17:04:18 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 17:04:25 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 17:04:25 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 17:07:52 GMT+0700 (GMT+07:00)
+        message: Tài khoản này hiện đang được đăng nhập ở nơi khác!
+        stack: Error: Tài khoản này hiện đang được đăng nhập ở nơi khác!
+    at checkLogin (D:\progaming\back_end\be_ebookingdoc\src\api\middleware\check_login.js:23:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+============================================================================
+        Sun Apr 27 2025 17:08:59 GMT+0700 (GMT+07:00)
+        message: Unexpected token 'n', "null" is not valid JSON
+        stack: SyntaxError: Unexpected token 'n', "null" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at createStrictSyntaxError (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:169:10)
+    at parse (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:86:15)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at invokeCallback (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:238:16)
+    at done (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+============================================================================
+        Sun Apr 27 2025 17:08:59 GMT+0700 (GMT+07:00)
+        message: Unexpected token 'n', "null" is not valid JSON
+        stack: SyntaxError: Unexpected token 'n', "null" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at createStrictSyntaxError (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:169:10)
+    at parse (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:86:15)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at invokeCallback (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:238:16)
+    at done (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+============================================================================
+        Sun Apr 27 2025 17:09:27 GMT+0700 (GMT+07:00)
+        message: Unexpected token 'n', "null" is not valid JSON
+        stack: SyntaxError: Unexpected token 'n', "null" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at createStrictSyntaxError (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:169:10)
+    at parse (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:86:15)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at invokeCallback (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:238:16)
+    at done (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+============================================================================
+        Sun Apr 27 2025 17:09:27 GMT+0700 (GMT+07:00)
+        message: Unexpected token 'n', "null" is not valid JSON
+        stack: SyntaxError: Unexpected token 'n', "null" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at createStrictSyntaxError (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:169:10)
+    at parse (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:86:15)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at invokeCallback (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:238:16)
+    at done (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+============================================================================
+        Sun Apr 27 2025 17:09:31 GMT+0700 (GMT+07:00)
+        message: Unexpected token 'n', "null" is not valid JSON
+        stack: SyntaxError: Unexpected token 'n', "null" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at createStrictSyntaxError (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:169:10)
+    at parse (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:86:15)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at invokeCallback (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:238:16)
+    at done (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+============================================================================
+        Sun Apr 27 2025 17:09:31 GMT+0700 (GMT+07:00)
+        message: Unexpected token 'n', "null" is not valid JSON
+        stack: SyntaxError: Unexpected token 'n', "null" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at createStrictSyntaxError (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:169:10)
+    at parse (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:86:15)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at invokeCallback (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:238:16)
+    at done (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+============================================================================
+        Sun Apr 27 2025 17:09:35 GMT+0700 (GMT+07:00)
+        message: Unexpected token 'n', "null" is not valid JSON
+        stack: SyntaxError: Unexpected token 'n', "null" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at createStrictSyntaxError (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:169:10)
+    at parse (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:86:15)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at invokeCallback (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:238:16)
+    at done (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+============================================================================
+        Sun Apr 27 2025 17:09:35 GMT+0700 (GMT+07:00)
+        message: Unexpected token 'n', "null" is not valid JSON
+        stack: SyntaxError: Unexpected token 'n', "null" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at createStrictSyntaxError (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:169:10)
+    at parse (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:86:15)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at invokeCallback (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:238:16)
+    at done (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+============================================================================
+        Sun Apr 27 2025 17:09:38 GMT+0700 (GMT+07:00)
+        message: Unexpected token 'n', "null" is not valid JSON
+        stack: SyntaxError: Unexpected token 'n', "null" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at createStrictSyntaxError (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:169:10)
+    at parse (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:86:15)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at invokeCallback (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:238:16)
+    at done (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+============================================================================
+        Sun Apr 27 2025 17:09:38 GMT+0700 (GMT+07:00)
+        message: Unexpected token 'n', "null" is not valid JSON
+        stack: SyntaxError: Unexpected token 'n', "null" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at createStrictSyntaxError (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:169:10)
+    at parse (D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\types\json.js:86:15)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at invokeCallback (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:238:16)
+    at done (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)

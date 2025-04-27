@@ -5,7 +5,7 @@ async function getDetailInfo(id) {
   try {
     const [data] = await db.execute(`
       SELECT
-        *
+        \`name\`, \`gender\`, \`phone\`, \`email\`, \`address\`, \`avatar\`, \`premission_id\`, \`created_at\`, \`updated_at\`
       FROM 
         \`user\`
       WHERE 
@@ -28,7 +28,7 @@ async function login(user) {
         uuid, name, premission_id
       FROM \`user\` 
       WHERE 
-        \`username\` = '${user.username}'
+        \`phone\` = '${user.phone}'
         AND \`password\` = '${user.password}'
     `);
 
@@ -66,7 +66,7 @@ async function login(user) {
       data: {
         uuid: uuid ?? null,
         name: rows.name ?? null,
-        permission: rows.permission_id ?? null,
+        permission: rows.premission_id ?? null,
         access_token: token.access_token,
         refresh_token: token.refresh_token,
       },
