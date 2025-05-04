@@ -337,3 +337,143 @@
     at IncomingMessage.onEnd (D:\progaming\back_end\be_ebookingdoc\node_modules\raw-body\index.js:287:7)
     at IncomingMessage.emit (node:events:518:28)
     at endReadableNT (node:internal/streams/readable:1698:12)
+============================================================================
+        Sun Apr 27 2025 17:20:41 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 17:20:41 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 17:21:24 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 17:21:24 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 17:21:27 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 17:21:27 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 17:21:46 GMT+0700 (GMT+07:00)
+        message: connect ECONNREFUSED 127.0.0.1:3306
+        stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at PromisePool.execute (D:\progaming\back_end\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\progaming\back_end\be_ebookingdoc\src\api\utils\database.js:14:32)
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:26:29)
+    at D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:31
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:346:12)
+============================================================================
+        Sun Apr 27 2025 17:21:46 GMT+0700 (GMT+07:00)
+        message: connect ECONNREFUSED 127.0.0.1:3306
+        stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at PromisePool.execute (D:\progaming\back_end\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\progaming\back_end\be_ebookingdoc\src\api\utils\database.js:14:32)
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:26:29)
+    at D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:31
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:346:12)
+============================================================================
+        Sun Apr 27 2025 17:21:52 GMT+0700 (GMT+07:00)
+        message: connect ECONNREFUSED 127.0.0.1:3306
+        stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at PromisePool.execute (D:\progaming\back_end\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\progaming\back_end\be_ebookingdoc\src\api\utils\database.js:14:32)
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:26:29)
+    at D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:31
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:346:12)
+============================================================================
+        Sun Apr 27 2025 17:21:52 GMT+0700 (GMT+07:00)
+        message: connect ECONNREFUSED 127.0.0.1:3306
+        stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at PromisePool.execute (D:\progaming\back_end\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\progaming\back_end\be_ebookingdoc\src\api\utils\database.js:14:32)
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:26:29)
+    at D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:31
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:346:12)
+============================================================================
+        Sun Apr 27 2025 17:22:09 GMT+0700 (GMT+07:00)
+        message: connect ECONNREFUSED 127.0.0.1:3306
+        stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at PromisePool.execute (D:\progaming\back_end\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\progaming\back_end\be_ebookingdoc\src\api\utils\database.js:14:32)
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:26:29)
+    at D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:31
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:346:12)
+============================================================================
+        Sun Apr 27 2025 17:22:09 GMT+0700 (GMT+07:00)
+        message: connect ECONNREFUSED 127.0.0.1:3306
+        stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at PromisePool.execute (D:\progaming\back_end\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\progaming\back_end\be_ebookingdoc\src\api\utils\database.js:14:32)
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:26:29)
+    at D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:31
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\progaming\back_end\be_ebookingdoc\node_modules\express\lib\router\index.js:346:12)
+============================================================================
+        Sun Apr 27 2025 17:22:15 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
+============================================================================
+        Sun Apr 27 2025 17:22:15 GMT+0700 (GMT+07:00)
+        message: Thông tin tài khoản hoặc mật khẩu không chính xác!
+        stack: Error: Thông tin tài khoản hoặc mật khẩu không chính xác!
+    at Object.login (D:\progaming\back_end\be_ebookingdoc\src\api\v1\controller\user_controller.js:36:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\progaming\back_end\be_ebookingdoc\src\api\v1\route\user.js:16:14
