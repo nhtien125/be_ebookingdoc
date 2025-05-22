@@ -1,4 +1,4 @@
-const db = require("../utils/database");
+const db = require("../../helper/database");
 const { verifyAccessToken } = require("../utils/token");
 
 const checkLogin = async (req, res, next) => {

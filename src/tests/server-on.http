@@ -1,3 +1,0 @@
-### Test server on
-GET http://localhost:3210/
-Content-Type: application/json

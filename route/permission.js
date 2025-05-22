@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../controller/permission_controller");
-const { checkLogin } = require("../../middleware/check_login");
+const controller = require("../src/controller/appointment_controller");
+const { checkLogin } = require("../src/api/middleware/check_login");
 
 router.get("/", checkLogin, async (req, res, next) => {
     try {

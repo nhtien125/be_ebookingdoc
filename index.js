@@ -1,37 +1,31 @@
-const { writeFileSync } = require("fs");
 const express = require("express");
 const cors = require("cors");
-const { checkLogin } = require("./api/middleware/check_login");
+const { writeFileSync } = require("fs");
 require("dotenv").config();
+const main = require("./route/router");
+const setupSwagger = require('./route/swagger');
 
-// Setup server
 const app = express();
 app.use(express.json());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
 app.use(cors());
 
-// Test server
-app.get("/", (req, res, next) => {
+app.get("/", (req, res) => {
   res.json({ code: 200, message: "ok" });
 });
 
-// Router version
-app.use('/resources', checkLogin, express.static(__dirname + '/resources'))
-app.use('/v1', require("./api/v1/main"));
+app.use("/resources", express.static(__dirname + "/resources"));
+app.use("/",main);
+setupSwagger(app);
 
-// Error response
+// Error handler
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   writeFileSync(
     "./src/api/log/log.txt",
     `============================================================================
-        ${Date()}
-        message: ${err.message}
-        stack: ${err.stack}\n`,
+${new Date()}
+message: ${err.message}
+stack: ${err.stack}\n`,
     { flag: "a" }
   );
   res.status(statusCode).json({
@@ -40,8 +34,8 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Server on
+// Start server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}/`);
+  console.log(`Server is running at http://localhost:${port}/`);
 });
