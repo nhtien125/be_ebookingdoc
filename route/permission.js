@@ -21,6 +21,4 @@ router.get("/", checkLogin, async (req, res, next) => {
 
 
 
-  
-
 module.exports = router;

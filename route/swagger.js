@@ -8,7 +8,7 @@ const options = {
         info: {
             title: 'API Documentation',
             version: '1.0.0',
-            description: 'API Documentation for your Node.js project',
+            description: 'Tài liệu API cho dự án ebookingdoc',
         },
         tags: [
             { name: "User", description: "User-related operations" },

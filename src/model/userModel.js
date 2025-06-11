@@ -1,4 +1,4 @@
-const db = require('../helper/database');
+const db = require("../helper/database");
 
 class User {
   constructor({
@@ -14,8 +14,9 @@ class User {
     username,
     password,
     status,
+    image,
     created_at,
-    updated_at
+    updated_at,
   }) {
     this.uuid = uuid || null;
     this.premission_id = premission_id || null;
@@ -29,12 +30,16 @@ class User {
     this.username = username || null;
     this.password = password || null;
     this.status = status || 1;
+    image ? (this.image = image) : (this.image = null);
     this.created_at = created_at || new Date();
     this.updated_at = updated_at || new Date();
   }
 
   static async findById(uuid) {
-    const [rows] = await db.execute(`SELECT * FROM \`user\` WHERE \`uuid\` = ?`, [uuid]);
+    const [rows] = await db.execute(
+      `SELECT * FROM \`user\` WHERE \`uuid\` = ?`,
+      [uuid]
+    );
     if (rows.length === 0) return null;
     return new User(rows[0]);
   }
@@ -55,9 +60,10 @@ class User {
           \`username\`,
           \`password\`,
           \`status\`,
+          \`image\`,
           \`created_at\`,
           \`updated_at\`
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
       const params = [
         this.uuid,
@@ -72,15 +78,17 @@ class User {
         this.username,
         this.password,
         this.status,
+        this.image || null,
         this.created_at,
-        this.updated_at
+        this.updated_at,
       ];
-      console.log('Save params:', params); 
+      console.log('Tham số query lưu database:', params);
       const [result] = await db.execute(query, params);
+      console.log('Kết quả lưu database:', result);
       return this;
     } catch (error) {
-      console.error('Error saving user:', error);
-      throw error;
+      console.error('Lỗi lưu user vào database:', error);
+      throw new Error('Lỗi khi lưu thông tin người dùng vào database!');
     }
   }
 }
