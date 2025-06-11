@@ -100,20 +100,7 @@ class HospitalController {
     }
   }
 
-  static async remove(req, res) {
-    try {
-      const deleted = await HospitalService.remove(req.params.uuid);
-      if (!deleted)
-        return res
-          .status(404)
-          .json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
-      res.json({ code: 200, msg: "Xóa thành công", status: "success" });
-    } catch (error) {
-      res.status(500).json({ code: 500, msg: error.message, status: "error" });
-    }
-  }
-
-  static async remove(req, res) {
+  static async delete(req, res) {
     try {
       const deleted = await HospitalService.remove(req.params.uuid);
       if (!deleted)

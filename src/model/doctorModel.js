@@ -1,53 +1,30 @@
-const db = require('../helper/database');
-
 class Doctor {
-  static async findAll() {
-    const [rows] = await db.execute('SELECT * FROM `doctors`');
-    return rows;
+  constructor({
+    uuid,
+    user_id,
+    doctor_type,
+    specialization_id,
+    license,
+    introduce,
+    image,
+    created_at,
+    updated_at,
+  }) {
+    this.uuid = uuid || null;
+    this.user_id = user_id || null;
+    this.doctor_type = doctor_type || null;
+    this.specialization_id = specialization_id || null;
+    this.license = license || null;
+    this.introduce = introduce || null;
+    this.image = image || null;
+    this.created_at = created_at || null;
+    this.updated_at = updated_at || null;
   }
-
-  static async findById(uuid) {
-    const [rows] = await db.execute('SELECT * FROM `doctors` WHERE `uuid` = ?', [uuid]);
-    return rows[0] || null;
+  static fromRow(row) {
+    return new Doctor(row);
   }
-
-  static async findByLicense(license) {
-    const [rows] = await db.execute('SELECT * FROM `doctors` WHERE `license` = ?', [license]);
-    return rows[0] || null;
-  }
-
-  static async findByUserId(user_id) {
-    const [rows] = await db.execute('SELECT * FROM `doctors` WHERE `user_id` = ?', [user_id]);
-    return rows[0] || null;
-  }
-
-  static async create({ uuid, user_id, doctor_type, specialization_id, license, introduce }) {
-    const query = `
-      INSERT INTO \`doctors\` (
-        \`uuid\`, \`user_id\`, \`doctor_type\`, \`specialization_id\`,
-        \`license\`, \`introduce\`
-      ) VALUES (?, ?, ?, ?, ?, ?)
-    `;
-    await db.execute(query, [
-      uuid, user_id, doctor_type, specialization_id, license, introduce
-    ]);
-  }
-
-  static async update(uuid, { user_id, doctor_type, specialization_id, license, introduce }) {
-    const query = `
-      UPDATE \`doctors\`
-      SET \`user_id\` = ?, \`doctor_type\` = ?, \`specialization_id\` = ?,
-          \`license\` = ?, \`introduce\` = ?
-      WHERE \`uuid\` = ?
-    `;
-    await db.execute(query, [
-      user_id, doctor_type, specialization_id, license, introduce, uuid
-    ]);
-  }
-
-  static async delete(uuid) {
-    await db.execute('DELETE FROM `doctors` WHERE `uuid` = ?', [uuid]);
+  static fromRows(rows) {
+    return rows.map(row => Doctor.fromRow(row));
   }
 }
-
 module.exports = Doctor;

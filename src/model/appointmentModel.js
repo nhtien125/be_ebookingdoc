@@ -1,49 +1,32 @@
-const db = require('../helper/database');
-const { v4: uuidv4 } = require('uuid');
-
 class Appointment {
-  static async findAll() {
-    const [rows] = await db.execute('SELECT * FROM `appointments`');
-    return rows;
+  constructor({
+    uuid,
+    doctor_id,
+    patient_id,
+    clinic_id,
+    hospital_id,
+    schedule_id,
+    date,
+    status,
+    created_at,
+    updated_at,
+  }) {
+    this.uuid = uuid || null;
+    this.doctor_id = doctor_id || null;
+    this.patient_id = patient_id || null;
+    this.clinic_id = clinic_id || null;
+    this.hospital_id = hospital_id || null;
+    this.schedule_id = schedule_id || null;
+    this.date = date || null;
+    this.status = status || null;
+    this.created_at = created_at || null;
+    this.updated_at = updated_at || null;
   }
-
-  static async findById(uuid) {
-    const [rows] = await db.execute('SELECT * FROM `appointments` WHERE `uuid` = ?', [uuid]);
-    return rows[0] || null;
+  static fromRow(row) {
+    return new Appointment(row);
   }
-
-  static async create({ doctor_id, patient_id, clinic_id, schedule_id, package_id, date, status }) {
-    const uuid = uuidv4().replace(/-/g, '');
-    const query = `
-      INSERT INTO \`appointments\` (
-        \`uuid\`, \`doctor_id\`, \`patient_id\`, \`clinic_id\`, 
-        \`schedule_id\`, \`package_id\`, \`date\`, \`status\`
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-    await db.execute(query, [
-      uuid, doctor_id, patient_id, clinic_id, 
-      schedule_id, package_id, date, status
-    ]);
-    return { uuid, doctor_id, patient_id, clinic_id, schedule_id, package_id, date, status };
-  }
-
-  static async update(uuid, { doctor_id, patient_id, clinic_id, schedule_id, package_id, date, status }) {
-    const query = `
-      UPDATE \`appointments\`
-      SET \`doctor_id\` = ?, \`patient_id\` = ?, \`clinic_id\` = ?, 
-          \`schedule_id\` = ?, \`package_id\` = ?, \`date\` = ?, \`status\` = ?
-      WHERE \`uuid\` = ?
-    `;
-    await db.execute(query, [
-      doctor_id, patient_id, clinic_id, schedule_id, 
-      package_id, date, status, uuid
-    ]);
-    return { uuid, doctor_id, patient_id, clinic_id, schedule_id, package_id, date, status };
-  }
-
-  static async delete(uuid) {
-    await db.execute('DELETE FROM `appointments` WHERE `uuid` = ?', [uuid]);
+  static fromRows(rows) {
+    return rows.map(row => Appointment.fromRow(row));
   }
 }
-
 module.exports = Appointment;

@@ -1,48 +1,63 @@
-const scheduleService = require('./../service/scheduleService');
+const ScheduleService = require("../service/scheduleService");
 
-module.exports = {
-  async getAll(req, res) {
+class ScheduleController {
+  static async getAll(req, res) {
     try {
-      const schedules = await scheduleService.getAll();
-      res.status(200).json(schedules);
+      const data = await ScheduleService.getAll();
+      res.json({ code: 200, msg: "Thành công", status: "success", data });
     } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
-
-  async getById(req, res) {
-    try {
-      const schedule = await scheduleService.getById(req.params.id);
-      res.status(200).json(schedule);
-    } catch (error) {
-      res.status(404).json({ error: error.message });
-    }
-  },
-
-  async create(req, res) {
-    try {
-      const schedule = await scheduleService.create(req.body);
-      res.status(201).json(schedule);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  },
-
-  async update(req, res) {
-    try {
-      const schedule = await scheduleService.update(req.params.id, req.body);
-      res.status(200).json(schedule);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  },
-
-  async delete(req, res) {
-    try {
-      const result = await scheduleService.delete(req.params.id);
-      res.status(200).json(result);
-    } catch (error) {
-      res.status(404).json({ error: error.message });
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
-};
+  static async getById(req, res) {
+    try {
+      const data = await ScheduleService.getById(req.params.id);
+      if (!data)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
+      res.json({ code: 200, msg: "Thành công", status: "success", data });
+    } catch (error) {
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
+    }
+  }
+  static async create(req, res) {
+    try {
+      const { doctor_id, clinic_id, start_time, end_time } = req.body;
+      const result = await ScheduleService.create({
+        doctor_id,
+        clinic_id,
+        start_time,
+        end_time,
+      });
+      res.status(201).json({ code: 201, msg: "Tạo thành công", status: "success", data: result });
+    } catch (error) {
+      res.status(400).json({ code: 400, msg: error.message, status: "error" });
+    }
+  }
+  static async update(req, res) {
+    try {
+      const { doctor_id, clinic_id, start_time, end_time } = req.body;
+      const updated = await ScheduleService.update(req.params.id, {
+        doctor_id,
+        clinic_id,
+        start_time,
+        end_time,
+      });
+      if (!updated)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy để cập nhật", status: "error" });
+      res.json({ code: 200, msg: "Cập nhật thành công", status: "success" });
+    } catch (error) {
+      res.status(400).json({ code: 400, msg: error.message, status: "error" });
+    }
+  }
+  static async delete(req, res) {
+    try {
+      const deleted = await ScheduleService.remove(req.params.id);
+      if (!deleted)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
+      res.json({ code: 200, msg: "Xóa thành công", status: "success" });
+    } catch (error) {
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
+    }
+  }
+}
+module.exports = ScheduleController;

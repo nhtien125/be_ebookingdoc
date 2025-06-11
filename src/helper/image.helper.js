@@ -1,4 +1,4 @@
-const { uploadImageToCloudinary } = require("../services/uploadimgame");
+const { uploadImageToCloudinary } = require("../service/uploadimage");
 const fs = require("fs").promises;
 const validator = require("validator");
 

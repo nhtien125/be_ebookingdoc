@@ -1,48 +1,85 @@
-const appointmentService = require('./../service/appointmentService');
+const AppointmentService = require("../service/appointmentService");
 
-module.exports = {
-  async getAll(req, res) {
+class AppointmentController {
+  static async getAll(req, res) {
     try {
-      const appointments = await appointmentService.getAll();
-      res.status(200).json(appointments);
+      const data = await AppointmentService.getAll();
+      res.json({ code: 200, msg: "Thành công", status: "success", data });
     } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
-
-  async getById(req, res) {
-    try {
-      const appointment = await appointmentService.getById(req.params.id);
-      res.status(200).json(appointment);
-    } catch (error) {
-      res.status(404).json({ error: error.message });
-    }
-  },
-
-  async create(req, res) {
-    try {
-      const appointment = await appointmentService.create(req.body);
-      res.status(201).json(appointment);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  },
-
-  async update(req, res) {
-    try {
-      const appointment = await appointmentService.update(req.params.id, req.body);
-      res.status(200).json(appointment);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  },
-
-  async delete(req, res) {
-    try {
-      const result = await appointmentService.delete(req.params.id);
-      res.status(200).json(result);
-    } catch (error) {
-      res.status(404).json({ error: error.message });
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
-};
+  static async getById(req, res) {
+    try {
+      const data = await AppointmentService.getById(req.params.id);
+      if (!data)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
+      res.json({ code: 200, msg: "Thành công", status: "success", data });
+    } catch (error) {
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
+    }
+  }
+  static async create(req, res) {
+    try {
+      const {
+        doctor_id,
+        patient_id,
+        clinic_id,
+        hospital_id,
+        schedule_id,
+        date,
+        status,
+      } = req.body;
+      const result = await AppointmentService.create({
+        doctor_id,
+        patient_id,
+        clinic_id,
+        hospital_id,
+        schedule_id,
+        date,
+        status,
+      });
+      res.status(201).json({ code: 201, msg: "Tạo thành công", status: "success", data: result });
+    } catch (error) {
+      res.status(400).json({ code: 400, msg: error.message, status: "error" });
+    }
+  }
+  static async update(req, res) {
+    try {
+      const {
+        doctor_id,
+        patient_id,
+        clinic_id,
+        hospital_id,
+        schedule_id,
+        date,
+        status,
+      } = req.body;
+      const updated = await AppointmentService.update(req.params.id, {
+        doctor_id,
+        patient_id,
+        clinic_id,
+        hospital_id,
+        schedule_id,
+        date,
+        status,
+      });
+      if (!updated)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy để cập nhật", status: "error" });
+      res.json({ code: 200, msg: "Cập nhật thành công", status: "success" });
+    } catch (error) {
+      res.status(400).json({ code: 400, msg: error.message, status: "error" });
+    }
+  }
+  static async delete(req, res) {
+    try {
+      const deleted = await AppointmentService.remove(req.params.id);
+      if (!deleted)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
+      res.json({ code: 200, msg: "Xóa thành công", status: "success" });
+    } catch (error) {
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
+    }
+  }
+}
+module.exports = AppointmentController;

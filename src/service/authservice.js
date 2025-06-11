@@ -2,7 +2,7 @@ const User = require("./../model/userModel");
 const db = require("../helper/database");
 const { signAccessToken } = require("../api/utils/token");
 const { v4: uuidv4 } = require("uuid");
-const { uploadImageToCloudinary } = require("./uploadimgame");
+const { uploadImageToCloudinary } = require("./uploadimage");
 const validator = require("validator");
 const fs = require("fs").promises;
 

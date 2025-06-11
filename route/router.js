@@ -21,7 +21,9 @@ const hospitalSpecializationController = require("../src/controller/hospitalSpec
 const hospitalDoctorController = require("../src/controller/hospitalDoctorController");
 const clinicSpecializationController = require("../src/controller/clinicSpecializationController");
 const clinicDoctorController = require("../src/controller/clinicDoctorController");
-
+const MedicalServiceController = require("../src/controller/medicalserviceController");
+const SelectProfileController = require("../src/controller/SelectProfileController");
+const ArticleController = require("../controllers/article.controller");
 const asyncHandler = fn => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
@@ -37,8 +39,8 @@ router.post(`/${auth}/register`, upload.single('image'), asyncHandler(UserContro
 router.post(`/${auth}/me`, checkLogin, asyncHandler(UserController.getDetailInfo));
 router.post(`/${auth}/refresh-token`, asyncHandler(UserController.refreshToken));
 router.put(`/${auth}/me`, checkLogin, asyncHandler(UserController.updateProfile));
-router.put(`/${auth}/change-password`, checkLogin, asyncHandler(UserController.changePassword));
-router.put(`/${auth}/change-status`, checkLogin, asyncHandler(UserController.changeStatus));
+// router.put(`/${auth}/change-password`, checkLogin, asyncHandler(UserController.changePassword));
+// router.put(`/${auth}/change-status`, checkLogin, asyncHandler(UserController.changeStatus));
 router.get(`/${auth}/getAll`, UserController.getAll);
 
 // Doctor
@@ -165,4 +167,27 @@ router.post(`/${clinic_doctors}/add`, clinicDoctorController.addDoctor);
 router.delete(`/${clinic_doctors}/delete`, clinicDoctorController.removeDoctor);
 router.get(`/${clinic_doctors}/getById/:clinic_uuid`, clinicDoctorController.getDoctorsByClinic);
 
+
+const medical_service = "medical_service";
+router.get(`/${medical_service}/getAll`, MedicalServiceController.getAll);
+router.get(`/${medical_service}/getById/:id`, MedicalServiceController.getById);
+router.post(`/${medical_service}/add`, upload.single('image'), MedicalServiceController.create);
+router.put(`/${medical_service}/update/:id`, upload.single('image'), MedicalServiceController.update);
+router.delete(`/${medical_service}/delete/:id`, MedicalServiceController.delete);
+
+
+const select_profile = "select_profile";
+router.get(`/${select_profile}/getAll`, SelectProfileController.getAll);
+router.get(`/${select_profile}/getById/:id`, SelectProfileController.getById);
+router.post(`/${select_profile}/add`, upload.single('image'), SelectProfileController.create);
+router.put(`/${select_profile}/update/:id`, upload.single('image'), SelectProfileController.update);
+router.delete(`/${select_profile}/delete/:id`, SelectProfileController.delete);
+
+
+const article = "article";
+router.get(`/${article}/getAll`, ArticleController.getAll);
+router.get(`/${article}/getById/:id`, ArticleController.getById);
+router.post(`/${article}/add`, upload.single('image'), ArticleController.create);
+router.put(`/${article}/update/:id`, upload.single('image'), ArticleController.update);
+router.delete(`/${article}/delete/:id`, ArticleController.delete);
 module.exports = router;

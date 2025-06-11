@@ -1,87 +1,35 @@
-const { v4: uuidv4 } = require('uuid');
-const Specialization = require('./../model/specializationModel');
+const db = require("../helper/database");
+const { v4: uuidv4 } = require("uuid");
+const Specialization = require("../model/specializationModel");
 
 class SpecializationService {
   static async getAll() {
-    try {
-      const data = await Specialization.findAll();
-      return { code: 200, data, message: 'Lấy danh sách chuyên môn thành công' };
-    } catch (error) {
-      console.error('Lỗi tại SpecializationService.layTatCa:', error);
-      throw new Error('Không thể lấy danh sách chuyên môn');
-    }
+    const [rows] = await db.execute("SELECT * FROM specializations ORDER BY created_at DESC");
+    return Specialization.fromRows(rows);
   }
-
   static async getById(uuid) {
-    try {
-      const data = await Specialization.findById(uuid);
-      if (!data) {
-        const error = new Error('Không tìm thấy chuyên môn');
-        error.statusCode = 404;
-        throw error;
-      }
-      return { code: 200, data, message: 'Lấy thông tin chuyên môn thành công' };
-    } catch (error) {
-      console.error('Lỗi tại SpecializationService.layTheoId:', error);
-      throw error;
-    }
+    const [rows] = await db.execute("SELECT * FROM specializations WHERE uuid = ?", [uuid]);
+    if (rows.length === 0) return null;
+    return Specialization.fromRow(rows[0]);
   }
-
-  static async create(body) {
-    try {
-      const checkname = await Specialization.findByName(body.name);
-      if (checkname) {
-        return {
-          code: 300,
-          message: 'Chuyên môn đã tồn tại',
-          data: checkname
-        };
-      }
-      const uuid = uuidv4().replace(/-/g, '');
-      await Specialization.create({
-        uuid,
-        name: body.name
-      });
-
-      return { code: 200, message: 'Tạo chuyên môn thành công' };
-    } catch (error) {
-      console.error('Lỗi tại SpecializationService.create:', error);
-      throw new Error('Không thể tạo chuyên môn');
-    }
+  static async create({ name }) {
+    const uuid = uuidv4().replace(/-/g, "").slice(0, 32);
+    await db.execute(
+      "INSERT INTO specializations (uuid, name, created_at, updated_at) VALUES (?, ?, NOW(), NOW())",
+      [uuid, name]
+    );
+    return { uuid, name };
   }
-
-
-  static async update(uuid, body) {
-    try {
-      const tonTai = await Specialization.findById(uuid);
-      if (!tonTai) {
-        const error = new Error('Không tìm thấy chuyên môn');
-        error.statusCode = 404;
-        throw error;
-      }
-      await Specialization.update(uuid, body);
-      return { code: 200, message: 'Cập nhật chuyên môn thành công' };
-    } catch (error) {
-      console.error('Lỗi tại SpecializationService.capNhat:', error);
-      throw error;
-    }
+  static async update(uuid, { name }) {
+    const [result] = await db.execute(
+      "UPDATE specializations SET name = ?, updated_at = NOW() WHERE uuid = ?",
+      [name, uuid]
+    );
+    return result.affectedRows > 0;
   }
-
-  static async delete(uuid) {
-    try {
-      const tonTai = await Specialization.findById(uuid);
-      if (!tonTai) {
-        const error = new Error('Không tìm thấy chuyên môn');
-        error.statusCode = 404;
-        throw error;
-      }
-      await Specialization.delete(uuid);
-      return { code: 200, message: 'Xoá chuyên môn thành công' };
-    } catch (error) {
-      console.error('Lỗi tại SpecializationService.xoa:', error);
-      throw error;
-    }
+  static async remove(uuid) {
+    const [result] = await db.execute("DELETE FROM specializations WHERE uuid = ?", [uuid]);
+    return result.affectedRows > 0;
   }
 }
-
 module.exports = SpecializationService;

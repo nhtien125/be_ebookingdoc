@@ -1,48 +1,53 @@
-const medicalRecordService = require('./../service/medicalRecordService');
+const MedicalRecordService = require("../service/medicalRecordService");
 
-module.exports = {
-  async getAll(req, res) {
+class MedicalRecordController {
+  static async getAll(req, res) {
     try {
-      const medicalRecords = await medicalRecordService.getAll();
-      res.status(200).json(medicalRecords);
+      const data = await MedicalRecordService.getAll();
+      res.json({ code: 200, msg: "Thành công", status: "success", data });
     } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
-
-  async getById(req, res) {
-    try {
-      const medicalRecord = await medicalRecordService.getById(req.params.id);
-      res.status(200).json(medicalRecord);
-    } catch (error) {
-      res.status(404).json({ error: error.message });
-    }
-  },
-
-  async create(req, res) {
-    try {
-      const medicalRecord = await medicalRecordService.create(req.body);
-      res.status(201).json(medicalRecord);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  },
-
-  async update(req, res) {
-    try {
-      const medicalRecord = await medicalRecordService.update(req.params.id, req.body);
-      res.status(200).json(medicalRecord);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  },
-
-  async delete(req, res) {
-    try {
-      const result = await medicalRecordService.delete(req.params.id);
-      res.status(200).json(result);
-    } catch (error) {
-      res.status(404).json({ error: error.message });
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
-};
+  static async getById(req, res) {
+    try {
+      const data = await MedicalRecordService.getById(req.params.id);
+      if (!data)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
+      res.json({ code: 200, msg: "Thành công", status: "success", data });
+    } catch (error) {
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
+    }
+  }
+  static async create(req, res) {
+    try {
+      const { patient_id } = req.body;
+      const result = await MedicalRecordService.create({ patient_id });
+      res.status(201).json({ code: 201, msg: "Tạo thành công", status: "success", data: result });
+    } catch (error) {
+      res.status(400).json({ code: 400, msg: error.message, status: "error" });
+    }
+  }
+  static async update(req, res) {
+    try {
+      const { patient_id } = req.body;
+      const updated = await MedicalRecordService.update(req.params.id, { patient_id });
+      if (!updated)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy để cập nhật", status: "error" });
+      res.json({ code: 200, msg: "Cập nhật thành công", status: "success" });
+    } catch (error) {
+      res.status(400).json({ code: 400, msg: error.message, status: "error" });
+    }
+  }
+  static async delete(req, res) {
+    try {
+      const deleted = await MedicalRecordService.remove(req.params.id);
+      if (!deleted)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
+      res.json({ code: 200, msg: "Xóa thành công", status: "success" });
+    } catch (error) {
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
+    }
+  }
+}
+module.exports = MedicalRecordController;

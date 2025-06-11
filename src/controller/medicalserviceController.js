@@ -1,10 +1,10 @@
-const DoctorService = require("../service/doctorService");
+const MedicalServiceService = require("../service/medicalRecordService");
 const { getImageValue } = require("../helper/image.helper");
 
-class DoctorController {
+class MedicalServiceController {
   static async getAll(req, res) {
     try {
-      const data = await DoctorService.getAll();
+      const data = await MedicalServiceService.getAll();
       res.json({ code: 200, msg: "Thành công", status: "success", data });
     } catch (error) {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
@@ -12,7 +12,7 @@ class DoctorController {
   }
   static async getById(req, res) {
     try {
-      const data = await DoctorService.getById(req.params.id);
+      const data = await MedicalServiceService.getById(req.params.id);
       if (!data)
         return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
       res.json({ code: 200, msg: "Thành công", status: "success", data });
@@ -22,14 +22,15 @@ class DoctorController {
   }
   static async create(req, res) {
     try {
-      const { user_id, doctor_type, specialization_id, license, introduce, image } = req.body;
-      const imageValue = await getImageValue(req.file, image, "doctors");
-      const result = await DoctorService.create({
-        user_id,
-        doctor_type,
+      const { name, description, price, specialization_id, clinic_id, hospital_id, image } = req.body;
+      const imageValue = await getImageValue(req.file, image, "medical_services");
+      const result = await MedicalServiceService.create({
+        name,
+        description,
+        price,
         specialization_id,
-        license,
-        introduce,
+        clinic_id,
+        hospital_id,
         image: imageValue,
       });
       res.status(201).json({ code: 201, msg: "Tạo thành công", status: "success", data: result });
@@ -39,14 +40,15 @@ class DoctorController {
   }
   static async update(req, res) {
     try {
-      const { user_id, doctor_type, specialization_id, license, introduce, image } = req.body;
-      const imageValue = await getImageValue(req.file, image, "doctors");
-      const updated = await DoctorService.update(req.params.id, {
-        user_id,
-        doctor_type,
+      const { name, description, price, specialization_id, clinic_id, hospital_id, image } = req.body;
+      const imageValue = await getImageValue(req.file, image, "medical_services");
+      const updated = await MedicalServiceService.update(req.params.id, {
+        name,
+        description,
+        price,
         specialization_id,
-        license,
-        introduce,
+        clinic_id,
+        hospital_id,
         image: imageValue,
       });
       if (!updated)
@@ -58,7 +60,7 @@ class DoctorController {
   }
   static async delete(req, res) {
     try {
-      const deleted = await DoctorService.remove(req.params.id);
+      const deleted = await MedicalServiceService.remove(req.params.id);
       if (!deleted)
         return res.status(404).json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
       res.json({ code: 200, msg: "Xóa thành công", status: "success" });
@@ -67,4 +69,4 @@ class DoctorController {
     }
   }
 }
-module.exports = DoctorController;
+module.exports = MedicalServiceController;

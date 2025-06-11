@@ -1,50 +1,53 @@
-const SpecializationService = require('../service/specializationService');
+const SpecializationService = require("../service/specializationService");
 
 class SpecializationController {
-  static async getAll(req, res, next) {
+  static async getAll(req, res) {
     try {
-      const result = await SpecializationService.getAll();
-      res.status(result.code).json(result);
-    } catch (err) {
-      next(err);
+      const data = await SpecializationService.getAll();
+      res.json({ code: 200, msg: "Thành công", status: "success", data });
+    } catch (error) {
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
-
-  static async getById(req, res, next) {
+  static async getById(req, res) {
     try {
-      const result = await SpecializationService.getById(req.params.id);
-      res.status(result.code).json(result);
-    } catch (err) {
-      next(err);
+      const data = await SpecializationService.getById(req.params.uuid);
+      if (!data)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
+      res.json({ code: 200, msg: "Thành công", status: "success", data });
+    } catch (error) {
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
-
-  static async create(req, res, next) {
+  static async create(req, res) {
     try {
-      const result = await SpecializationService.create(req.body);
-      res.status(result.code).json(result);
-    } catch (err) {
-      next(err);
+      const { name } = req.body;
+      const result = await SpecializationService.create({ name });
+      res.status(201).json({ code: 201, msg: "Tạo thành công", status: "success", data: result });
+    } catch (error) {
+      res.status(400).json({ code: 400, msg: error.message, status: "error" });
     }
   }
-
-  static async update(req, res, next) {
+  static async update(req, res) {
     try {
-      const result = await SpecializationService.update(req.params.id, req.body);
-      res.status(result.code).json(result);
-    } catch (err) {
-      next(err);
+      const { name } = req.body;
+      const updated = await SpecializationService.update(req.params.uuid, { name });
+      if (!updated)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy để cập nhật", status: "error" });
+      res.json({ code: 200, msg: "Cập nhật thành công", status: "success" });
+    } catch (error) {
+      res.status(400).json({ code: 400, msg: error.message, status: "error" });
     }
   }
-
-  static async delete(req, res, next) {
+  static async delete(req, res) {
     try {
-      const result = await SpecializationService.delete(req.params.id);
-      res.status(result.code).json(result);
-    } catch (err) {
-      next(err);
+      const deleted = await SpecializationService.remove(req.params.uuid);
+      if (!deleted)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
+      res.json({ code: 200, msg: "Xóa thành công", status: "success" });
+    } catch (error) {
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
 }
-
 module.exports = SpecializationController;

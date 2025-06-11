@@ -1,63 +1,71 @@
+const ClinicService = require("../service/clinicService");
+const { getImageValue } = require("../helper/image.helper");
 
-const clinicService = require('../../src/service/clinicService');
-
-module.exports = {
-
-  async getAll(req, res) {
+class ClinicController {
+  static async getAll(req, res) {
     try {
-      const clinics = await clinicService.getAll();
-     res
-        .status(200)
-        .json({ code: 200, message: "Thành công", data: clinics });
+      const data = await ClinicService.getAll();
+      res.json({ code: 200, msg: "Thành công", status: "success", data });
     } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
-  async getById(req, res) {
-    try {
-      const clinic = await clinicService.getById(req.params.id);
-      res.status(200).json(clinic);
-    } catch (error) {
-      res.status(404).json({ error: error.message });
-    }
-  },
-
-  async create(req, res) {
-  try {
-    const { name, address, phone, email, image } = req.body;
-    if (!name || !address || !phone || !email) {
-      return res.status(400).json({ error: 'Missing required fields: name, address, phone, email' });
-    }
-
-    console.log("req.body:", req.body);
-    console.log("req.file:", req.file);
-
-    const clinic = await clinicService.create({ name, address, phone, email, image }, req.file);
-
-    console.log("Created clinic:", clinic); // Log kiểm tra
-
-    res.status(200).json({ code: 200, message: "Thành công", data: clinic });
-  } catch (error) {
-    console.error("Error in create:", error);
-    res.status(400).json({ error: error.message });
-  }
-},
-
-  async update(req, res) {
-    try {
-      const clinic = await clinicService.update(req.params.id, req.body);
-      res.status(200).json(clinic);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  },
-
-  async delete(req, res) {
-    try {
-      const result = await clinicService.delete(req.params.id);
-      res.status(200).json(result);
-    } catch (error) {
-      res.status(404).json({ error: error.message });
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
-};
+  static async getById(req, res) {
+    try {
+      const data = await ClinicService.getById(req.params.id);
+      if (!data)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
+      res.json({ code: 200, msg: "Thành công", status: "success", data });
+    } catch (error) {
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
+    }
+  }
+    static async create(req, res) {
+    try {
+      const { name, address, phone, email, image, hospital_id } = req.body;
+      const imageValue = await getImageValue(req.file, image, "clinics");
+      const result = await ClinicService.create({
+        name,
+        address,
+        phone,
+        email,
+        image: imageValue,
+        hospital_id,
+      });
+      res.status(201).json({ code: 201, msg: "Tạo thành công", status: "success", data: result });
+    } catch (error) {
+      res.status(error.statusCode || 400).json({ code: error.statusCode || 400, msg: error.message, status: "error" });
+    }
+  }
+
+  static async update(req, res) {
+    try {
+      const { name, address, phone, email, image, hospital_id } = req.body;
+      const imageValue = await getImageValue(req.file, image, "clinics");
+      const updated = await ClinicService.update(req.params.id, {
+        name,
+        address,
+        phone,
+        email,
+        image: imageValue,
+        hospital_id,
+      });
+      if (!updated)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy để cập nhật", status: "error" });
+      res.json({ code: 200, msg: "Cập nhật thành công", status: "success" });
+    } catch (error) {
+      res.status(error.statusCode || 400).json({ code: error.statusCode || 400, msg: error.message, status: "error" });
+    }
+  }
+  static async delete(req, res) {
+    try {
+      const deleted = await ClinicService.remove(req.params.id);
+      if (!deleted)
+        return res.status(404).json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
+      res.json({ code: 200, msg: "Xóa thành công", status: "success" });
+    } catch (error) {
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
+    }
+  }
+}
+module.exports = ClinicController;

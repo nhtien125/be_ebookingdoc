@@ -1,43 +1,30 @@
-const db = require("../helper/database");
-const { v4: uuidv4 } = require("uuid");
-
 class Clinic {
-  static async findAll() {
-    const [rows] = await db.execute("SELECT * FROM `clinics`");
-    return rows;
+  constructor({
+    uuid,
+    name,
+    address,
+    phone,
+    email,
+    image,
+    hospital_id,
+    created_at,
+    updated_at,
+  }) {
+    this.uuid = uuid || null;
+    this.name = name || null;
+    this.address = address || null;
+    this.phone = phone || null;
+    this.email = email || null;
+    this.image = image || null;
+    this.hospital_id = hospital_id || null;
+    this.created_at = created_at || null;
+    this.updated_at = updated_at || null;
   }
-
-  static async findById(uuid) {
-    const [rows] = await db.execute(
-      "SELECT * FROM `clinics` WHERE `uuid` = ?",
-      [uuid]
-    );
-    return rows[0] || null;
+  static fromRow(row) {
+    return new Clinic(row);
   }
-
-  static async create({ uuid,name, address, phone, email, image }) {
-    const query = `
-      INSERT INTO \`clinics\` (
-        \`uuid\`, \`name\`, \`address\`, \`phone\`, \`email\`, \`image\`
-      ) VALUES (?, ?, ?, ?, ?, ?)
-    `;
-  await db.execute(query, [uuid, name, address,phone,email, image]);
-   
-  }
-
-  static async update(uuid, { name, address, phone, email, image }) {
-    const query = `
-      UPDATE \`clinics\`
-      SET \`name\` = ?, \`address\` = ?, \`phone\` = ?, \`email\`,,\`image\` = ?
-      WHERE \`uuid\` = ?
-    `;
-    await db.execute(query, [name, address, phone, email, uuid, image]);
-    return { uuid, name, address, phone, email, image };
-  }
-
-  static async delete(uuid) {
-    await db.execute("DELETE FROM `clinics` WHERE `uuid` = ?", [uuid]);
+  static fromRows(rows) {
+    return rows.map(row => Clinic.fromRow(row));
   }
 }
-
 module.exports = Clinic;
