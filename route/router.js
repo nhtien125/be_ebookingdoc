@@ -23,7 +23,8 @@ const clinicSpecializationController = require("../src/controller/clinicSpeciali
 const clinicDoctorController = require("../src/controller/clinicDoctorController");
 const MedicalServiceController = require("../src/controller/medicalserviceController");
 const SelectProfileController = require("../src/controller/SelectProfileController");
-const ArticleController = require("../controllers/article.controller");
+const ArticleController = require("../src/controller/ArticleController");
+const CarouselItemController = require("../src/controller/CarouselItemController");
 const asyncHandler = fn => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
@@ -190,4 +191,12 @@ router.get(`/${article}/getById/:id`, ArticleController.getById);
 router.post(`/${article}/add`, upload.single('image'), ArticleController.create);
 router.put(`/${article}/update/:id`, upload.single('image'), ArticleController.update);
 router.delete(`/${article}/delete/:id`, ArticleController.delete);
+
+
+const carousel_item = "carousel_item";
+router.get(`/${carousel_item}/getAll`, CarouselItemController.getAll);
+router.get(`/${carousel_item}/getById/:id`, CarouselItemController.getById);
+router.post(`/${carousel_item}/add`, upload.single('image'), CarouselItemController.create);
+router.put(`/${carousel_item}/update/:id`, upload.single('image'), CarouselItemController.update);
+router.delete(`/${carousel_item}/delete/:id`, CarouselItemController.delete);
 module.exports = router;
