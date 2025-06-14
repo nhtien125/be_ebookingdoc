@@ -5,7 +5,7 @@ class UserController {
   static async login(req, res) {
     try {
       const result = await UserService.login(req.body);
-      return res.status(result.code).json(result);
+       res.status(200).json(result);
     } catch (error) {
       return res.status(error.statusCode || 500).json({
         code: error.statusCode || 500,
@@ -13,26 +13,22 @@ class UserController {
       });
     }
   }
-  static async register(req, res) {
-    try {
-      console.log(
-        "Full request object:",
-        req.body,
-        req.file,
-        req.headers["content-type"]
-      );
-      console.log("req.body.image:", req.body.image);
+ static async register(req, res) {
+  try {
+    console.log("Full request object:", req.body);
 
-      const result = await UserService.register(req.body, req.file);
-      return res.status(200).json(result); // Trả về 200 khi thành công
-    } catch (error) {
-      console.error("Error in UserController.register:", error);
-      return res.status(200).json({
-        code: error.statusCode || 500,
-        message: error.message,
-      }); // Trả về 200 với thông tin lỗi
-    }
+    // Không truyền req.file, chỉ lấy body
+    const result = await UserService.register(req.body);
+    return res.status(200).json(result); // Trả về 200 khi thành công
+  } catch (error) {
+    console.error("Error in UserController.register:", error);
+    return res.status(200).json({
+      code: error.statusCode || 500,
+      message: error.message,
+    }); // Trả về 200 với thông tin lỗi
   }
+}
+
 
   static async getDetailInfo(req, res) {
     try {

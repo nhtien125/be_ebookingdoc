@@ -7,236 +7,203 @@ const validator = require("validator");
 const fs = require("fs").promises;
 
 class UserService {
-  static async login(user) {
-    try {
-      // Kiểm tra bắt buộc nhập phone hoặc username, và password
-      const identifier = user.phone || user.username;
-      if (!identifier || !user.password) {
+ static async login(user) {
+  try {
+    // Nhận username hoặc email và password
+    const identifier = user.username || user.email;
+    if (!identifier || !user.password) {
+      const error = new Error(
+        "Username hoặc email và password không được để trống!"
+      );
+      error.statusCode = 400;
+      throw error;
+    }
+
+    // Xác định field: nếu là email (có @), còn lại là username
+    const field = identifier.includes("@") ? "email" : "username";
+
+    // Query database
+    const [rows] = await db.execute(
+      `SELECT uuid, name, premission_id, image FROM \`user\` WHERE \`${field}\` = ? AND \`password\` = ?`,
+      [identifier, user.password]
+    );
+
+    if (!rows || rows.length === 0) {
+      const error = new Error(
+        "Thông tin tài khoản hoặc mật khẩu không chính xác!"
+      );
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const userData = rows[0];
+    if (!userData || typeof userData !== "object") {
+      const error = new Error("Dữ liệu user không hợp lệ!");
+      error.statusCode = 500;
+      throw error;
+    }
+
+    const uuid = userData.uuid;
+    if (!uuid) {
+      const error = new Error("Không tìm thấy UUID của user!");
+      error.statusCode = 500;
+      throw error;
+    }
+
+    // Tạo access token và refresh token
+    const token = await signAccessToken(uuid);
+    if (!token || !token.access_token || !token.refresh_token) {
+      const error = new Error("Không thể tạo token!");
+      error.statusCode = 500;
+      throw error;
+    }
+
+    // Xóa token cũ
+    await db.execute("DELETE FROM `token` WHERE `user_id` = ?", [uuid]);
+
+    // Thêm token mới vào DB
+    await db.execute(
+      `INSERT INTO \`token\`(\`uuid\`, \`user_id\`, \`access_token\`, \`refresh_token\`) VALUES (uuid(), ?, ?, ?)`,
+      [uuid, token.access_token, token.refresh_token]
+    );
+
+    return {
+      code: 200,
+      data: {
+        uuid: userData.uuid ?? null,
+        name: userData.name ?? null,
+        premission_id: userData.premission_id ?? null,
+        avatar: userData.image ?? '',
+        access_token: token.access_token,
+        refresh_token: token.refresh_token,
+      },
+    };
+  } catch (error) {
+    console.error("Login error:", error);
+    error.statusCode = error.statusCode || 500;
+    throw error;
+  }
+}
+
+static async register(userData) {
+  try {
+    const sanitizeInput = (value) => {
+      if (typeof value !== "string") return value;
+      return value.replace(/[\n\r\t\x00-\x1F\x7F-\x9F]/g, "").trim();
+    };
+
+    const premissionId = Number(userData.premission_id);
+    const username = sanitizeInput(userData.username);
+    const password = sanitizeInput(userData.password);
+    const email = sanitizeInput(userData.email);
+    const name = sanitizeInput(userData.name);
+    const phone = sanitizeInput(userData.phone);
+    const address = sanitizeInput(userData.address);
+
+    if (!email) {
+      const error = new Error("Email không được để trống!");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    if (premissionId !== 3) {
+      if (!username || username.length < 6) {
+        const error = new Error("Username phải có ít nhất 6 ký tự!");
+        error.statusCode = 400;
+        throw error;
+      }
+      if (!password || password.length < 6) {
+        const error = new Error("Password phải có ít nhất 6 ký tự!");
+        error.statusCode = 400;
+        throw error;
+      }
+    } else {
+      if (username && username.length < 6) {
         const error = new Error(
-          "Phone hoặc username và password không được để trống!"
+          "Username phải có ít nhất 6 ký tự nếu được cung cấp!"
         );
         error.statusCode = 400;
         throw error;
       }
-
-      // Xác định trường để query (phone hoặc username)
-      const field = user.phone ? "phone" : "username";
-
-      // Truy vấn database lấy user theo identifier và password
-      const [rows] = await db.execute(
-        `SELECT uuid, name, premission_id FROM \`user\` WHERE \`${field}\` = ? AND \`password\` = ?`,
-        [identifier, user.password]
-      );
-
-      console.log("Login query result:", rows);
-
-      if (!rows || rows.length === 0) {
+      if (password && password.length < 6) {
         const error = new Error(
-          "Thông tin tài khoản hoặc mật khẩu không chính xác!"
+          "Password phải có ít nhất 6 ký tự nếu được cung cấp!"
         );
         error.statusCode = 400;
         throw error;
       }
+    }
 
-      const userData = rows[0];
-      if (!userData || typeof userData !== "object") {
-        const error = new Error("Dữ liệu user không hợp lệ!");
-        error.statusCode = 500;
-        throw error;
-      }
-
-      const uuid = userData.uuid;
-      if (!uuid) {
-        const error = new Error("Không tìm thấy UUID của user!");
-        error.statusCode = 500;
-        throw error;
-      }
-
-      // Tạo access token và refresh token
-      const token = await signAccessToken(uuid);
-      if (!token || !token.access_token || !token.refresh_token) {
-        const error = new Error("Không thể tạo token!");
-        error.statusCode = 500;
-        throw error;
-      }
-
-      // Xóa token cũ của user nếu có
-      await db.execute("DELETE FROM `token` WHERE `user_id` = ?", [uuid]);
-
-      // Thêm token mới vào DB
-      await db.execute(
-        `
-      INSERT INTO \`token\`(
-        \`uuid\`,
-        \`user_id\`,
-        \`access_token\`,
-        \`refresh_token\`
-      )
-      VALUES (uuid(), ?, ?, ?)
-      `,
-        [uuid, token.access_token, token.refresh_token]
-      );
-
-      return {
-        code: 200,
-        data: {
-          uuid: userData.uuid ?? null,
-          name: userData.name ?? null,
-          permission: userData.premission_id ?? null,
-          access_token: token.access_token,
-          refresh_token: token.refresh_token,
-        },
-      };
-    } catch (error) {
-      console.error("Login error:", error);
-      error.statusCode = error.statusCode || 500;
+    if (!validator.isEmail(email)) {
+      const error = new Error("Email không hợp lệ!");
+      error.statusCode = 400;
       throw error;
     }
-  }
-  static async register(userData, file) {
+
+    let existingUser;
+    let query = `SELECT uuid FROM \`user\` WHERE \`email\` = ?`;
+    let params = [email];
+
+    if (premissionId !== 3) {
+      query += ` OR \`username\` = ?`;
+      params.push(username);
+    }
+
     try {
-      const sanitizeInput = (value) => {
-        if (typeof value !== "string") return value;
-        return value.replace(/[\n\r\t\x00-\x1F\x7F-\x9F]/g, "").trim();
-      };
-
-      const premissionId = Number(userData.premission_id);
-      const username = sanitizeInput(userData.username);
-      const password = sanitizeInput(userData.password);
-      const email = sanitizeInput(userData.email);
-      const name = sanitizeInput(userData.name);
-      const phone = sanitizeInput(userData.phone);
-      const address = sanitizeInput(userData.address);
-
-      if (!email) {
-        const error = new Error("Email không được để trống!");
-        error.statusCode = 400;
-        throw error;
-      }
-
-      if (premissionId !== 3) {
-        if (!username || username.length < 6) {
-          const error = new Error("Username phải có ít nhất 6 ký tự!");
-          error.statusCode = 400;
-          throw error;
-        }
-        if (!password || password.length < 6) {
-          const error = new Error("Password phải có ít nhất 6 ký tự!");
-          error.statusCode = 400;
-          throw error;
-        }
-      } else {
-        if (username && username.length < 6) {
-          const error = new Error(
-            "Username phải có ít nhất 6 ký tự nếu được cung cấp!"
-          );
-          error.statusCode = 400;
-          throw error;
-        }
-        if (password && password.length < 6) {
-          const error = new Error(
-            "Password phải có ít nhất 6 ký tự nếu được cung cấp!"
-          );
-          error.statusCode = 400;
-          throw error;
-        }
-      }
-
-      if (!validator.isEmail(email)) {
-        const error = new Error("Email không hợp lệ!");
-        error.statusCode = 400;
-        throw error;
-      }
-
-      let existingUser;
-      let query = `SELECT uuid FROM \`user\` WHERE \`email\` = ?`;
-      let params = [email];
-
-      if (premissionId !== 3) {
-        query += ` OR \`username\` = ?`;
-        params.push(username);
-      }
-
-      try {
-        const [rows] = await db.execute(query, params);
-        existingUser = rows;
-      } catch (dbError) {
-        console.error("Database query error:", dbError);
-        const error = new Error("Lỗi khi truy vấn thông tin người dùng!");
-        error.statusCode = 500;
-        throw error;
-      }
-
-      if (existingUser.length > 0) {
-        const error = new Error("Email hoặc Username đã tồn tại!");
-        error.statusCode = 400;
-        throw error;
-      }
-
-      // Xử lý ảnh
-      let imageUrl = null;
-      if (file) {
-        try {
-          imageUrl = await uploadImageToCloudinary(file.path, "users");
-          console.log("Cloudinary upload result:", imageUrl);
-          await fs
-            .unlink(file.path)
-            .catch((err) => console.error("Error deleting local file:", err));
-        } catch (uploadError) {
-          console.error("Image upload error:", uploadError);
-          const error = new Error("Lỗi khi upload ảnh đại diện!");
-          error.statusCode = 500;
-          throw error;
-        }
-      } else if (userData.image && typeof userData.image === "string") {
-        if (!validator.isURL(userData.image)) {
-          const error = new Error("URL ảnh không hợp lệ!");
-          error.statusCode = 400;
-          throw error;
-        }
-        imageUrl = sanitizeInput(userData.image);
-      }
-
-      const user = new User({
-        uuid: uuidv4().replace(/-/g, ""),
-        premission_id: premissionId,
-        doctor_id: userData.doctor_id || null,
-        patient_id: userData.patient_id || null,
-        name,
-        email,
-        phone,
-        gender: userData.gender || null,
-        address,
-        username: username || null,
-        password: password || null,
-        status: userData.status || 1,
-        image: imageUrl,
-        created_at: new Date(),
-        updated_at: new Date(),
-      });
-
-      await user.save();
-
-      return {
-        code: 200,
-        data: {
-          uuid: user.uuid,
-          name: user.name,
-          email: user.email,
-          phone: user.phone,
-          username: user.username,
-          premission_id: user.premission_id,
-          status: user.status,
-          image: user.image,
-        },
-        message: "Đăng ký thành công!",
-      };
-    } catch (error) {
-      console.error("Register error:", error);
-      error.statusCode = error.statusCode || 500;
+      const [rows] = await db.execute(query, params);
+      existingUser = rows;
+    } catch (dbError) {
+      console.error("Database query error:", dbError);
+      const error = new Error("Lỗi khi truy vấn thông tin người dùng!");
+      error.statusCode = 500;
       throw error;
     }
+
+    if (existingUser.length > 0) {
+      const error = new Error("Email hoặc Username đã tồn tại!");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const user = new User({
+      uuid: uuidv4().replace(/-/g, ""),
+      premission_id: premissionId,
+      name,
+      email,
+      phone,
+      gender: userData.gender || null,
+      address,
+      username: username || null,
+      password: password || null,
+      status: userData.status || 1,
+      image: null,
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
+
+    await user.save();
+
+    return {
+      code: 200,
+      data: {
+        uuid: user.uuid,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        username: user.username,
+        premission_id: user.premission_id,
+        status: user.status,
+        image: user.image,
+      },
+      message: "Đăng ký thành công!",
+    };
+  } catch (error) {
+    console.error("Register error:", error);
+    error.statusCode = error.statusCode || 500;
+    throw error;
   }
+}
+
 
   static async getDetailInfo(uuid) {
     try {

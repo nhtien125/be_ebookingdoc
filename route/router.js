@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
 // Auth
 const auth = "auth";
 router.post(`/${auth}/login`, asyncHandler(UserController.login));
-router.post(`/${auth}/register`, upload.single('image'), asyncHandler(UserController.register));
+router.post(`/${auth}/register`, asyncHandler(UserController.register));
 router.post(`/${auth}/me`, checkLogin, asyncHandler(UserController.getDetailInfo));
 router.post(`/${auth}/refresh-token`, asyncHandler(UserController.refreshToken));
 router.put(`/${auth}/me`, checkLogin, asyncHandler(UserController.updateProfile));
