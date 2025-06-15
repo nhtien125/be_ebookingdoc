@@ -1,68 +1,28 @@
-const db = require('../helper/database');
-const { v4: uuidv4 } = require('uuid');
-
 class Review {
-  static async findAll() {
-    try {
-      const [rows] = await db.execute('SELECT * FROM `reviews`');
-      return rows;
-    } catch (error) {
-      throw new Error('Error fetching reviews: ' + error.message);
-    }
+  constructor({
+    uuid,
+    user_id,
+    doctor_id,
+    appointment_id,
+    stars,
+    comment,
+    created_at,
+    updated_at,
+  }) {
+    this.uuid = uuid || null;
+    this.user_id = user_id || null;
+    this.doctor_id = doctor_id || null;
+    this.appointment_id = appointment_id || null;
+    this.stars = stars || null;
+    this.comment = comment || null;
+    this.created_at = created_at || null;
+    this.updated_at = updated_at || null;
   }
-
-  static async findById(uuid) {
-    try {
-      const [rows] = await db.execute('SELECT * FROM `reviews` WHERE `uuid` = ?', [uuid]);
-      return rows[0] || null;
-    } catch (error) {
-      throw new Error('Error fetching review by ID: ' + error.message);
-    }
+  static fromRow(row) {
+    return new Review(row);
   }
-
-  static async create({ doctor_id, patient_id, comment }) {
-    try {
-      const uuid = uuidv4().replace(/-/g, '');
-      const query = `
-        INSERT INTO \`reviews\` (
-          \`uuid\`, \`doctor_id\`, \`patient_id\`, \`comment\`
-        ) VALUES (?, ?, ?, ?)
-      `;
-      const [result] = await db.execute(query, [uuid, doctor_id, patient_id, comment]);
-      return { uuid, doctor_id, patient_id, comment };
-    } catch (error) {
-      throw new Error('Error creating review: ' + error.message);
-    }
-  }
-
-  static async update(uuid, { doctor_id, patient_id, comment }) {
-    try {
-      const query = `
-        UPDATE \`reviews\`
-        SET \`doctor_id\` = ?, \`patient_id\` = ?, \`comment\` = ?
-        WHERE \`uuid\` = ?
-      `;
-      const [result] = await db.execute(query, [doctor_id, patient_id, comment, uuid]);
-      if (result.affectedRows === 0) {
-        throw new Error('Review not found');
-      }
-      return { uuid, doctor_id, patient_id, comment };
-    } catch (error) {
-      throw new Error('Error updating review: ' + error.message);
-    }
-  }
-
-  static async delete(uuid) {
-    try {
-      const [result] = await db.execute('DELETE FROM `reviews` WHERE `uuid` = ?', [uuid]);
-      if (result.affectedRows === 0) {
-        throw new Error('Review not found');
-      }
-      return { message: 'Review deleted successfully' };
-    } catch (error) {
-      throw new Error('Error deleting review: ' + error.message);
-    }
+  static fromRows(rows) {
+    return rows.map(row => Review.fromRow(row));
   }
 }
-
 module.exports = Review;
