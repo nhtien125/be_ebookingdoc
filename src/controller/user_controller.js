@@ -5,7 +5,7 @@ class UserController {
   static async login(req, res) {
     try {
       const result = await UserService.login(req.body);
-       res.status(200).json(result);
+      res.status(200).json(result);
     } catch (error) {
       return res.status(error.statusCode || 500).json({
         code: error.statusCode || 500,
@@ -13,22 +13,21 @@ class UserController {
       });
     }
   }
- static async register(req, res) {
-  try {
-    console.log("Full request object:", req.body);
+  static async register(req, res) {
+    try {
+      console.log("Full request object:", req.body);
 
-    // Không truyền req.file, chỉ lấy body
-    const result = await UserService.register(req.body);
-    return res.status(200).json(result); // Trả về 200 khi thành công
-  } catch (error) {
-    console.error("Error in UserController.register:", error);
-    return res.status(200).json({
-      code: error.statusCode || 500,
-      message: error.message,
-    }); // Trả về 200 với thông tin lỗi
+      // Không truyền req.file, chỉ lấy body
+      const result = await UserService.register(req.body);
+      return res.status(200).json(result); // Trả về 200 khi thành công
+    } catch (error) {
+      console.error("Error in UserController.register:", error);
+      return res.status(200).json({
+        code: error.statusCode || 500,
+        message: error.message,
+      }); // Trả về 200 với thông tin lỗi
+    }
   }
-}
-
 
   static async getDetailInfo(req, res) {
     try {
@@ -69,13 +68,30 @@ class UserController {
 
   static async updateProfile(req, res, next) {
     try {
-      const result = await UserService.updateProfile(req.payload.id, req.body);
-      res.json(result);
+      const uuid = req.params.uuid; // Lấy uuid từ param URL
+      if (!uuid) {
+        return res.status(400).json({
+          code: 400,
+          message: "Thiếu uuid!",
+          status: "error",
+        });
+      }
+      const result = await UserService.updateProfile(uuid, req.body);
+      res.status(200).json({
+        code: 200,
+        message: result.message || "Sửa thành công",
+        status: "success",
+        data: result.data,
+      });
     } catch (error) {
-      next(error);
+      console.error("Lỗi ở controller updateProfile:", error);
+      res.status(error.statusCode || 500).json({
+        code: error.statusCode || 500,
+        message: error.message || "Đã có lỗi xảy ra!",
+        status: "error",
+      });
     }
   }
-
   static async getAll(req, res) {
     try {
       const premission_id = req.query.premission_id
@@ -101,6 +117,20 @@ class UserController {
       return res.status(error.statusCode || 500).json({
         code: error.statusCode || 500,
         message: error.message || "Lỗi server khi lấy danh sách người dùng",
+      });
+    }
+  }
+
+  static async getById(req, res) {
+    try {
+      const { id } = req.params;
+      const result = await UserService.getById(id);
+      return res.status(result.code).json(result);
+    } catch (error) {
+      console.error("Error in UserController.getById:", error);
+      return res.status(error.statusCode || 500).json({
+        code: error.statusCode || 500,
+        message: error.message || "Lỗi server khi lấy thông tin user",
       });
     }
   }

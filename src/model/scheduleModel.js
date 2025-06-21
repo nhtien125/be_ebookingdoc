@@ -3,6 +3,7 @@ class Schedule {
     uuid,
     doctor_id,
     clinic_id,
+    work_date,      
     start_time,
     end_time,
     created_at,
@@ -11,6 +12,7 @@ class Schedule {
     this.uuid = uuid || null;
     this.doctor_id = doctor_id || null;
     this.clinic_id = clinic_id || null;
+    this.work_date = work_date || null;   
     this.start_time = start_time || null;
     this.end_time = end_time || null;
     this.created_at = created_at || null;

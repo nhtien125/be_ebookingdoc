@@ -10,6 +10,7 @@ class DoctorController {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
+
   static async getById(req, res) {
     try {
       const data = await DoctorService.getById(req.params.id);
@@ -20,16 +21,29 @@ class DoctorController {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
+
   static async create(req, res) {
     try {
-      const { user_id, doctor_type, specialization_id, license, introduce, image } = req.body;
+      // Lấy thêm hospital_id
+      const { user_id, hospital_id, doctor_type, specialization_id, license, introduce, experience, patient_count, image } = req.body;
+
+      if (!hospital_id) {
+        return res.status(400).json({ code: 400, msg: "Thiếu trường hospital_id", status: "error" });
+      }
+      if (experience === undefined || patient_count === undefined) {
+        return res.status(400).json({ code: 400, msg: "Thiếu trường experience hoặc patient_count", status: "error" });
+      }
+
       const imageValue = await getImageValue(req.file, image, "doctors");
       const result = await DoctorService.create({
         user_id,
+        hospital_id,   // BẮT BUỘC truyền xuống Service
         doctor_type,
         specialization_id,
         license,
         introduce,
+        experience,
+        patient_count,
         image: imageValue,
       });
       res.status(201).json({ code: 201, msg: "Tạo thành công", status: "success", data: result });
@@ -37,16 +51,28 @@ class DoctorController {
       res.status(error.statusCode || 400).json({ code: error.statusCode || 400, msg: error.message, status: "error" });
     }
   }
+
   static async update(req, res) {
     try {
-      const { user_id, doctor_type, specialization_id, license, introduce, image } = req.body;
+      const { user_id, hospital_id, doctor_type, specialization_id, license, introduce, experience, patient_count, image } = req.body;
+
+      if (!hospital_id) {
+        return res.status(400).json({ code: 400, msg: "Thiếu trường hospital_id", status: "error" });
+      }
+      if (experience === undefined || patient_count === undefined) {
+        return res.status(400).json({ code: 400, msg: "Thiếu trường experience hoặc patient_count", status: "error" });
+      }
+
       const imageValue = await getImageValue(req.file, image, "doctors");
       const updated = await DoctorService.update(req.params.id, {
         user_id,
+        hospital_id, 
         doctor_type,
         specialization_id,
         license,
         introduce,
+        experience,
+        patient_count,
         image: imageValue,
       });
       if (!updated)
@@ -56,6 +82,7 @@ class DoctorController {
       res.status(error.statusCode || 400).json({ code: error.statusCode || 400, msg: error.message, status: "error" });
     }
   }
+
   static async delete(req, res) {
     try {
       const deleted = await DoctorService.remove(req.params.id);
@@ -67,4 +94,5 @@ class DoctorController {
     }
   }
 }
+
 module.exports = DoctorController;

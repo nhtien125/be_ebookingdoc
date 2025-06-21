@@ -62,3 +62,247 @@ stack: MulterError: Unexpected field
     at SBMH.push (D:\ProjectTien\be_ebookingdoc\node_modules\streamsearch\lib\sbmh.js:104:16)
     at Multipart._write (D:\ProjectTien\be_ebookingdoc\node_modules\busboy\lib\types\multipart.js:567:19)
     at writeOrBuffer (node:internal/streams/writable:572:12)
+============================================================================
+2025-06-19T16:03:48.038Z
+message: Tài khoản này hiện đang được đăng nhập ở nơi khác!
+stack: Error: Tài khoản này hiện đang được đăng nhập ở nơi khác!
+    at checkLogin (D:\ProjectTien\be_ebookingdoc\src\api\middleware\check_login.js:23:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+============================================================================
+2025-06-19T16:03:48.142Z
+message: Tài khoản này hiện đang được đăng nhập ở nơi khác!
+stack: Error: Tài khoản này hiện đang được đăng nhập ở nơi khác!
+    at checkLogin (D:\ProjectTien\be_ebookingdoc\src\api\middleware\check_login.js:23:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+============================================================================
+2025-06-19T16:09:16.293Z
+message: Bạn chưa đăng nhập!
+stack: Error: Bạn chưa đăng nhập!
+    at checkLogin (D:\ProjectTien\be_ebookingdoc\src\api\middleware\check_login.js:6:15)
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at param (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:365:14)
+    at param (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:376:14)
+    at Function.process_params (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:421:3)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:280:10)
+============================================================================
+2025-06-19T16:09:16.495Z
+message: Bạn chưa đăng nhập!
+stack: Error: Bạn chưa đăng nhập!
+    at checkLogin (D:\ProjectTien\be_ebookingdoc\src\api\middleware\check_login.js:6:15)
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at param (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:365:14)
+    at param (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:376:14)
+    at Function.process_params (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:421:3)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:280:10)
+============================================================================
+2025-06-19T16:13:55.756Z
+message: Unknown column 'birth_day' in 'field list'
+stack: Error: Unknown column 'birth_day' in 'field list'
+    at PromisePool.execute (D:\ProjectTien\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\ProjectTien\be_ebookingdoc\src\helper\database.js:27:44)
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:356:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:13:55.825Z
+message: Unknown column 'birth_day' in 'field list'
+stack: Error: Unknown column 'birth_day' in 'field list'
+    at PromisePool.execute (D:\ProjectTien\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\ProjectTien\be_ebookingdoc\src\helper\database.js:27:44)
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:356:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:14:15.580Z
+message: Unknown column 'birth_day' in 'field list'
+stack: Error: Unknown column 'birth_day' in 'field list'
+    at PromisePool.execute (D:\ProjectTien\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\ProjectTien\be_ebookingdoc\src\helper\database.js:27:44)
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:356:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:14:15.640Z
+message: Unknown column 'birth_day' in 'field list'
+stack: Error: Unknown column 'birth_day' in 'field list'
+    at PromisePool.execute (D:\ProjectTien\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\ProjectTien\be_ebookingdoc\src\helper\database.js:27:44)
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:356:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:16:28.822Z
+message: Unknown column 'birth_day' in 'field list'
+stack: Error: Unknown column 'birth_day' in 'field list'
+    at PromisePool.execute (D:\ProjectTien\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\ProjectTien\be_ebookingdoc\src\helper\database.js:27:44)
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:360:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:16:28.886Z
+message: Unknown column 'birth_day' in 'field list'
+stack: Error: Unknown column 'birth_day' in 'field list'
+    at PromisePool.execute (D:\ProjectTien\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\ProjectTien\be_ebookingdoc\src\helper\database.js:27:44)
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:360:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:22:16.811Z
+message: Cannot read properties of undefined (reading 'length')
+stack: Error: Cannot read properties of undefined (reading 'length')
+    at PromisePool.execute (D:\ProjectTien\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\ProjectTien\be_ebookingdoc\src\helper\database.js:27:44)
+    at User.findById (D:\ProjectTien\be_ebookingdoc\src\model\userModel.js:37:29)
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:363:38)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:22:16.869Z
+message: Cannot read properties of undefined (reading 'length')
+stack: Error: Cannot read properties of undefined (reading 'length')
+    at PromisePool.execute (D:\ProjectTien\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\ProjectTien\be_ebookingdoc\src\helper\database.js:27:44)
+    at User.findById (D:\ProjectTien\be_ebookingdoc\src\model\userModel.js:37:29)
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:326:31)
+    at updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:38)
+    at D:\ProjectTien\be_ebookingdoc\route\router.js:22:19
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+============================================================================
+2025-06-19T16:23:49.949Z
+message: Cannot read properties of undefined (reading 'length')
+stack: Error: Cannot read properties of undefined (reading 'length')
+    at PromisePool.execute (D:\ProjectTien\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\ProjectTien\be_ebookingdoc\src\helper\database.js:27:44)
+    at User.findById (D:\ProjectTien\be_ebookingdoc\src\model\userModel.js:37:27)
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:326:31)
+    at updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:38)
+    at D:\ProjectTien\be_ebookingdoc\route\router.js:22:19
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+============================================================================
+2025-06-19T16:23:50.003Z
+message: Cannot read properties of undefined (reading 'length')
+stack: Error: Cannot read properties of undefined (reading 'length')
+    at PromisePool.execute (D:\ProjectTien\be_ebookingdoc\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\ProjectTien\be_ebookingdoc\src\helper\database.js:27:44)
+    at User.findById (D:\ProjectTien\be_ebookingdoc\src\model\userModel.js:37:27)
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:326:31)
+    at updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:38)
+    at D:\ProjectTien\be_ebookingdoc\route\router.js:22:19
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+============================================================================
+2025-06-19T16:25:15.782Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:328:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:25:15.841Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:328:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:25:39.539Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:328:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:25:39.602Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:328:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:26:24.558Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:328:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:26:25.658Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:328:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:27:28.242Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:328:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:27:28.514Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:328:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:28:55.149Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:328:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:28:55.280Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:328:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:29:12.378Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:328:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:29:12.447Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:328:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:32:34.625Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:333:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)
+============================================================================
+2025-06-19T16:32:34.693Z
+message: User not found
+stack: Error: User not found
+    at UserService.updateProfile (D:\ProjectTien\be_ebookingdoc\src\service\authservice.js:333:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async updateProfile (D:\ProjectTien\be_ebookingdoc\src\controller\user_controller.js:73:20)

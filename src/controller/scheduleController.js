@@ -13,7 +13,9 @@ class ScheduleController {
     try {
       const data = await ScheduleService.getById(req.params.id);
       if (!data)
-        return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
+        return res
+          .status(404)
+          .json({ code: 404, msg: "Không tìm thấy", status: "error" });
       res.json({ code: 200, msg: "Thành công", status: "success", data });
     } catch (error) {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
@@ -21,29 +23,46 @@ class ScheduleController {
   }
   static async create(req, res) {
     try {
-      const { doctor_id, clinic_id, start_time, end_time } = req.body;
+      const { doctor_id, clinic_id, work_date, start_time, end_time } =
+        req.body;
       const result = await ScheduleService.create({
         doctor_id,
         clinic_id,
+        work_date,
         start_time,
         end_time,
       });
-      res.status(201).json({ code: 201, msg: "Tạo thành công", status: "success", data: result });
+      res
+        .status(201)
+        .json({
+          code: 201,
+          msg: "Tạo thành công",
+          status: "success",
+          data: result,
+        });
     } catch (error) {
       res.status(400).json({ code: 400, msg: error.message, status: "error" });
     }
   }
   static async update(req, res) {
     try {
-      const { doctor_id, clinic_id, start_time, end_time } = req.body;
+      const { doctor_id, clinic_id, work_date, start_time, end_time } =
+        req.body;
       const updated = await ScheduleService.update(req.params.id, {
         doctor_id,
         clinic_id,
+        work_date,
         start_time,
         end_time,
       });
       if (!updated)
-        return res.status(404).json({ code: 404, msg: "Không tìm thấy để cập nhật", status: "error" });
+        return res
+          .status(404)
+          .json({
+            code: 404,
+            msg: "Không tìm thấy để cập nhật",
+            status: "error",
+          });
       res.json({ code: 200, msg: "Cập nhật thành công", status: "success" });
     } catch (error) {
       res.status(400).json({ code: 400, msg: error.message, status: "error" });
@@ -53,10 +72,29 @@ class ScheduleController {
     try {
       const deleted = await ScheduleService.remove(req.params.id);
       if (!deleted)
-        return res.status(404).json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
+        return res
+          .status(404)
+          .json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
       res.json({ code: 200, msg: "Xóa thành công", status: "success" });
     } catch (error) {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
+    }
+  }
+  static async getByDoctorId(req, res) {
+    try {
+      const { doctor_id } = req.params;
+      const data = await ScheduleService.getByDoctorId(doctor_id);
+       if (!data)
+        return res
+          .status(404)
+          .json({ code: 404, msg: "Không tìm thấy", status: "error" });
+      res.json({ code: 200, msg: "Thành công", status: "success", data });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        error: err.message,
+      });
     }
   }
 }

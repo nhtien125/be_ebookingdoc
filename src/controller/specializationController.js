@@ -10,20 +10,30 @@ class SpecializationController {
     }
   }
   static async getById(req, res) {
+    const id = req.params.id; 
+    console.log("getById id:", id);
     try {
-      const data = await SpecializationService.getById(req.params.uuid);
-      if (!data)
-        return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
-      res.json({ code: 200, msg: "Thành công", status: "success", data });
+        const data = await SpecializationService.getById(id);
+        if (!data)
+            return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
+        res.json({ code: 200, msg: "Thành công", status: "success", data });
     } catch (error) {
-      res.status(500).json({ code: 500, msg: error.message, status: "error" });
+        res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
-  }
+}
+
   static async create(req, res) {
     try {
       const { name } = req.body;
       const result = await SpecializationService.create({ name });
-      res.status(201).json({ code: 201, msg: "Tạo thành công", status: "success", data: result });
+      res
+        .status(201)
+        .json({
+          code: 201,
+          msg: "Tạo thành công",
+          status: "success",
+          data: result,
+        });
     } catch (error) {
       res.status(400).json({ code: 400, msg: error.message, status: "error" });
     }
@@ -31,9 +41,17 @@ class SpecializationController {
   static async update(req, res) {
     try {
       const { name } = req.body;
-      const updated = await SpecializationService.update(req.params.uuid, { name });
+      const updated = await SpecializationService.update(req.params.uuid, {
+        name,
+      });
       if (!updated)
-        return res.status(404).json({ code: 404, msg: "Không tìm thấy để cập nhật", status: "error" });
+        return res
+          .status(404)
+          .json({
+            code: 404,
+            msg: "Không tìm thấy để cập nhật",
+            status: "error",
+          });
       res.json({ code: 200, msg: "Cập nhật thành công", status: "success" });
     } catch (error) {
       res.status(400).json({ code: 400, msg: error.message, status: "error" });
@@ -43,7 +61,9 @@ class SpecializationController {
     try {
       const deleted = await SpecializationService.remove(req.params.uuid);
       if (!deleted)
-        return res.status(404).json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
+        return res
+          .status(404)
+          .json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
       res.json({ code: 200, msg: "Xóa thành công", status: "success" });
     } catch (error) {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });

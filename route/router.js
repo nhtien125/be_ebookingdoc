@@ -32,7 +32,9 @@ router.post(`/${auth}/login`, asyncHandler(UserController.login));
 router.post(`/${auth}/register`, asyncHandler(UserController.register));
 router.post(`/${auth}/me`, checkLogin, asyncHandler(UserController.getDetailInfo));
 router.post(`/${auth}/refresh-token`, asyncHandler(UserController.refreshToken));
-router.put(`/${auth}/me`, checkLogin, asyncHandler(UserController.updateProfile));
+router.put(`/${auth}/update/:uuid`, asyncHandler(UserController.updateProfile));
+router.get(`/${auth}/getById/:id`, UserController.getById);
+
 // router.put(`/${auth}/change-password`, checkLogin, asyncHandler(UserController.changePassword));
 // router.put(`/${auth}/change-status`, checkLogin, asyncHandler(UserController.changeStatus));
 router.get(`/${auth}/getAll`, UserController.getAll);
@@ -100,6 +102,7 @@ router.get(`/${review}/getById/:id`, reviewController.getById);
 router.post(`/${review}/add`, reviewController.create);
 router.put(`/${review}/update/:id`, reviewController.update);
 router.delete(`/${review}/delete/:id`, reviewController.delete);
+router.get(`/${review}/getByDoctorId/:doctorId`, reviewController.getByDoctorId);
 
 // Schedule
 const schedule = "schedule";
@@ -108,6 +111,7 @@ router.get(`/${schedule}/getById/:id`, scheduleController.getById);
 router.post(`/${schedule}/add`, scheduleController.create);
 router.put(`/${schedule}/update/:id`, scheduleController.update);
 router.delete(`/${schedule}/delete/:id`, scheduleController.delete);
+router.get(`/${schedule}/doctor/:doctor_id`, scheduleController.getByDoctorId);
 
 // hospital
 const hospital = "hospital";

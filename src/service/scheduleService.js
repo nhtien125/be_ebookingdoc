@@ -12,18 +12,18 @@ class ScheduleService {
     if (rows.length === 0) return null;
     return Schedule.fromRow(rows[0]);
   }
-  static async create({ doctor_id, clinic_id, start_time, end_time }) {
+  static async create({ doctor_id, clinic_id, work_date, start_time, end_time }) {
     const uuid = uuidv4().replace(/-/g, "").slice(0, 32);
     await db.execute(
-      "INSERT INTO schedules (uuid, doctor_id, clinic_id, start_time, end_time, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())",
-      [uuid, doctor_id, clinic_id, start_time, end_time]
+      "INSERT INTO schedules (uuid, doctor_id, clinic_id, work_date, start_time, end_time, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())",
+      [uuid, doctor_id, clinic_id, work_date, start_time, end_time]
     );
-    return { uuid, doctor_id, clinic_id, start_time, end_time };
+    return { uuid, doctor_id, clinic_id, work_date, start_time, end_time };
   }
-  static async update(uuid, { doctor_id, clinic_id, start_time, end_time }) {
+  static async update(uuid, { doctor_id, clinic_id, work_date, start_time, end_time }) {
     const [result] = await db.execute(
-      "UPDATE schedules SET doctor_id=?, clinic_id=?, start_time=?, end_time=?, updated_at=NOW() WHERE uuid=?",
-      [doctor_id, clinic_id, start_time, end_time, uuid]
+      "UPDATE schedules SET doctor_id=?, clinic_id=?, work_date=?, start_time=?, end_time=?, updated_at=NOW() WHERE uuid=?",
+      [doctor_id, clinic_id, work_date, start_time, end_time, uuid]
     );
     return result.affectedRows > 0;
   }
@@ -31,5 +31,13 @@ class ScheduleService {
     const [result] = await db.execute("DELETE FROM schedules WHERE uuid = ?", [uuid]);
     return result.affectedRows > 0;
   }
+  static async getByDoctorId(doctor_id) {
+    const [rows] = await db.execute(
+      "SELECT * FROM schedules WHERE doctor_id = ? ORDER BY work_date DESC, start_time DESC",
+      [doctor_id]
+    );
+    return Schedule.fromRows(rows);
+  }
+
 }
 module.exports = ScheduleService;

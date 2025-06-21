@@ -9,16 +9,20 @@ class AppointmentController {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
-  static async getById(req, res) {
-    try {
-      const data = await AppointmentService.getById(req.params.id);
-      if (!data)
-        return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
-      res.json({ code: 200, msg: "Thành công", status: "success", data });
-    } catch (error) {
-      res.status(500).json({ code: 500, msg: error.message, status: "error" });
-    }
+static async getById(req, res) {
+  try {
+    const uuid = req.params.uuid;
+
+    console.log('[SpecializationController] uuid:', uuid);
+    const data = await SpecializationService.getById(uuid);
+    if (!data)
+      return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
+    res.json({ code: 200, msg: "Thành công", status: "success", data });
+  } catch (error) {
+    res.status(500).json({ code: 500, msg: error.message, status: "error" });
   }
+}
+
   static async create(req, res) {
     try {
       const {

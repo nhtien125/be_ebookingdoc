@@ -1,5 +1,21 @@
 -- ===========================
--- 1. BỆNH VIỆN (HOSPITALS)
+-- 1. PHÂN QUYỀN (PREMISSION)
+-- ===========================
+CREATE TABLE `premission` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(75) DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;
+
+INSERT INTO `premission` (`id`, `name`) VALUES
+(1, 'Quản trị viên'),
+(2, 'Bác sĩ'),
+(3, 'Người dùng');
+
+-- ===========================
+-- 2. BỆNH VIỆN (HOSPITALS)
 -- ===========================
 CREATE TABLE `hospitals` (
   `uuid` char(32) NOT NULL,
@@ -24,7 +40,7 @@ INSERT INTO hospitals (uuid, name, address, image) VALUES
 ('hosp0010uuid00000000000000000010','BV Hữu Nghị','1 Tràng Tiền, Hà Nội','https://cdn.youmed.vn/tin-tuc/wp-content/uploads/2020/04/images1534192_3.jpg');
 
 -- ===========================
--- 2. CHUYÊN KHOA (SPECIALIZATIONS)
+-- 3. CHUYÊN KHOA (SPECIALIZATIONS)
 -- ===========================
 CREATE TABLE `specializations` (
   `uuid` char(32) NOT NULL,
@@ -46,9 +62,8 @@ INSERT INTO specializations (uuid, name) VALUES
 ('spec0009uuid00000000000000000009','Nội tiết'),
 ('spec0010uuid00000000000000000010','Chấn thương chỉnh hình');
 
-
 -- ===========================
--- 3. PHÒNG KHÁM (CLINICS)
+-- 4. PHÒNG KHÁM (CLINICS)
 -- ===========================
 CREATE TABLE `clinics` (
   `uuid` char(32) NOT NULL,
@@ -75,26 +90,7 @@ INSERT INTO clinics (uuid, name, address, phone, email, image, hospital_id) VALU
 ('cli0007uuid00000000000000000007','PK Nội Tiết','24 Phan Đăng Lưu, TP.HCM','0908000007','noitiet@bv.com','https://cdn.benhvienthucuc.vn/wp-content/uploads/2021/06/kham-noi-tiet-la-gi.jpg','hosp0007uuid00000000000000000007'),
 ('cli0008uuid00000000000000000008','PK Thần Kinh','37 Nguyễn Trãi, Hà Nội','0908000008','thankinh@bv.com','https://www.victoriavn.com/images/cacchuyenkhoa/N%E1%BB%98I_TH%E1%BA%A6N_KINH.JPG','hosp0008uuid00000000000000000008'),
 ('cli0009uuid00000000000000000009','PK Ung Bướu','10 Nguyễn Văn Trỗi, TP.HCM','0908000009','ungbuou@bv.com','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIM8CpFHw3CygRmoU3QADdi6-cjzjSYr9snw&s','hosp0009uuid00000000000000000009'),
-('cli0010uuid00000000000000000010','PK https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIM8CpFHw3CygRmoU3QADdi6-cjzjSYr9snw&s','90 Đinh Tiên Hoàng, Đà Nẵng','0908000010','chcth@bv.com','https://picsum.photos/id/1060/500/300','hosp0010uuid00000000000000000010');
-
-
--- ===========================
--- 4.(premission)
--- ===========================
-
-CREATE TABLE `premission` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(75) DEFAULT NULL,
-  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;
-
-INSERT INTO `premission` (`id`, `name`) VALUES
-(1, 'Quản trị viên'),
-(2, 'Bác sĩ'),
-(3, 'Người dùng');
-
+('cli0010uuid00000000000000000010','PK Chấn Thương','90 Đinh Tiên Hoàng, Đà Nẵng','0908000010','chcth@bv.com','https://phongkhambsvinh.com/thumbs/1366x544x1/upload/photo/blue-simple-medical-clinic-banner-1-7489.png','hosp0010uuid00000000000000000010');
 
 -- ===========================
 -- 5. NGƯỜI DÙNG (USER)
@@ -111,6 +107,7 @@ CREATE TABLE `user` (
   `password` varchar(255) DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
   `image` varchar(500) DEFAULT NULL,
+  `birth_day` DATE NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`uuid`),
@@ -118,17 +115,18 @@ CREATE TABLE `user` (
   CONSTRAINT `user_premission_id` FOREIGN KEY (`premission_id`) REFERENCES `premission` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO user (uuid, premission_id, name, email, phone, gender, address, username, password, status, image) VALUES
-('user0001uuid00000000000000000001',2,'BS Nguyễn Quang H','bs1@bv.com','0911000001',1,'TP.HCM','bs1','123456',1,'https://picsum.photos/id/1101/200/200'),
-('user0002uuid00000000000000000002',2,'BS Trần Thị Bích','bs2@bv.com','0911000002',0,'Hà Nội','bs2','123456',1,'https://picsum.photos/id/1102/200/200'),
-('user0003uuid00000000000000000003',2,'BS Lê Văn C','bs3@bv.com','0911000003',1,'Đà Nẵng','bs3','123456',1,'https://picsum.photos/id/1103/200/200'),
-('user0004uuid00000000000000000004',2,'BS Nguyễn Minh D','bs4@bv.com','0911000004',1,'TP.HCM','bs4','123456',1,'https://picsum.photos/id/1104/200/200'),
-('user0005uuid00000000000000000005',2,'BS Phạm Thị E','bs5@bv.com','0911000005',0,'Hà Nội','bs5','123456',1,'https://picsum.photos/id/1105/200/200'),
-('user0006uuid00000000000000000006',2,'BS Nguyễn Thị F','bs6@bv.com','0911000006',0,'Đà Nẵng','bs6','123456',1,'https://picsum.photos/id/1106/200/200'),
-('user0007uuid00000000000000000007',2,'BS Trương Văn G','bs7@bv.com','0911000007',1,'TP.HCM','bs7','123456',1,'https://picsum.photos/id/1107/200/200'),
-('user0008uuid00000000000000000008',3,'BN Trần Thị A','bn1@bn.com','0922000008',0,'TP.HCM','bn1','123456',1,'https://picsum.photos/id/1108/200/200'),
-('user0009uuid00000000000000000009',3,'BN Lê Văn B','bn2@bn.com','0922000009',1,'Hà Nội','bn2','123456',1,'https://picsum.photos/id/1109/200/200'),
-('user0010uuid00000000000000000010',3,'BN Nguyễn Văn C','bn3@bn.com','0922000010',1,'Đà Nẵng','bn3','123456',1,'https://picsum.photos/id/1110/200/200');
+INSERT INTO user 
+(uuid, premission_id, name, email, phone, gender, address, username, password, status, image, birth_day) VALUES
+('user0001uuid00000000000000000001',2,'BS Nguyễn Quang H','bs1@bv.com','0911000001',1,'TP.HCM','bs1','123456',1,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169.jpg', '1990-02-01'),
+('user0002uuid00000000000000000002',2,'BS Trần Thị Bích','bs2@bv.com','0911000002',0,'Hà Nội','bs2','123456',1,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-1.jpg', '1987-03-22'),
+('user0003uuid00000000000000000003',2,'BS Lê Văn C','bs3@bv.com','0911000003',1,'Đà Nẵng','bs3','123456',1,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-5.jpg', '1992-10-15'),
+('user0004uuid00000000000000000004',2,'BS Nguyễn Minh D','bs4@bv.com','0911000004',1,'TP.HCM','bs4','123456',1,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-8.jpg', '1989-08-09'),
+('user0005uuid00000000000000000005',2,'BS Phạm Thị E','bs5@bv.com','0911000005',0,'Hà Nội','bs5','123456',1,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-10.jpg', '1991-06-21'),
+('user0006uuid00000000000000000006',2,'BS Nguyễn Thị F','bs6@bv.com','0911000006',0,'Đà Nẵng','bs6','123456',1,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-12.jpg', '1993-12-03'),
+('user0007uuid00000000000000000007',2,'BS Trương Văn G','bs7@bv.com','0911000007',1,'TP.HCM','bs7','123456',1,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-13.jpg', '1988-11-28'),
+('user0008uuid00000000000000000008',3,'BN Trần Thị A','bn1@bn.com','0922000008',0,'TP.HCM','bn1','123456',1,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-15.jpg', '1999-01-10'),
+('user0009uuid00000000000000000009',3,'BN Lê Văn B','bn2@bn.com','0922000009',1,'Hà Nội','bn2','123456',1,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-17.jpg', '1997-05-17'),
+('user0010uuid00000000000000000010',3,'BN Nguyễn Văn C','bn3@bn.com','0922000010',1,'Đà Nẵng','bn3','123456',1,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-28.jpg', '2000-07-30');
 
 -- ===========================
 -- 6. BỆNH NHÂN (PATIENTS)
@@ -148,35 +146,40 @@ INSERT INTO patients (uuid, user_id) VALUES
 ('pat0002uuid00000000000000000002','user0009uuid00000000000000000009'),
 ('pat0003uuid00000000000000000003','user0010uuid00000000000000000010');
 
-
 -- ===========================
 -- 7. BÁC SĨ (DOCTORS)
 -- ===========================
 CREATE TABLE `doctors` (
   `uuid` char(32) NOT NULL,
   `user_id` char(32) DEFAULT NULL,
+  `hospital_id` char(32) DEFAULT NULL,
   `doctor_type` tinyint(1) DEFAULT NULL,
   `specialization_id` char(32) DEFAULT NULL,
   `license` varchar(32) DEFAULT NULL,
   `introduce` varchar(2000) DEFAULT NULL,
+  `experience` INT DEFAULT 0,
   `image` varchar(500) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`uuid`),
   KEY `user_id` (`user_id`),
+  KEY `hospital_id` (`hospital_id`),
   KEY `specialization_id` (`specialization_id`),
   CONSTRAINT `doctors_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `doctors_specialization_id` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE
+  CONSTRAINT `doctors_specialization_id` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `doctors_hospital_id` FOREIGN KEY (`hospital_id`) REFERENCES `hospitals` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO doctors (uuid, user_id, doctor_type, specialization_id, license, introduce, image) VALUES
-('doc0001uuid00000000000000000001','user0001uuid00000000000000000001',1,'spec0001uuid00000000000000000001','BS12345','Chuyên gia tim mạch','https://picsum.photos/id/1201/200/200'),
-('doc0002uuid00000000000000000002','user0002uuid00000000000000000002',2,'spec0002uuid00000000000000000002','BS23456','Chuyên gia nhi','https://picsum.photos/id/1202/200/200'),
-('doc0003uuid00000000000000000003','user0003uuid00000000000000000003',1,'spec0003uuid00000000000000000003','BS34567','Chuyên gia da liễu','https://picsum.photos/id/1203/200/200'),
-('doc0004uuid00000000000000000004','user0004uuid00000000000000000004',2,'spec0004uuid00000000000000000004','BS45678','Chuyên gia thần kinh','https://picsum.photos/id/1204/200/200'),
-('doc0005uuid00000000000000000005','user0005uuid00000000000000000005',1,'spec0005uuid00000000000000000005','BS56789','Chuyên gia ngoại tổng quát','https://picsum.photos/id/1205/200/200'),
-('doc0006uuid00000000000000000006','user0006uuid00000000000000000006',2,'spec0006uuid00000000000000000006','BS67890','Chuyên gia sản phụ khoa','https://picsum.photos/id/1206/200/200'),
-('doc0007uuid00000000000000000007','user0007uuid00000000000000000007',1,'spec0007uuid00000000000000000007','BS78901','Chuyên gia răng hàm mặt','https://picsum.photos/id/1207/200/200');
+INSERT INTO doctors
+(uuid, user_id, hospital_id, doctor_type, specialization_id, license, introduce, experience, image)
+VALUES
+('doc0001uuid00000000000000000001','user0001uuid00000000000000000001','hosp0001uuid00000000000000000001',1,'spec0001uuid00000000000000000001','BS12345','Chuyên gia tim mạch, từng tu nghiệp tại Pháp, tận tâm với bệnh nhân.',12,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-31.jpg'),
+('doc0002uuid00000000000000000002','user0002uuid00000000000000000002','hosp0002uuid00000000000000000002',2,'spec0002uuid00000000000000000002','BS23456','Chuyên gia nhi, nhiều năm kinh nghiệm điều trị trẻ nhỏ, tư vấn tận tình.',10,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-32.jpg'),
+('doc0003uuid00000000000000000003','user0003uuid00000000000000000003','hosp0003uuid00000000000000000003',1,'spec0003uuid00000000000000000003','BS34567','Chuyên gia da liễu, nổi tiếng với liệu trình trị mụn và trẻ hóa da.',15,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-39.jpg'),
+('doc0004uuid00000000000000000004','user0004uuid00000000000000000004','hosp0004uuid00000000000000000004',2,'spec0004uuid00000000000000000004','BS45678','Chuyên gia thần kinh, từng công tác tại nhiều bệnh viện lớn.',8,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-40.jpg'),
+('doc0005uuid00000000000000000005','user0005uuid00000000000000000005','hosp0005uuid00000000000000000005',1,'spec0005uuid00000000000000000005','BS56789','Chuyên gia ngoại tổng quát, phẫu thuật thành công hơn 6000 ca.',20,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-40.jpg'),
+('doc0006uuid00000000000000000006','user0006uuid00000000000000000006','hosp0006uuid00000000000000000006',2,'spec0006uuid00000000000000000006','BS67890','Chuyên gia sản phụ khoa, đồng hành cùng hơn 2000 ca sinh.',9,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-46.jpg'),
+('doc0007uuid00000000000000000007','user0007uuid00000000000000000007','hosp0007uuid00000000000000000007',1,'spec0007uuid00000000000000000007','BS78901','Chuyên gia răng hàm mặt, giàu kinh nghiệm thẩm mỹ và phục hình.',11,'https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-46.jpg');
 
 -- ===========================
 -- 8. LỊCH LÀM VIỆC (SCHEDULES)
@@ -185,6 +188,7 @@ CREATE TABLE `schedules` (
   `uuid` char(32) NOT NULL,
   `doctor_id` char(32) DEFAULT NULL,
   `clinic_id` char(32) DEFAULT NULL,
+  `work_date` DATE NOT NULL,
   `start_time` TIME DEFAULT NULL,
   `end_time` TIME DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -195,15 +199,149 @@ CREATE TABLE `schedules` (
   CONSTRAINT `schedules_doctor_id` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `schedules_clinic_id` FOREIGN KEY (`clinic_id`) REFERENCES `clinics` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO schedules (uuid, doctor_id, clinic_id, work_date, start_time, end_time) VALUES
 
-INSERT INTO schedules (uuid, doctor_id, clinic_id, start_time, end_time) VALUES
-('sch0001uuid00000000000000000001','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','08:00:00','12:00:00'),
-('sch0002uuid00000000000000000002','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','13:00:00','17:00:00'),
-('sch0003uuid00000000000000000003','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','09:00:00','11:00:00'),
-('sch0004uuid00000000000000000004','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','14:00:00','16:00:00'),
-('sch0005uuid00000000000000000005','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','10:00:00','12:00:00'),
-('sch0006uuid00000000000000000006','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','08:00:00','10:00:00'),
-('sch0007uuid00000000000000000007','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','10:00:00','14:00:00');
+    ('sch0001uuid010101','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-23','08:00:00','12:00:00'),
+    ('sch0002uuid010102','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-23','13:00:00','17:00:00'),
+    ('sch0003uuid010201','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-24','07:00:00','10:00:00'),
+    ('sch0004uuid010202','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-24','10:30:00','14:00:00'),
+    ('sch0005uuid010203','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-24','14:30:00','17:30:00'),
+    ('sch0006uuid010301','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-25','06:00:00','09:00:00'),
+    ('sch0007uuid010302','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-25','09:30:00','12:00:00'),
+    ('sch0008uuid010303','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-25','13:00:00','15:00:00'),
+    ('sch0009uuid010304','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-25','15:30:00','18:00:00'),
+    ('sch0010uuid010401','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-26','08:00:00','12:00:00'),
+    ('sch0011uuid010402','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-26','13:00:00','17:00:00'),
+    ('sch0012uuid010501','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-27','07:00:00','10:00:00'),
+    ('sch0013uuid010502','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-27','10:30:00','14:00:00'),
+    ('sch0014uuid010503','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-27','14:30:00','17:30:00'),
+    ('sch0015uuid010601','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-28','06:00:00','09:00:00'),
+    ('sch0016uuid010602','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-28','09:30:00','12:00:00'),
+    ('sch0017uuid010603','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-28','13:00:00','15:00:00'),
+    ('sch0018uuid010604','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-28','15:30:00','18:00:00'),
+    ('sch0019uuid010701','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-29','08:00:00','12:00:00'),
+    ('sch0020uuid010702','doc0001uuid00000000000000000001','cli0001uuid00000000000000000001','2025-06-29','13:00:00','17:00:00'),
+    ('sch0021uuid020101','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-23','08:00:00','12:00:00'),
+    ('sch0022uuid020102','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-23','13:00:00','17:00:00'),
+    ('sch0023uuid020201','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-24','07:00:00','10:00:00'),
+    ('sch0024uuid020202','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-24','10:30:00','14:00:00'),
+    ('sch0025uuid020203','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-24','14:30:00','17:30:00'),
+    ('sch0026uuid020301','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-25','06:00:00','09:00:00'),
+    ('sch0027uuid020302','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-25','09:30:00','12:00:00'),
+    ('sch0028uuid020303','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-25','13:00:00','15:00:00'),
+    ('sch0029uuid020304','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-25','15:30:00','18:00:00'),
+    ('sch0030uuid020401','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-26','08:00:00','12:00:00'),
+    ('sch0031uuid020402','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-26','13:00:00','17:00:00'),
+    ('sch0032uuid020501','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-27','07:00:00','10:00:00'),
+    ('sch0033uuid020502','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-27','10:30:00','14:00:00'),
+    ('sch0034uuid020503','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-27','14:30:00','17:30:00'),
+    ('sch0035uuid020601','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-28','06:00:00','09:00:00'),
+    ('sch0036uuid020602','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-28','09:30:00','12:00:00'),
+    ('sch0037uuid020603','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-28','13:00:00','15:00:00'),
+    ('sch0038uuid020604','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-28','15:30:00','18:00:00'),
+    ('sch0039uuid020701','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-29','08:00:00','12:00:00'),
+    ('sch0040uuid020702','doc0002uuid00000000000000000002','cli0002uuid00000000000000000002','2025-06-29','13:00:00','17:00:00'),
+    ('sch0041uuid030101','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-23','08:00:00','12:00:00'),
+    ('sch0042uuid030102','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-23','13:00:00','17:00:00'),
+    ('sch0043uuid030201','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-24','07:00:00','10:00:00'),
+    ('sch0044uuid030202','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-24','10:30:00','14:00:00'),
+    ('sch0045uuid030203','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-24','14:30:00','17:30:00'),
+    ('sch0046uuid030301','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-25','06:00:00','09:00:00'),
+    ('sch0047uuid030302','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-25','09:30:00','12:00:00'),
+    ('sch0048uuid030303','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-25','13:00:00','15:00:00'),
+    ('sch0049uuid030304','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-25','15:30:00','18:00:00'),
+    ('sch0050uuid030401','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-26','08:00:00','12:00:00'),
+    ('sch0051uuid030402','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-26','13:00:00','17:00:00'),
+    ('sch0052uuid030501','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-27','07:00:00','10:00:00'),
+    ('sch0053uuid030502','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-27','10:30:00','14:00:00'),
+    ('sch0054uuid030503','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-27','14:30:00','17:30:00'),
+    ('sch0055uuid030601','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-28','06:00:00','09:00:00'),
+    ('sch0056uuid030602','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-28','09:30:00','12:00:00'),
+    ('sch0057uuid030603','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-28','13:00:00','15:00:00'),
+    ('sch0058uuid030604','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-28','15:30:00','18:00:00'),
+    ('sch0059uuid030701','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-29','08:00:00','12:00:00'),
+    ('sch0060uuid030702','doc0003uuid00000000000000000003','cli0003uuid00000000000000000003','2025-06-29','13:00:00','17:00:00'),
+    ('sch0061uuid040101','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-23','08:00:00','12:00:00'),
+    ('sch0062uuid040102','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-23','13:00:00','17:00:00'),
+    ('sch0063uuid040201','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-24','07:00:00','10:00:00'),
+    ('sch0064uuid040202','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-24','10:30:00','14:00:00'),
+    ('sch0065uuid040203','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-24','14:30:00','17:30:00'),
+    ('sch0066uuid040301','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-25','06:00:00','09:00:00'),
+    ('sch0067uuid040302','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-25','09:30:00','12:00:00'),
+    ('sch0068uuid040303','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-25','13:00:00','15:00:00'),
+    ('sch0069uuid040304','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-25','15:30:00','18:00:00'),
+    ('sch0070uuid040401','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-26','08:00:00','12:00:00'),
+    ('sch0071uuid040402','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-26','13:00:00','17:00:00'),
+    ('sch0072uuid040501','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-27','07:00:00','10:00:00'),
+    ('sch0073uuid040502','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-27','10:30:00','14:00:00'),
+    ('sch0074uuid040503','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-27','14:30:00','17:30:00'),
+    ('sch0075uuid040601','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-28','06:00:00','09:00:00'),
+    ('sch0076uuid040602','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-28','09:30:00','12:00:00'),
+    ('sch0077uuid040603','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-28','13:00:00','15:00:00'),
+    ('sch0078uuid040604','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-28','15:30:00','18:00:00'),
+    ('sch0079uuid040701','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-29','08:00:00','12:00:00'),
+    ('sch0080uuid040702','doc0004uuid00000000000000000004','cli0004uuid00000000000000000004','2025-06-29','13:00:00','17:00:00'),
+    ('sch0081uuid050101','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-23','08:00:00','12:00:00'),
+    ('sch0082uuid050102','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-23','13:00:00','17:00:00'),
+    ('sch0083uuid050201','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-24','07:00:00','10:00:00'),
+    ('sch0084uuid050202','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-24','10:30:00','14:00:00'),
+    ('sch0085uuid050203','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-24','14:30:00','17:30:00'),
+    ('sch0086uuid050301','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-25','06:00:00','09:00:00'),
+    ('sch0087uuid050302','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-25','09:30:00','12:00:00'),
+    ('sch0088uuid050303','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-25','13:00:00','15:00:00'),
+    ('sch0089uuid050304','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-25','15:30:00','18:00:00'),
+    ('sch0090uuid050401','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-26','08:00:00','12:00:00'),
+    ('sch0091uuid050402','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-26','13:00:00','17:00:00'),
+    ('sch0092uuid050501','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-27','07:00:00','10:00:00'),
+    ('sch0093uuid050502','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-27','10:30:00','14:00:00'),
+    ('sch0094uuid050503','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-27','14:30:00','17:30:00'),
+    ('sch0095uuid050601','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-28','06:00:00','09:00:00'),
+    ('sch0096uuid050602','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-28','09:30:00','12:00:00'),
+    ('sch0097uuid050603','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-28','13:00:00','15:00:00'),
+    ('sch0098uuid050604','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-28','15:30:00','18:00:00'),
+    ('sch0099uuid050701','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-29','08:00:00','12:00:00'),
+    ('sch0100uuid050702','doc0005uuid00000000000000000005','cli0005uuid00000000000000000005','2025-06-29','13:00:00','17:00:00'),
+    ('sch0101uuid060101','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-23','08:00:00','12:00:00'),
+    ('sch0102uuid060102','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-23','13:00:00','17:00:00'),
+    ('sch0103uuid060201','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-24','07:00:00','10:00:00'),
+    ('sch0104uuid060202','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-24','10:30:00','14:00:00'),
+    ('sch0105uuid060203','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-24','14:30:00','17:30:00'),
+    ('sch0106uuid060301','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-25','06:00:00','09:00:00'),
+    ('sch0107uuid060302','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-25','09:30:00','12:00:00'),
+    ('sch0108uuid060303','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-25','13:00:00','15:00:00'),
+    ('sch0109uuid060304','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-25','15:30:00','18:00:00'),
+    ('sch0110uuid060401','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-26','08:00:00','12:00:00'),
+    ('sch0111uuid060402','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-26','13:00:00','17:00:00'),
+    ('sch0112uuid060501','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-27','07:00:00','10:00:00'),
+    ('sch0113uuid060502','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-27','10:30:00','14:00:00'),
+    ('sch0114uuid060503','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-27','14:30:00','17:30:00'),
+    ('sch0115uuid060601','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-28','06:00:00','09:00:00'),
+    ('sch0116uuid060602','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-28','09:30:00','12:00:00'),
+    ('sch0117uuid060603','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-28','13:00:00','15:00:00'),
+    ('sch0118uuid060604','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-28','15:30:00','18:00:00'),
+    ('sch0119uuid060701','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-29','08:00:00','12:00:00'),
+    ('sch0120uuid060702','doc0006uuid00000000000000000006','cli0006uuid00000000000000000006','2025-06-29','13:00:00','17:00:00'),
+    ('sch0121uuid070101','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-23','08:00:00','12:00:00'),
+    ('sch0122uuid070102','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-23','13:00:00','17:00:00'),
+    ('sch0123uuid070201','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-24','07:00:00','10:00:00'),
+    ('sch0124uuid070202','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-24','10:30:00','14:00:00'),
+    ('sch0125uuid070203','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-24','14:30:00','17:30:00'),
+    ('sch0126uuid070301','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-25','06:00:00','09:00:00'),
+    ('sch0127uuid070302','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-25','09:30:00','12:00:00'),
+    ('sch0128uuid070303','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-25','13:00:00','15:00:00'),
+    ('sch0129uuid070304','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-25','15:30:00','18:00:00'),
+    ('sch0130uuid070401','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-26','08:00:00','12:00:00'),
+    ('sch0131uuid070402','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-26','13:00:00','17:00:00'),
+    ('sch0132uuid070501','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-27','07:00:00','10:00:00'),
+    ('sch0133uuid070502','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-27','10:30:00','14:00:00'),
+    ('sch0134uuid070503','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-27','14:30:00','17:30:00'),
+    ('sch0135uuid070601','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-28','06:00:00','09:00:00'),
+    ('sch0136uuid070602','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-28','09:30:00','12:00:00'),
+    ('sch0137uuid070603','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-28','13:00:00','15:00:00'),
+    ('sch0138uuid070604','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-28','15:30:00','18:00:00'),
+    ('sch0139uuid070701','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-29','08:00:00','12:00:00'),
+    ('sch0140uuid070702','doc0007uuid00000000000000000007','cli0007uuid00000000000000000007','2025-06-29','13:00:00','17:00:00');
+
 
 -- ===========================
 -- 9. HỒ SƠ BỆNH ÁN (MEDICAL_RECORDS)
@@ -230,45 +368,44 @@ INSERT INTO medical_records (uuid, patient_id) VALUES
 ('mr0009uuid00000000000000000009','pat0003uuid00000000000000000003'),
 ('mr0010uuid00000000000000000010','pat0001uuid00000000000000000001');
 
-
-
 -- ===========================
--- 9. DỊCH VỤ Y TẾ (MEDICAL_SERVICES)
+-- 10. DỊCH VỤ Y TẾ (MEDICAL_SERVICES)
 -- ===========================
 CREATE TABLE `medical_services` (
-  `uuid` char(32) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `description` varchar(1000) DEFAULT NULL,
-  `price` double DEFAULT NULL,
-  `specialization_id` char(32) DEFAULT NULL,
-  `clinic_id` char(32) DEFAULT NULL,
-  `hospital_id` char(32) DEFAULT NULL,
-  `image` varchar(500) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `uuid` CHAR(32) NOT NULL,
+  `name` VARCHAR(255) DEFAULT NULL,
+  `description` VARCHAR(1000) DEFAULT NULL,
+  `price` DOUBLE DEFAULT NULL,
+  `specialization_id` CHAR(32) DEFAULT NULL,
+  `clinic_id` CHAR(32) DEFAULT NULL,
+  `hospital_id` CHAR(32) DEFAULT NULL,
+  `image` VARCHAR(500) DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`uuid`),
-  KEY `specialization_id` (`specialization_id`),
-  KEY `clinic_id` (`clinic_id`),
-  KEY `hospital_id` (`hospital_id`),
-  CONSTRAINT `ms_specialization_id` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `ms_clinic_id` FOREIGN KEY (`clinic_id`) REFERENCES `clinics` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `ms_hospital_id` FOREIGN KEY (`hospital_id`) REFERENCES `hospitals` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE
+  KEY `idx_specialization_id` (`specialization_id`),
+  KEY `idx_clinic_id` (`clinic_id`),
+  KEY `idx_hospital_id` (`hospital_id`),
+  CONSTRAINT `fk_ms_specialization_id` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_ms_clinic_id` FOREIGN KEY (`clinic_id`) REFERENCES `clinics` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_ms_hospital_id` FOREIGN KEY (`hospital_id`) REFERENCES `hospitals` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO medical_services (uuid, name, description, price, specialization_id, clinic_id, hospital_id, image) VALUES
-('ms0001uuid00000000000000000001','Xét nghiệm máu','Kiểm tra chỉ số máu',200000,'spec0001uuid00000000000000000001','cli0001uuid00000000000000000001','hosp0001uuid00000000000000000001','https://picsum.photos/id/1301/400/200'),
-('ms0002uuid00000000000000000002','Khám nhi','Khám sức khỏe cho trẻ',150000,'spec0002uuid00000000000000000002','cli0002uuid00000000000000000002','hosp0002uuid00000000000000000002','https://picsum.photos/id/1302/400/200'),
-('ms0003uuid00000000000000000003','Khám da liễu','Tư vấn da',180000,'spec0003uuid00000000000000000003','cli0003uuid00000000000000000003','hosp0003uuid00000000000000000003','https://picsum.photos/id/1303/400/200'),
-('ms0004uuid00000000000000000004','Khám thần kinh','Khám và tư vấn thần kinh',250000,'spec0004uuid00000000000000000004','cli0004uuid00000000000000000004','hosp0004uuid00000000000000000004','https://picsum.photos/id/1304/400/200'),
-('ms0005uuid00000000000000000005','Khám ngoại','Khám các vấn đề ngoại tổng quát',200000,'spec0005uuid00000000000000000005','cli0005uuid00000000000000000005','hosp0005uuid00000000000000000005','https://picsum.photos/id/1305/400/200'),
-('ms0006uuid00000000000000000006','Khám sản phụ','Khám thai sản',300000,'spec0006uuid00000000000000000006','cli0006uuid00000000000000000006','hosp0006uuid00000000000000000006','https://picsum.photos/id/1306/400/200'),
-('ms0007uuid00000000000000000007','Khám nội tiết','Kiểm tra hormone',210000,'spec0009uuid00000000000000000009','cli0007uuid00000000000000000007','hosp0007uuid00000000000000000007','https://picsum.photos/id/1307/400/200'),
-('ms0008uuid00000000000000000008','Khám ung bướu','Tầm soát ung thư',350000,'spec0008uuid00000000000000000008','cli0009uuid00000000000000000009','hosp0009uuid00000000000000000009','https://picsum.photos/id/1308/400/200'),
-('ms0009uuid00000000000000000009','Khám răng hàm mặt','Khám nha khoa',160000,'spec0007uuid00000000000000000007','cli0004uuid00000000000000000004','hosp0004uuid00000000000000000004','https://picsum.photos/id/1309/400/200'),
-('ms0010uuid00000000000000000010','Khám chấn thương','Khám chấn thương chỉnh hình',240000,'spec0010uuid00000000000000000010','cli0010uuid00000000000000000010','hosp0010uuid00000000000000000010','https://picsum.photos/id/1310/400/200');
+('ms0001uuid00000000000000000001','Xét nghiệm máu','Kiểm tra chỉ số máu',200000,'spec0001uuid00000000000000000001','cli0001uuid00000000000000000001','hosp0001uuid00000000000000000001','https://chienthanky.vn/wp-content/uploads/2024/01/150-hinh-anh-gai-xinh-2k5-2k6-ngay-tho-hon-nhien-3183-1.jpg'),
+('ms0002uuid00000000000000000002','Khám nhi','Khám sức khỏe cho trẻ',150000,'spec0002uuid00000000000000000002','cli0002uuid00000000000000000002','hosp0002uuid00000000000000000002','https://chienthanky.vn/wp-content/uploads/2024/01/150-hinh-anh-gai-xinh-2k5-2k6-ngay-tho-hon-nhien-3183-4.jpg'),
+('ms0003uuid00000000000000000003','Khám da liễu','Tư vấn da',180000,'spec0003uuid00000000000000000003','cli0003uuid00000000000000000003','hosp0003uuid00000000000000000003','https://chienthanky.vn/wp-content/uploads/2024/01/150-hinh-anh-gai-xinh-2k5-2k6-ngay-tho-hon-nhien-3183-14.jpg'),
+('ms0004uuid00000000000000000004','Khám thần kinh','Khám và tư vấn thần kinh',250000,'spec0004uuid00000000000000000004','cli0004uuid00000000000000000004','hosp0004uuid00000000000000000004','https://chienthanky.vn/wp-content/uploads/2024/01/150-hinh-anh-gai-xinh-2k5-2k6-ngay-tho-hon-nhien-3183-15.jpg'),
+('ms0005uuid00000000000000000005','Khám ngoại','Khám các vấn đề ngoại tổng quát',200000,'spec0005uuid00000000000000000005','cli0005uuid00000000000000000005','hosp0005uuid00000000000000000005','https://chienthanky.vn/wp-content/uploads/2024/01/150-hinh-anh-gai-xinh-2k5-2k6-ngay-tho-hon-nhien-3183-18.jpg'),
+('ms0006uuid00000000000000000006','Khám sản phụ','Khám thai sản',300000,'spec0006uuid00000000000000000006','cli0006uuid00000000000000000006','hosp0006uuid00000000000000000006','https://chienthanky.vn/wp-content/uploads/2024/01/150-hinh-anh-gai-xinh-2k5-2k6-ngay-tho-hon-nhien-3183-21.jpg'),
+('ms0007uuid00000000000000000007','Khám nội tiết','Kiểm tra hormone',210000,'spec0009uuid00000000000000000009','cli0007uuid00000000000000000007','hosp0007uuid00000000000000000007','https://chienthanky.vn/wp-content/uploads/2024/01/100-hinh-anh-gai-xinh-2k4-de-thuong-hot-nhat-hien-nay-2746-2.jpg'),
+('ms0008uuid00000000000000000008','Khám ung bướu','Tầm soát ung thư',350000,'spec0008uuid00000000000000000008','cli0009uuid00000000000000000009','hosp0009uuid00000000000000000009','https://chienthanky.vn/wp-content/uploads/2024/01/100-hinh-anh-gai-xinh-2k4-de-thuong-hot-nhat-hien-nay-2746-5.jpg'),
+('ms0009uuid00000000000000000009','Khám răng hàm mặt','Khám nha khoa',160000,'spec0007uuid00000000000000000007','cli0004uuid00000000000000000004','hosp0004uuid00000000000000000004','https://chienthanky.vn/wp-content/uploads/2024/01/100-hinh-anh-gai-xinh-2k4-de-thuong-hot-nhat-hien-nay-2746-7.jpg'),
+('ms0010uuid00000000000000000010','Khám chấn thương','Khám chấn thương chỉnh hình',240000,'spec0010uuid00000000000000000010','cli0010uuid00000000000000000010','hosp0010uuid00000000000000000010','https://chienthanky.vn/wp-content/uploads/2024/01/100-hinh-anh-gai-xinh-2k4-de-thuong-hot-nhat-hien-nay-2746-9.jpg');
+
 
 -- ===========================
--- 10. CUỘC HẸN (APPOINTMENTS)
+-- 11. CUỘC HẸN (APPOINTMENTS)
 -- ===========================
 CREATE TABLE `appointments` (
   `uuid` char(32) NOT NULL,
@@ -304,7 +441,7 @@ INSERT INTO appointments (uuid, doctor_id, patient_id, clinic_id, hospital_id, s
 ('app0007uuid00000000000000000007','doc0007uuid00000000000000000007','pat0002uuid00000000000000000002','cli0007uuid00000000000000000007','hosp0007uuid00000000000000000007','sch0007uuid00000000000000000007','2025-06-21 13:00:00',1);
 
 -- ===========================
--- 11. HỒ SƠ PHỤ (SELECT_PROFILES)
+-- 12. HỒ SƠ PHỤ (SELECT_PROFILES)
 -- ===========================
 CREATE TABLE `select_profiles` (
   `uuid` char(32) NOT NULL,
@@ -320,20 +457,21 @@ CREATE TABLE `select_profiles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO select_profiles (uuid, user_id, name, relationship, image) VALUES
-('sp0001uuid00000000000000000001','user0008uuid00000000000000000008','Nguyễn Văn An','Con','https://picsum.photos/id/1401/150/150'),
-('sp0002uuid00000000000000000002','user0009uuid00000000000000000009','Trần Thị Bình','Vợ','https://picsum.photos/id/1402/150/150'),
-('sp0003uuid00000000000000000003','user0010uuid00000000000000000010','Lê Văn Cường','Anh','https://picsum.photos/id/1403/150/150'),
-('sp0004uuid00000000000000000004','user0008uuid00000000000000000008','Đỗ Thị Dung','Em','https://picsum.photos/id/1404/150/150'),
-('sp0005uuid00000000000000000005','user0009uuid00000000000000000009','Nguyễn Hữu Dũng','Cháu','https://picsum.photos/id/1405/150/150'),
-('sp0006uuid00000000000000000006','user0010uuid00000000000000000010','Nguyễn Văn Em','Bố','https://picsum.photos/id/1406/150/150'),
-('sp0007uuid00000000000000000007','user0008uuid00000000000000000008','Trần Thị Hoa','Mẹ','https://picsum.photos/id/1407/150/150'),
-('sp0008uuid00000000000000000008','user0009uuid00000000000000000009','Lê Thị Hòa','Ông','https://picsum.photos/id/1408/150/150'),
-('sp0009uuid00000000000000000009','user0010uuid00000000000000000010','Nguyễn Thị Hạnh','Bà','https://picsum.photos/id/1409/150/150'),
-('sp0010uuid00000000000000000010','user0008uuid00000000000000000008','Đỗ Văn Hiếu','Chị','https://picsum.photos/id/1410/150/150');
+('sp0001uuid00000000000000000001','user0008uuid00000000000000000008','Nguyễn Văn An','Con','https://chienthanky.vn/wp-content/uploads/2024/01/100-hinh-anh-gai-xinh-2k4-de-thuong-hot-nhat-hien-nay-2746-10.jpg'),
+('sp0002uuid00000000000000000002','user0009uuid00000000000000000009','Trần Thị Bình','Vợ','https://chienthanky.vn/wp-content/uploads/2024/01/100-hinh-anh-gai-xinh-2k4-de-thuong-hot-nhat-hien-nay-2746-13.jpg'),
+('sp0003uuid00000000000000000003','user0010uuid00000000000000000010','Lê Văn Cường','Anh','https://chienthanky.vn/wp-content/uploads/2024/01/100-hinh-anh-gai-xinh-2k4-de-thuong-hot-nhat-hien-nay-2746-16.jpg'),
+('sp0004uuid00000000000000000004','user0008uuid00000000000000000008','Đỗ Thị Dung','Em','https://chienthanky.vn/wp-content/uploads/2024/01/100-hinh-anh-gai-xinh-2k4-de-thuong-hot-nhat-hien-nay-2746-19.jpg'),
+('sp0005uuid00000000000000000005','user0009uuid00000000000000000009','Nguyễn Hữu Dũng','Cháu','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k7-toc-ngan.jpg'),
+('sp0006uuid00000000000000000006','user0010uuid00000000000000000010','Nguyễn Văn Em','Bố','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k7-deo-kinh.jpg'),
+('sp0007uuid00000000000000000007','user0008uuid00000000000000000008','Trần Thị Hoa','Mẹ','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k7-deo-kinh.jpg'),
+('sp0008uuid00000000000000000008','user0009uuid00000000000000000009','Lê Thị Hòa','Ông','https://anhnail.com/wp-content/uploads/2024/11/Hinh-anh-gai-xinh-2k7-cute.jpg'),
+('sp0009uuid00000000000000000009','user0010uuid00000000000000000010','Nguyễn Thị Hạnh','Bà','https://anhnail.com/wp-content/uploads/2024/11/Gai-xinh-2k7-toc-dai-cute.jpg'),
+('sp0010uuid00000000000000000010','user0008uuid00000000000000000008','Đỗ Văn Hiếu','Chị','https://anhnail.com/wp-content/uploads/2024/11/Anh-hinh-gai-xinh-2k7.jpg');
+
 
 
 -- ===========================
--- 12. BÀI VIẾT (ARTICLES)
+-- 13. BÀI VIẾT (ARTICLES)
 -- ===========================
 CREATE TABLE `articles` (
   `uuid` char(32) NOT NULL,
@@ -347,19 +485,19 @@ CREATE TABLE `articles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO articles (uuid, title, content, image, author) VALUES
-('art0001uuid00000000000000000001','Chăm sóc sức khỏe mùa hè','Nội dung bài viết số 1','https://picsum.photos/id/1501/400/200','BS Nguyễn Quang H'),
-('art0002uuid00000000000000000002','Tư vấn da liễu','Nội dung bài viết số 2','https://picsum.photos/id/1502/400/200','BS Trần Thị Bích'),
-('art0003uuid00000000000000000003','Chế độ ăn hợp lý','Nội dung bài viết số 3','https://picsum.photos/id/1503/400/200','BS Lê Văn C'),
-('art0004uuid00000000000000000004','Phòng chống COVID','Nội dung bài viết số 4','https://picsum.photos/id/1504/400/200','BS Nguyễn Minh D'),
-('art0005uuid00000000000000000005','Chủ động phòng bệnh','Nội dung bài viết số 5','https://picsum.photos/id/1505/400/200','BS Phạm Thị E'),
-('art0006uuid00000000000000000006','Dinh dưỡng cho trẻ','Nội dung bài viết số 6','https://picsum.photos/id/1506/400/200','BS Nguyễn Thị F'),
-('art0007uuid00000000000000000007','Cách giữ gìn sức khỏe','Nội dung bài viết số 7','https://picsum.photos/id/1507/400/200','BS Trương Văn G'),
-('art0008uuid00000000000000000008','Cách giảm cân an toàn','Nội dung bài viết số 8','https://picsum.photos/id/1508/400/200','BS Nguyễn Quang H'),
-('art0009uuid00000000000000000009','Luyện tập thể thao','Nội dung bài viết số 9','https://picsum.photos/id/1509/400/200','BS Trần Thị Bích'),
-('art0010uuid00000000000000000010','Tăng sức đề kháng','Nội dung bài viết số 10','https://picsum.photos/id/1510/400/200','BS Lê Văn C');
+('art0001uuid00000000000000000001','Chăm sóc sức khỏe mùa hè','Nội dung bài viết số 1','https://anhnail.com/wp-content/uploads/2024/11/Anh-hinh-gai-xinh-2k7-mac-vay.jpg','BS Nguyễn Quang H'),
+('art0002uuid00000000000000000002','Tư vấn da liễu','Nội dung bài viết số 2','https://anhnail.com/wp-content/uploads/2024/11/Anh-gai-xinh-2k7-sieu-cute.jpg','BS Trần Thị Bích'),
+('art0003uuid00000000000000000003','Chế độ ăn hợp lý','Nội dung bài viết số 3','https://anhnail.com/wp-content/uploads/2024/11/Anh-gai-xinh-2k7-mac-vay-mau-hong-de-thuong.jpg','BS Lê Văn C'),
+('art0004uuid00000000000000000004','Phòng chống COVID','Nội dung bài viết số 4','https://anhnail.com/wp-content/uploads/2024/11/Anh-gai-xinh-2k7-deo-kinh-den.jpg','BS Nguyễn Minh D'),
+('art0005uuid00000000000000000005','Chủ động phòng bệnh','Nội dung bài viết số 5','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k8-deo-kinh-den-ngau.jpg','BS Phạm Thị E'),
+('art0006uuid00000000000000000006','Dinh dưỡng cho trẻ','Nội dung bài viết số 6','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k2-toc-dai.jpg','BS Nguyễn Thị F'),
+('art0007uuid00000000000000000007','Cách giữ gìn sức khỏe','Nội dung bài viết số 7','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k2-de-thuong.jpg','BS Trương Văn G'),
+('art0008uuid00000000000000000008','Cách giảm cân an toàn','Nội dung bài viết số 8','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k1-toc-dai-mac-vay.jpg','BS Nguyễn Quang H'),
+('art0009uuid00000000000000000009','Luyện tập thể thao','Nội dung bài viết số 9','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k1-toc-dai-cute.jpg','BS Trần Thị Bích'),
+('art0010uuid00000000000000000010','Tăng sức đề kháng','Nội dung bài viết số 10','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k1-mac-vay-ngan.jpg','BS Lê Văn C');
 
 -- ===========================
--- 13. SLIDE QUẢNG CÁO (CAROUSEL_ITEMS)
+-- 14. SLIDE QUẢNG CÁO (CAROUSEL_ITEMS)
 -- ===========================
 CREATE TABLE `carousel_items` (
   `uuid` char(32) NOT NULL,
@@ -372,20 +510,19 @@ CREATE TABLE `carousel_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO carousel_items (uuid, image, title, description) VALUES
-('car0001uuid00000000000000000001','https://picsum.photos/id/1601/600/300','Khám tổng quát giảm giá','Ưu đãi cho khách mới 15%'),
-('car0002uuid00000000000000000002','https://picsum.photos/id/1602/600/300','Miễn phí xét nghiệm máu','Áp dụng 10/6 đến 30/6'),
-('car0003uuid00000000000000000003','https://picsum.photos/id/1603/600/300','Ưu đãi mùa hè','Tặng quà cho khách hàng đặt khám'),
-('car0004uuid00000000000000000004','https://picsum.photos/id/1604/600/300','Tư vấn sức khỏe trực tuyến','Gặp bác sĩ online, miễn phí lần đầu'),
-('car0005uuid00000000000000000005','https://picsum.photos/id/1605/600/300','Giảm giá xét nghiệm','Chỉ còn 99k/lần'),
-('car0006uuid00000000000000000006','https://picsum.photos/id/1606/600/300','Miễn phí đo huyết áp','Dành cho khách lớn tuổi'),
-('car0007uuid00000000000000000007','https://picsum.photos/id/1607/600/300','Gói khám cho trẻ em','Tặng sữa cho trẻ dưới 6 tuổi'),
-('car0008uuid00000000000000000008','https://picsum.photos/id/1608/600/300','Ưu đãi khám nha khoa','Tặng nước súc miệng'),
-('car0009uuid00000000000000000009','https://picsum.photos/id/1609/600/300','Gói xét nghiệm tổng quát','Giá chỉ 1 triệu đồng'),
-('car0010uuid00000000000000000010','https://picsum.photos/id/1610/600/300','Miễn phí tư vấn dinh dưỡng','Đặt lịch qua app, không cần chờ');
-
+('car0001uuid00000000000000000001','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k1-mac-vay-2-day.jpg','Khám tổng quát giảm giá','Ưu đãi cho khách mới 15%'),
+('car0002uuid00000000000000000002','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k1-doi-mu-sieu-banh-beo.jpg','Miễn phí xét nghiệm máu','Áp dụng 10/6 đến 30/6'),
+('car0003uuid00000000000000000003','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k-toc-dai-2.jpg','Ưu đãi mùa hè','Tặng quà cho khách hàng đặt khám'),
+('car0004uuid00000000000000000004','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k4-dang-yeu.jpg','Tư vấn sức khỏe trực tuyến','Gặp bác sĩ online, miễn phí lần đầu'),
+('car0005uuid00000000000000000005','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k4-cute-de-thuong.jpg','Giảm giá xét nghiệm','Chỉ còn 99k/lần'),
+('car0006uuid00000000000000000006','https://anhnail.com/wp-content/uploads/2024/11/Hinh-anh-gai-xinh-2k4-toc-dai.jpg','Miễn phí đo huyết áp','Dành cho khách lớn tuổi'),
+('car0007uuid00000000000000000007','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k5-nhe-nhang-de-thuong.jpg','Gói khám cho trẻ em','Tặng sữa cho trẻ dưới 6 tuổi'),
+('car0008uuid00000000000000000008','https://anhnail.com/wp-content/uploads/2024/11/Hinh-gai-xinh-2k5-cute-de-thuong.jpg','Ưu đãi khám nha khoa','Tặng nước súc miệng'),
+('car0009uuid00000000000000000009','https://anhnail.com/wp-content/uploads/2024/11/Hinh-anh-gai-xinh-2k5-de-thuong.jpg','Gói xét nghiệm tổng quát','Giá chỉ 1 triệu đồng'),
+('car0010uuid00000000000000000010','https://anhnail.com/wp-content/uploads/2024/11/Anh-hinh-gai-xinh-2k5.jpg','Miễn phí tư vấn dinh dưỡng','Đặt lịch qua app, không cần chờ');
 
 -- ===========================
--- 14. BẢNG TOKEN (XÁC THỰC)
+-- 15. BẢNG TOKEN (XÁC THỰC)
 -- ===========================
 CREATE TABLE `token` (
   `uuid` char(32) NOT NULL,
@@ -411,7 +548,9 @@ INSERT INTO token (uuid, user_id, access_token, refresh_token) VALUES
 ('tok0009uuid00000000000000000009','user0009uuid00000000000000000009','token9','refreshtoken9'),
 ('tok0010uuid00000000000000000010','user0010uuid00000000000000000010','token10','refreshtoken10');
 
-
+-- ===========================
+-- 16. ĐÁNH GIÁ (REVIEWS)
+-- ===========================
 CREATE TABLE `reviews` (
   `uuid` CHAR(32) NOT NULL,
   `user_id` CHAR(32) NOT NULL,
@@ -428,7 +567,6 @@ CREATE TABLE `reviews` (
   CONSTRAINT `reviews_doctor_id` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `reviews_appointment_id` FOREIGN KEY (`appointment_id`) REFERENCES `appointments` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 
 INSERT INTO reviews (uuid, user_id, doctor_id, appointment_id, stars, comment) VALUES
 ('rev0001uuid00000000000000000001','user0008uuid00000000000000000008','doc0001uuid00000000000000000001','app0001uuid00000000000000000001',5,'Bác sĩ tận tâm, hướng dẫn rõ ràng!'),

@@ -4,14 +4,24 @@ const Specialization = require("../model/specializationModel");
 
 class SpecializationService {
   static async getAll() {
-    const [rows] = await db.execute("SELECT * FROM specializations ORDER BY created_at DESC");
+    const [rows] = await db.execute(
+      "SELECT * FROM specializations ORDER BY created_at DESC"
+    );
     return Specialization.fromRows(rows);
   }
+
   static async getById(uuid) {
-    const [rows] = await db.execute("SELECT * FROM specializations WHERE uuid = ?", [uuid]);
+    if (!uuid || uuid === "undefined" || uuid === "null") {
+      return null;
+    }
+    const [rows] = await db.execute(
+      "SELECT * FROM specializations WHERE uuid = ?",
+      [uuid]
+    );
     if (rows.length === 0) return null;
     return Specialization.fromRow(rows[0]);
   }
+
   static async create({ name }) {
     const uuid = uuidv4().replace(/-/g, "").slice(0, 32);
     await db.execute(
@@ -28,7 +38,10 @@ class SpecializationService {
     return result.affectedRows > 0;
   }
   static async remove(uuid) {
-    const [result] = await db.execute("DELETE FROM specializations WHERE uuid = ?", [uuid]);
+    const [result] = await db.execute(
+      "DELETE FROM specializations WHERE uuid = ?",
+      [uuid]
+    );
     return result.affectedRows > 0;
   }
 }

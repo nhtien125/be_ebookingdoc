@@ -1,4 +1,4 @@
-const MedicalServiceService = require("../service/medicalRecordService");
+const MedicalServiceService = require("../service/medical_service");
 const { getImageValue } = require("../helper/image.helper");
 
 class MedicalServiceController {
@@ -10,6 +10,7 @@ class MedicalServiceController {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
+
   static async getById(req, res) {
     try {
       const data = await MedicalServiceService.getById(req.params.id);
@@ -20,6 +21,7 @@ class MedicalServiceController {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
+
   static async create(req, res) {
     try {
       const { name, description, price, specialization_id, clinic_id, hospital_id, image } = req.body;
@@ -38,6 +40,7 @@ class MedicalServiceController {
       res.status(error.statusCode || 400).json({ code: error.statusCode || 400, msg: error.message, status: "error" });
     }
   }
+
   static async update(req, res) {
     try {
       const { name, description, price, specialization_id, clinic_id, hospital_id, image } = req.body;
@@ -58,6 +61,7 @@ class MedicalServiceController {
       res.status(error.statusCode || 400).json({ code: error.statusCode || 400, msg: error.message, status: "error" });
     }
   }
+
   static async delete(req, res) {
     try {
       const deleted = await MedicalServiceService.remove(req.params.id);

@@ -7,29 +7,35 @@ class DoctorService {
     const [rows] = await db.execute("SELECT * FROM doctors ORDER BY created_at DESC");
     return Doctor.fromRows(rows);
   }
+
   static async getById(uuid) {
     const [rows] = await db.execute("SELECT * FROM doctors WHERE uuid = ?", [uuid]);
     if (rows.length === 0) return null;
     return Doctor.fromRow(rows[0]);
   }
-  static async create({ user_id, doctor_type, specialization_id, license, introduce, image }) {
+
+
+  static async create({ user_id, hospital_id, doctor_type, specialization_id, license, introduce, experience, patient_count, image }) {
     const uuid = uuidv4().replace(/-/g, "").slice(0, 32);
     await db.execute(
-      "INSERT INTO doctors (uuid, user_id, doctor_type, specialization_id, license, introduce, image, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())",
-      [uuid, user_id, doctor_type, specialization_id, license, introduce, image]
+      "INSERT INTO doctors (uuid, user_id, hospital_id, doctor_type, specialization_id, license, introduce, experience, patient_count, image, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())",
+      [uuid, user_id, hospital_id, doctor_type, specialization_id, license, introduce, experience, patient_count, image]
     );
-    return { uuid, user_id, doctor_type, specialization_id, license, introduce, image };
+    return { uuid, user_id, hospital_id, doctor_type, specialization_id, license, introduce, experience, patient_count, image };
   }
-  static async update(uuid, { user_id, doctor_type, specialization_id, license, introduce, image }) {
+
+  static async update(uuid, { user_id, hospital_id, doctor_type, specialization_id, license, introduce, experience, patient_count, image }) {
     const [result] = await db.execute(
-      "UPDATE doctors SET user_id=?, doctor_type=?, specialization_id=?, license=?, introduce=?, image=?, updated_at=NOW() WHERE uuid=?",
-      [user_id, doctor_type, specialization_id, license, introduce, image, uuid]
+      "UPDATE doctors SET user_id=?, hospital_id=?, doctor_type=?, specialization_id=?, license=?, introduce=?, experience=?, patient_count=?, image=?, updated_at=NOW() WHERE uuid=?",
+      [user_id, hospital_id, doctor_type, specialization_id, license, introduce, experience, patient_count, image, uuid]
     );
     return result.affectedRows > 0;
   }
+
   static async remove(uuid) {
     const [result] = await db.execute("DELETE FROM doctors WHERE uuid = ?", [uuid]);
     return result.affectedRows > 0;
   }
 }
+
 module.exports = DoctorService;
