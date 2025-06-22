@@ -86,7 +86,7 @@ router.get(`/${patient}/getById/:id`, patientController.getById);
 router.post(`/${patient}/add`, patientController.create);
 router.put(`/${patient}/update/:id`, patientController.update);
 router.delete(`/${patient}/delete/:id`, patientController.delete);
-
+router.get(`/${patient}/byUser/:userId`, patientController.getByUserId);
 // Permission
 const permission = "premission";
 router.get(`/${permission}/getAll`, premissionController.getAll);

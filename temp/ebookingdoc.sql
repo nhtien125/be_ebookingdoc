@@ -1,3 +1,87 @@
+
+CREATE TABLE `patients` (
+  `uuid` char(32) NOT NULL,
+  `user_id` char(32) DEFAULT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `dob` DATE DEFAULT NULL,
+  `gender` VARCHAR(10) DEFAULT NULL,
+  `phone` VARCHAR(20) DEFAULT NULL,
+  `relationship` VARCHAR(50) DEFAULT NULL,
+  `address` VARCHAR(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`uuid`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `patients_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+INSERT INTO patients (uuid, user_id, name, dob, gender, phone, relationship, address)
+VALUES
+('pat0001uuid00000000000000000001','user0008uuid00000000000000000008','LÔ THỊ NỘ','1990-01-01','Nữ','0987654321','Bản thân','TP HCM'),
+('pat0002uuid00000000000000000002','user0009uuid00000000000000000009','NGUYỄN VĂN A','1985-05-15','Nam','0911111111','Chồng','Hà Nội'),
+('pat0003uuid00000000000000000003','user0010uuid00000000000000000010','TRẦN THỊ B','2000-12-31','Nữ','0902222222','Con','Đà Nẵng');
+
+
+ CREATE TABLE `appointments` (
+  `uuid` char(32) NOT NULL,
+  `doctor_id` char(32) DEFAULT NULL,
+  `patient_id` char(32) DEFAULT NULL,
+  `clinic_id` char(32) DEFAULT NULL,
+  `hospital_id` char(32) DEFAULT NULL,
+  `schedule_id` char(32) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
+  `health_status` VARCHAR(1000) DEFAULT NULL COMMENT 'Tình trạng sức khỏe khi đặt lịch',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`uuid`),
+  KEY `doctor_id` (`doctor_id`),
+  KEY `patient_id` (`patient_id`),
+  KEY `clinic_id` (`clinic_id`),
+  KEY `hospital_id` (`hospital_id`),
+  KEY `schedule_id` (`schedule_id`),
+  CONSTRAINT `appointments_doctor_id` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `appointments_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `appointments_clinic_id` FOREIGN KEY (`clinic_id`) REFERENCES `clinics` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `appointments_hospital_id` FOREIGN KEY (`hospital_id`) REFERENCES `hospitals` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `appointments_schedule_id` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO appointments (uuid, doctor_id, patient_id, clinic_id, hospital_id, schedule_id, date, status, health_status) VALUES
+('app0001uuid00000000000000000001','doc0001uuid00000000000000000001','pat0001uuid00000000000000000001','cli0001uuid00000000000000000001','hosp0001uuid00000000000000000001','sch0077uuid040603','2025-06-15 09:00:00',1,'Đau đầu, mệt mỏi kéo dài 2 ngày'),
+('app0002uuid00000000000000000002','doc0002uuid00000000000000000002','pat0002uuid00000000000000000002','cli0002uuid00000000000000000002','hosp0002uuid00000000000000000002','sch0042uuid030102','2025-06-16 10:30:00',1,'Ho, sốt nhẹ, đau họng'),
+('app0003uuid00000000000000000003','doc0003uuid00000000000000000003','pat0003uuid00000000000000000003','cli0003uuid00000000000000000003','hosp0003uuid00000000000000000003','sch0038uuid020604','2025-06-17 14:00:00',1,'Ngứa da, nổi mẩn đỏ'),
+('app0004uuid00000000000000000004','doc0004uuid00000000000000000004','pat0002uuid00000000000000000002','cli0004uuid00000000000000000004','hosp0004uuid00000000000000000004','sch0024uuid020202','2025-06-18 09:00:00',1,'Chóng mặt, mất ngủ'),
+('app0005uuid00000000000000000005','doc0005uuid00000000000000000005','pat0001uuid00000000000000000001','cli0005uuid00000000000000000005','hosp0005uuid00000000000000000005','sch0019uuid010701','2025-06-19 15:00:00',1,'Đau bụng âm ỉ'),
+('app0006uuid00000000000000000006','doc0006uuid00000000000000000006','pat0003uuid00000000000000000003','cli0006uuid00000000000000000006','hosp0006uuid00000000000000000006','sch0011uuid010402','2025-06-20 08:00:00',1,'Khó thở, tức ngực'),
+('app0007uuid00000000000000000007','doc0007uuid00000000000000000007','pat0002uuid00000000000000000002','cli0007uuid00000000000000000007','hosp0007uuid00000000000000000007','sch0037uuid020603','2025-06-21 13:00:00',1,'Đau răng, sưng lợi');
+
+CREATE TABLE `medical_records` (
+  `uuid` char(32) NOT NULL,
+  `patient_id` char(32) DEFAULT NULL,
+  `appointment_id` char(32) DEFAULT NULL,
+  `current_medications` VARCHAR(1000) DEFAULT NULL COMMENT 'Thuốc đang sử dụng',
+  `allergies` VARCHAR(500) DEFAULT NULL COMMENT 'Dị ứng',
+  `chronic_diseases` VARCHAR(500) DEFAULT NULL COMMENT 'Bệnh mãn tính',
+  `surgeries` VARCHAR(500) DEFAULT NULL COMMENT 'Tiền sử phẫu thuật',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`uuid`),
+  KEY `patient_id` (`patient_id`),
+  KEY `appointment_id` (`appointment_id`),
+  CONSTRAINT `medical_records_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `medical_records_appointment_id` FOREIGN KEY (`appointment_id`) REFERENCES `appointments` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO medical_records (uuid, patient_id, appointment_id, current_medications, allergies, chronic_diseases, surgeries) VALUES
+('mr0011uuid00000000000000000011', 'pat0001uuid00000000000000000001', 'app0001uuid00000000000000000001', 'Paracetamol 500mg', 'Không', 'Tiểu đường', 'Mổ ruột thừa 2015'),
+('mr0012uuid00000000000000000012', 'pat0002uuid00000000000000000002', 'app0002uuid00000000000000000002', 'Amoxicillin 250mg', 'Penicillin', 'Tăng huyết áp', 'Không'),
+('mr0013uuid00000000000000000013', 'pat0003uuid00000000000000000003', 'app0003uuid00000000000000000003', 'Vitamin D', 'Không', 'Không', 'Phẫu thuật mắt 2018'),
+('mr0014uuid00000000000000000014', 'pat0001uuid00000000000000000001', 'app0004uuid00000000000000000004', 'Thuốc hạ cholesterol', 'Không', 'Rối loạn mỡ máu', 'Không'),
+('mr0015uuid00000000000000000015', 'pat0002uuid00000000000000000002', 'app0005uuid00000000000000000005', 'Thuốc giảm đau', 'Không', 'Hen suyễn', 'Mổ bướu cổ 2017');
+
+
 CREATE TABLE `doctors` (
   `uuid` char(32) NOT NULL,
   `user_id` char(32) DEFAULT NULL,
@@ -330,20 +414,7 @@ INSERT INTO `premission` (`id`, `name`) VALUES
 -- ===========================
 -- 6. BỆNH NHÂN (PATIENTS)
 -- ===========================
-CREATE TABLE `patients` (
-  `uuid` char(32) NOT NULL,
-  `user_id` char(32) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`uuid`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `patients_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO patients (uuid, user_id) VALUES
-('pat0001uuid00000000000000000001','user0008uuid00000000000000000008'),
-('pat0002uuid00000000000000000002','user0009uuid00000000000000000009'),
-('pat0003uuid00000000000000000003','user0010uuid00000000000000000010');
 
 
 -- ===========================
@@ -366,7 +437,7 @@ CREATE TABLE `doctors` (
   CONSTRAINT `doctors_specialization_id` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO doctors (uuid, user_id, doctor_type, specialization_id, license, introduce, image) VALUES
+   doctors (uuid, user_id, doctor_type, specialization_id, license, introduce, image) VALUES
 ('doc0001uuid00000000000000000001','user0001uuid00000000000000000001',1,'spec0001uuid00000000000000000001','BS12345','Chuyên gia tim mạch','https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-31.jpg'),
 ('doc0002uuid00000000000000000002','user0002uuid00000000000000000002',2,'spec0002uuid00000000000000000002','BS23456','Chuyên gia nhi','https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-32.jpg'),
 ('doc0003uuid00000000000000000003','user0003uuid00000000000000000003',1,'spec0003uuid00000000000000000003','BS34567','Chuyên gia da liễu','https://chienthanky.vn/wp-content/uploads/2024/01/top-100-anh-gai-2k7-cuc-xinh-ngay-tho-thuan-khiet-2169-39.jpg'),
@@ -383,28 +454,6 @@ INSERT INTO doctors (uuid, user_id, doctor_type, specialization_id, license, int
 -- ===========================
 -- 9. HỒ SƠ BỆNH ÁN (MEDICAL_RECORDS)
 -- ===========================
-CREATE TABLE `medical_records` (
-  `uuid` char(32) NOT NULL,
-  `patient_id` char(32) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`uuid`),
-  KEY `patient_id` (`patient_id`),
-  CONSTRAINT `medical_records_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO medical_records (uuid, patient_id) VALUES
-('mr0001uuid00000000000000000001','pat0001uuid00000000000000000001'),
-('mr0002uuid00000000000000000002','pat0002uuid00000000000000000002'),
-('mr0003uuid00000000000000000003','pat0003uuid00000000000000000003'),
-('mr0004uuid00000000000000000004','pat0001uuid00000000000000000001'),
-('mr0005uuid00000000000000000005','pat0002uuid00000000000000000002'),
-('mr0006uuid00000000000000000006','pat0003uuid00000000000000000003'),
-('mr0007uuid00000000000000000007','pat0001uuid00000000000000000001'),
-('mr0008uuid00000000000000000008','pat0002uuid00000000000000000002'),
-('mr0009uuid00000000000000000009','pat0003uuid00000000000000000003'),
-('mr0010uuid00000000000000000010','pat0001uuid00000000000000000001');
-
 
 
 -- ===========================
@@ -445,38 +494,6 @@ INSERT INTO medical_services (uuid, name, description, price, specialization_id,
 -- ===========================
 -- 10. CUỘC HẸN (APPOINTMENTS)
 -- ===========================
-CREATE TABLE `appointments` (
-  `uuid` char(32) NOT NULL,
-  `doctor_id` char(32) DEFAULT NULL,
-  `patient_id` char(32) DEFAULT NULL,
-  `clinic_id` char(32) DEFAULT NULL,
-  `hospital_id` char(32) DEFAULT NULL,
-  `schedule_id` char(32) DEFAULT NULL,
-  `date` datetime DEFAULT NULL,
-  `status` tinyint(1) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`uuid`),
-  KEY `doctor_id` (`doctor_id`),
-  KEY `patient_id` (`patient_id`),
-  KEY `clinic_id` (`clinic_id`),
-  KEY `hospital_id` (`hospital_id`),
-  KEY `schedule_id` (`schedule_id`),
-  CONSTRAINT `appointments_doctor_id` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `appointments_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `appointments_clinic_id` FOREIGN KEY (`clinic_id`) REFERENCES `clinics` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `appointments_hospital_id` FOREIGN KEY (`hospital_id`) REFERENCES `hospitals` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `appointments_schedule_id` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO appointments (uuid, doctor_id, patient_id, clinic_id, hospital_id, schedule_id, date, status) VALUES
-('app0001uuid00000000000000000001','doc0001uuid00000000000000000001','pat0001uuid00000000000000000001','cli0001uuid00000000000000000001','hosp0001uuid00000000000000000001','sch0077uuid040603','2025-06-15 09:00:00',1),
-('app0002uuid00000000000000000002','doc0002uuid00000000000000000002','pat0002uuid00000000000000000002','cli0002uuid00000000000000000002','hosp0002uuid00000000000000000002','sch0042uuid030102','2025-06-16 10:30:00',1),
-('app0003uuid00000000000000000003','doc0003uuid00000000000000000003','pat0003uuid00000000000000000003','cli0003uuid00000000000000000003','hosp0003uuid00000000000000000003','sch0038uuid020604','2025-06-17 14:00:00',1),
-('app0004uuid00000000000000000004','doc0004uuid00000000000000000004','pat0002uuid00000000000000000002','cli0004uuid00000000000000000004','hosp0004uuid00000000000000000004','sch0024uuid020202','2025-06-18 09:00:00',1),
-('app0005uuid00000000000000000005','doc0005uuid00000000000000000005','pat0001uuid00000000000000000001','cli0005uuid00000000000000000005','hosp0005uuid00000000000000000005','sch0019uuid010701','2025-06-19 15:00:00',1),
-('app0006uuid00000000000000000006','doc0006uuid00000000000000000006','pat0003uuid00000000000000000003','cli0006uuid00000000000000000006','hosp0006uuid00000000000000000006','sch0011uuid010402','2025-06-20 08:00:00',1),
-('app0007uuid00000000000000000007','doc0007uuid00000000000000000007','pat0002uuid00000000000000000002','cli0007uuid00000000000000000007','hosp0007uuid00000000000000000007','sch0037uuid020603','2025-06-21 13:00:00',1);
 
 -- ===========================
 -- 11. HỒ SƠ PHỤ (SELECT_PROFILES)
@@ -505,7 +522,6 @@ INSERT INTO select_profiles (uuid, user_id, name, relationship, image) VALUES
 ('sp0008uuid00000000000000000008','user0009uuid00000000000000000009','Lê Thị Hòa','Ông','https://anhnail.com/wp-content/uploads/2024/11/Hinh-anh-gai-xinh-2k7-cute.jpg'),
 ('sp0009uuid00000000000000000009','user0010uuid00000000000000000010','Nguyễn Thị Hạnh','Bà','https://anhnail.com/wp-content/uploads/2024/11/Gai-xinh-2k7-toc-dai-cute.jpg'),
 ('sp0010uuid00000000000000000010','user0008uuid00000000000000000008','Đỗ Văn Hiếu','Chị','https://anhnail.com/wp-content/uploads/2024/11/Anh-hinh-gai-xinh-2k7.jpg');
-
 
 -- ===========================
 -- 12. BÀI VIẾT (ARTICLES)
