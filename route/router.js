@@ -118,15 +118,16 @@ const hospital = "hospital";
 router.get(`/${hospital}/getAll`, hospitalController.getAll);
 router.get(`/${hospital}/getById/:id`, hospitalController.getById);
 router.post(`/${hospital}/add`, upload.single('image'), hospitalController.create);
-router.put(`/${hospital}/update/:id`, upload.single('image'), hospitalController.update);
-router.delete(`/${hospital}/delete/:id`, hospitalController.delete);
+router.put("/hospital/update/:uuid", upload.single("image"), hospitalController.update);
+// router.delete(`/${hospital}/delete/:id`, hospitalController.delete);
+router.delete("/hospital/delete/:uuid", hospitalController.delete);
 
 const medical_service = "medical_service";
 router.get(`/${medical_service}/getAll`, MedicalServiceController.getAll);
-router.get(`/${medical_service}/getById/:id`, MedicalServiceController.getById);
+router.get(`/${medical_service}/getById/:uuid`, MedicalServiceController.getById);
 router.post(`/${medical_service}/add`, upload.single('image'), MedicalServiceController.create);
-router.put(`/${medical_service}/update/:id`, upload.single('image'), MedicalServiceController.update);
-router.delete(`/${medical_service}/delete/:id`, MedicalServiceController.delete);
+router.put(`/${medical_service}/update/:uuid`, upload.single('image'), MedicalServiceController.update);
+router.delete(`/${medical_service}/delete/:uuid`, MedicalServiceController.delete);
 
 
 const select_profile = "select_profile";

@@ -20,9 +20,9 @@ class ClinicController {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
-    static async create(req, res) {
+  static async create(req, res) {
     try {
-      const { name, address, phone, email, image, hospital_id } = req.body;
+      const { name, address, phone, email, image, hospital_uuid} = req.body;
       const imageValue = await getImageValue(req.file, image, "clinics");
       const result = await ClinicService.create({
         name,
@@ -30,31 +30,54 @@ class ClinicController {
         phone,
         email,
         image: imageValue,
-        hospital_id,
+        hospital_uuid,
       });
       res.status(201).json({ code: 201, msg: "Tạo thành công", status: "success", data: result });
     } catch (error) {
       res.status(error.statusCode || 400).json({ code: error.statusCode || 400, msg: error.message, status: "error" });
     }
   }
-
   static async update(req, res) {
     try {
-      const { name, address, phone, email, image, hospital_id } = req.body;
+      const {
+        name = null,
+        address = null,
+        phone = null,
+        email = null,
+        image = null,
+        hospital_uuid = null,
+      } = req.body;
+  
       const imageValue = await getImageValue(req.file, image, "clinics");
-      const updated = await ClinicService.update(req.params.id, {
+  
+      const updated = await ClinicService.update(req.params.uuid, {
         name,
         address,
         phone,
         email,
-        image: imageValue,
-        hospital_id,
+        image: imageValue ?? null,
+        hospital_id: hospital_uuid ?? null, // 🚨 Chú ý: DB là hospital_id
       });
+  
       if (!updated)
-        return res.status(404).json({ code: 404, msg: "Không tìm thấy để cập nhật", status: "error" });
-      res.json({ code: 200, msg: "Cập nhật thành công", status: "success" });
+        return res.status(404).json({
+          code: 404,
+          msg: "Không tìm thấy để cập nhật",
+          status: "error",
+        });
+  
+      res.json({
+        code: 200,
+        msg: "Cập nhật thành công",
+        status: "success",
+      });
     } catch (error) {
-      res.status(error.statusCode || 400).json({ code: error.statusCode || 400, msg: error.message, status: "error" });
+      console.error("Update lỗi:", error); // Để dễ debug hơn
+      res.status(error.statusCode || 400).json({
+        code: error.statusCode || 400,
+        msg: error.message,
+        status: "error",
+      });
     }
   }
   static async delete(req, res) {
