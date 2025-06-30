@@ -23,34 +23,28 @@ class ScheduleController {
   }
   static async create(req, res) {
     try {
-      const { doctor_id, clinic_id, work_date, start_time, end_time } =
-        req.body;
+      const { doctor_id, work_date, start_time, end_time } = req.body;
       const result = await ScheduleService.create({
         doctor_id,
-        clinic_id,
         work_date,
         start_time,
         end_time,
       });
-      res
-        .status(201)
-        .json({
-          code: 201,
-          msg: "Tạo thành công",
-          status: "success",
-          data: result,
-        });
+      res.status(201).json({
+        code: 201,
+        msg: "Tạo thành công",
+        status: "success",
+        data: result,
+      });
     } catch (error) {
       res.status(400).json({ code: 400, msg: error.message, status: "error" });
     }
   }
   static async update(req, res) {
     try {
-      const { doctor_id, clinic_id, work_date, start_time, end_time } =
-        req.body;
+      const { doctor_id, work_date, start_time, end_time } = req.body;
       const updated = await ScheduleService.update(req.params.id, {
         doctor_id,
-        clinic_id,
         work_date,
         start_time,
         end_time,
@@ -84,7 +78,7 @@ class ScheduleController {
     try {
       const { doctor_id } = req.params;
       const data = await ScheduleService.getByDoctorId(doctor_id);
-       if (!data)
+      if (!data)
         return res
           .status(404)
           .json({ code: 404, msg: "Không tìm thấy", status: "error" });
@@ -97,5 +91,7 @@ class ScheduleController {
       });
     }
   }
+  
 }
+
 module.exports = ScheduleController;

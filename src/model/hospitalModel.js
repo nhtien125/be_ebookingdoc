@@ -4,6 +4,7 @@ class Hospital {
     name,
     address,
     image,
+    description, 
     created_at,
     updated_at,
   }) {
@@ -11,6 +12,7 @@ class Hospital {
     this.name = name || null;
     this.address = address || null;
     this.image = image || null;
+    this.description = description || null; 
     this.created_at = created_at || null;
     this.updated_at = updated_at || null;
   }
@@ -20,7 +22,7 @@ class Hospital {
   }
 
   static fromRows(rows) {
-    return rows.map(row => Hospital.fromRow(row));
+    return rows.map((row) => Hospital.fromRow(row));
   }
 }
 

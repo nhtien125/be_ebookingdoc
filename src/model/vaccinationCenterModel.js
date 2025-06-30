@@ -1,4 +1,4 @@
-class Clinic {
+class VaccinationCenter {
   constructor({
     uuid,
     name,
@@ -7,6 +7,8 @@ class Clinic {
     email,
     image,
     description,
+    status,
+    working_hours,
     created_at,
     updated_at,
   }) {
@@ -17,14 +19,16 @@ class Clinic {
     this.email = email || null;
     this.image = image || null;
     this.description = description || null;
+    this.status = status || "open";
+    this.working_hours = working_hours || null;
     this.created_at = created_at || null;
     this.updated_at = updated_at || null;
   }
   static fromRow(row) {
-    return new Clinic(row);
+    return new VaccinationCenter(row);
   }
   static fromRows(rows) {
-    return rows.map(row => Clinic.fromRow(row));
+    return rows.map(row => VaccinationCenter.fromRow(row));
   }
 }
-module.exports = Clinic;
+module.exports = VaccinationCenter;

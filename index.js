@@ -4,13 +4,23 @@ const fs = require("fs").promises; // Use promises for async file operations
 const path = require("path");
 require("dotenv").config();
 const main = require("./route/router");
-const setupSwagger = require("./route/swagger");
-
+const logger = require("morgan");
+const cookieParser = require('cookie-parser');
+const updateUnpaidPayments = require('./src/service/paymentService').cancelUnpaidPayosPayments;
 const app = express();
+const cron = require("node-cron");
+
+
 app.use(express.json());
 app.use(cors());
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "hbs");
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
 
-// Ensure log directory and file exist
 const logDir = path.join(__dirname, "src", "api", "log");
 const logFile = path.join(logDir, "log.txt");
 
@@ -35,6 +45,11 @@ async function ensureLogFile() {
   }
 }
 
+cron.schedule('* * * * *', async () => {
+  console.log("Checking for unpaid payments...");
+  await updateUnpaidPayments();
+});
+
 // Initialize log file before starting server
 ensureLogFile()
   .then(() => {
@@ -44,7 +59,6 @@ ensureLogFile()
 
     app.use("/resources", express.static(path.join(__dirname, "resources")));
     app.use("/api", main);
-    setupSwagger(app);
 
     // Error handling middleware
     app.use(async (err, req, res, next) => {
@@ -73,5 +87,5 @@ stack: ${err.stack}\n`
   })
   .catch((err) => {
     console.error("Failed to initialize log file:", err);
-    process.exit(1); // Exit if log setup fails, or handle differently
+    process.exit(1);
   });

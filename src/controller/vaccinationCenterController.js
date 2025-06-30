@@ -1,10 +1,10 @@
-const ClinicService = require("../service/clinicService");
+const VaccinationCenterService = require("../service/vaccinationCenterService");
 const { getImageValue } = require("../helper/image.helper");
 
-class ClinicController {
+class VaccinationCenterController {
   static async getAll(req, res) {
     try {
-      const data = await ClinicService.getAll();
+      const data = await VaccinationCenterService.getAll();
       res.json({ code: 200, msg: "Thành công", status: "success", data });
     } catch (error) {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
@@ -13,7 +13,7 @@ class ClinicController {
 
   static async getById(req, res) {
     try {
-      const data = await ClinicService.getById(req.params.id);
+      const data = await VaccinationCenterService.getById(req.params.id);
       if (!data)
         return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
       res.json({ code: 200, msg: "Thành công", status: "success", data });
@@ -24,15 +24,17 @@ class ClinicController {
 
   static async create(req, res) {
     try {
-      const { name, address, phone, email, image, description } = req.body;
-      const imageValue = await getImageValue(req.file, image, "clinics");
-      const result = await ClinicService.create({
+      const { name, address, phone, email, description, status, working_hours } = req.body;
+      const imageValue = await getImageValue(req.file, req.body.image, "vaccination_centers");
+      const result = await VaccinationCenterService.create({
         name,
         address,
         phone,
         email,
         image: imageValue,
         description,
+        status,
+        working_hours,
       });
       res.status(201).json({ code: 201, msg: "Tạo thành công", status: "success", data: result });
     } catch (error) {
@@ -49,17 +51,20 @@ class ClinicController {
         email = null,
         image = null,
         description = null,
+        status = null,
+        working_hours = null,
       } = req.body;
 
-      const imageValue = await getImageValue(req.file, image, "clinics");
-
-      const updated = await ClinicService.update(req.params.uuid, {
+      const imageValue = await getImageValue(req.file, image, "vaccination_centers");
+      const updated = await VaccinationCenterService.update(req.params.uuid, {
         name,
         address,
         phone,
         email,
         image: imageValue ?? null,
         description,
+        status,
+        working_hours,
       });
 
       if (!updated)
@@ -86,7 +91,7 @@ class ClinicController {
 
   static async delete(req, res) {
     try {
-      const deleted = await ClinicService.remove(req.params.id);
+      const deleted = await VaccinationCenterService.remove(req.params.id);
       if (!deleted)
         return res.status(404).json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
       res.json({ code: 200, msg: "Xóa thành công", status: "success" });
@@ -95,4 +100,4 @@ class ClinicController {
     }
   }
 }
-module.exports = ClinicController;
+module.exports = VaccinationCenterController;
