@@ -102,7 +102,7 @@ router.delete(`/${vc}/delete/:id`, vaccinationCenterController.delete);
 // Appointment
 const appointment = "appointment";
 router.get(`/${appointment}/getAll`, appointmentController.getAll);
-router.get(`/${appointment}/getById/:id`, appointmentController.getById);
+router.get(`/${appointment}/getById/:uuid`, appointmentController.getById);
 router.post(`/${appointment}/add`, appointmentController.create);
 router.put(`/${appointment}/update/:id`, appointmentController.update);
 router.delete(`/${appointment}/delete/:id`, appointmentController.delete);
