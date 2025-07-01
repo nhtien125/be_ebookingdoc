@@ -44,7 +44,6 @@ class ScheduleService {
     );
     return Schedule.fromRows(rows);
   }
-  
 }
 
 module.exports = ScheduleService;

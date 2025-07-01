@@ -168,7 +168,7 @@ router.get(`/${schedule}/doctor/:doctor_id`, scheduleController.getByDoctorId);
 // hospital
 const hospital = "hospital";
 router.get(`/${hospital}/getAll`, hospitalController.getAll);
-router.get(`/${hospital}/getById/:id`, hospitalController.getById);
+router.get(`/${hospital}/getById/:uuid`, hospitalController.getById);
 router.post(
   `/${hospital}/add`,
   upload.single("image"),

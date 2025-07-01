@@ -10,7 +10,7 @@ class UserService {
   static async login(user) {
     try {
       // Nhận username hoặc email và password
-      const identifier = user.username || user.email;
+      const identifier = user.email || user.username; 
       if (!identifier || !user.password) {
         const error = new Error(
           "Username hoặc email và password không được để trống!"

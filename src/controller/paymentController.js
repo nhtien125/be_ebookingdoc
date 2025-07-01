@@ -1,7 +1,7 @@
-// controller/paymentController.js
 const PaymentService = require("../service/paymentService");
 
 class PaymentController {
+  // Lấy tất cả thanh toán
   static async getAll(req, res) {
     try {
       const data = await PaymentService.getAll();
@@ -10,6 +10,8 @@ class PaymentController {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
+
+  // Lấy thanh toán theo UUID
   static async getById(req, res) {
     try {
       const uuid = req.params.uuid;
@@ -23,6 +25,8 @@ class PaymentController {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
+
+  // Tạo thanh toán mới
   static async create(req, res) {
     try {
       const {
@@ -51,6 +55,8 @@ class PaymentController {
       res.status(400).json({ code: 400, msg: error.message, status: "error" });
     }
   }
+
+  // Cập nhật thanh toán theo UUID
   static async update(req, res) {
     try {
       const {
@@ -80,6 +86,8 @@ class PaymentController {
       res.status(400).json({ code: 400, msg: error.message, status: "error" });
     }
   }
+
+  // Xóa thanh toán theo UUID
   static async delete(req, res) {
     try {
       const deleted = await PaymentService.remove(req.params.id);
@@ -92,6 +100,8 @@ class PaymentController {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
+
+  // Cập nhật trạng thái thanh toán theo UUID
   static async updateStatus(req, res) {
     try {
       const { status } = req.body;
@@ -116,6 +126,8 @@ class PaymentController {
       res.status(400).json({ code: 400, msg: error.message, status: "error" });
     }
   }
+
+  // Lấy thanh toán của người dùng theo userId
   static async getByUserId(req, res) {
     try {
       const userId = req.params.userId;
@@ -135,4 +147,5 @@ class PaymentController {
     }
   }
 }
+
 module.exports = PaymentController;

@@ -2,13 +2,14 @@ const express = require("express");
 const PayOS = require("@payos/node");
 const router = express.Router();
 const db = require("../src/helper/database");
+
 const payos = new PayOS(
   "9643ef8f-e07f-4405-8248-211f9b59adb2",
   "607fff9d-d752-441e-b55c-4d712afbe0fa",
   "2094e0b06f2b8f9f1aa9b7155f2126f1ee0d2fa90d461c2dcf77abb4dd586418"
 );
 
-const YOUR_DOMAIN = "http://192.168.1.29:3210/api";
+const YOUR_DOMAIN = "http://192.168.2.207:3210/api";
 const fixedAmount = 10000;
 
 // Tạo payment link

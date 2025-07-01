@@ -150,6 +150,31 @@ class AppointmentController {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
+
+  static async delete(req, res) {
+    try {
+      const appointmentId = req.params.id; 
+      const deleted = await AppointmentService.remove(appointmentId); 
+
+      if (!deleted) {
+        return res
+          .status(404)
+          .json({
+            code: 404,
+            msg: "Không tìm thấy cuộc hẹn để xóa",
+            status: "error",
+          });
+      }
+      res.json({
+        code: 200,
+        msg: "Xóa cuộc hẹn thành công",
+        status: "success",
+      });
+    } catch (error) {
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
+    }
+  }
+
   static async updateStatus(req, res) {
     try {
       const { uuid } = req.params;

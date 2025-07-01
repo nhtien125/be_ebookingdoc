@@ -17,12 +17,24 @@ class HospitalController {
   }
 
   static async getById(req, res) {
+    const { uuid } = req.params;
+
+    if (!uuid) {
+      return res.status(400).json({
+        code: 400,
+        msg: "UUID is required",
+        status: "error",
+      });
+    }
+
     try {
-      const data = await HospitalService.getById(req.params.uuid);
+      const data = await HospitalService.getById(uuid);
       if (!data)
-        return res
-          .status(404)
-          .json({ code: 404, msg: "Không tìm thấy", status: "error" });
+        return res.status(404).json({
+          code: 404,
+          msg: "Không tìm thấy",
+          status: "error",
+        });
       res.json({ code: 200, msg: "Thành công", status: "success", data });
     } catch (error) {
       console.error("[HospitalController][getById] error:", error);

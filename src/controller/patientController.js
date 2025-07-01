@@ -36,14 +36,12 @@ class PatientController {
         relationship,
         address,
       });
-      res
-        .status(201)
-        .json({
-          code: 201,
-          msg: "Tạo thành công",
-          status: "success",
-          data: result,
-        });
+      res.status(201).json({
+        code: 201,
+        msg: "Tạo thành công",
+        status: "success",
+        data: result,
+      });
     } catch (error) {
       res.status(400).json({ code: 400, msg: error.message, status: "error" });
     }
@@ -63,13 +61,11 @@ class PatientController {
         address,
       });
       if (!updated)
-        return res
-          .status(404)
-          .json({
-            code: 404,
-            msg: "Không tìm thấy để cập nhật",
-            status: "error",
-          });
+        return res.status(404).json({
+          code: 404,
+          msg: "Không tìm thấy để cập nhật",
+          status: "error",
+        });
       res.json({ code: 200, msg: "Cập nhật thành công", status: "success" });
     } catch (error) {
       res.status(400).json({ code: 400, msg: error.message, status: "error" });
