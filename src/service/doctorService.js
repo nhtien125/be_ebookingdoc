@@ -21,41 +21,40 @@ class DoctorService {
   static async create({
     user_id,
     hospital_id,
-    doctor_type,
+    clinic_id,
     specialization_id,
     license,
     introduce,
     experience,
-    patient_count,
-    image,
+    status = 1
   }) {
     const uuid = uuidv4().replace(/-/g, "").slice(0, 32);
     await db.execute(
-      "INSERT INTO doctors (uuid, user_id, hospital_id, doctor_type, specialization_id, license, introduce, experience, patient_count, image, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())",
+      `INSERT INTO doctors 
+      (uuid, user_id, hospital_id, clinic_id, specialization_id, license, introduce, experience, status, created_at, updated_at) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
         uuid,
         user_id,
         hospital_id,
-        doctor_type,
+        clinic_id,
         specialization_id,
         license,
         introduce,
         experience,
-        patient_count,
-        image,
+        status,
       ]
     );
     return {
       uuid,
       user_id,
       hospital_id,
-      doctor_type,
+      clinic_id,
       specialization_id,
       license,
       introduce,
       experience,
-      patient_count,
-      image,
+      status,
     };
   }
 
@@ -64,27 +63,25 @@ class DoctorService {
     {
       user_id,
       hospital_id,
-      doctor_type,
+      clinic_id,
       specialization_id,
       license,
       introduce,
       experience,
-      patient_count,
-      image,
+      status
     }
   ) {
     const [result] = await db.execute(
-      "UPDATE doctors SET user_id=?, hospital_id=?, doctor_type=?, specialization_id=?, license=?, introduce=?, experience=?, patient_count=?, image=?, updated_at=NOW() WHERE uuid=?",
+      `UPDATE doctors SET user_id=?, hospital_id=?, clinic_id=?, specialization_id=?, license=?, introduce=?, experience=?, status=?, updated_at=NOW() WHERE uuid=?`,
       [
         user_id,
         hospital_id,
-        doctor_type,
+        clinic_id,
         specialization_id,
         license,
         introduce,
         experience,
-        patient_count,
-        image,
+        status,
         uuid,
       ]
     );
@@ -97,10 +94,27 @@ class DoctorService {
     ]);
     return result.affectedRows > 0;
   }
+
   static async getByUserId(userId) {
     const [rows] = await db.execute(
       "SELECT * FROM doctors WHERE user_id = ? ORDER BY created_at DESC",
       [userId]
+    );
+    return Doctor.fromRows(rows);
+  }
+
+  static async updateStatus(uuid, status) {
+    const [result] = await db.execute(
+      `UPDATE doctors SET status=?, updated_at=NOW() WHERE uuid=?`,
+      [status, uuid]
+    );
+    return result.affectedRows > 0;
+  }
+
+  static async getByStatus(status) {
+    const [rows] = await db.execute(
+      "SELECT * FROM doctors WHERE status = ? ORDER BY created_at DESC",
+      [status]
     );
     return Doctor.fromRows(rows);
   }

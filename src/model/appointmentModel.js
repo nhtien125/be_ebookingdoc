@@ -25,7 +25,7 @@ class Appointment {
     this.vaccination_center_id = vaccination_center_id || null;
     this.medical_service_id = medical_service_id || null;
     this.date = date || null;
-    this.status = status || null;
+    this.status = status ?? null;
     this.health_status = health_status || null;
     this.created_at = created_at || null;
     this.updated_at = updated_at || null;

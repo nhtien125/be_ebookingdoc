@@ -33,25 +33,23 @@ class User {
     this.updated_at = updated_at || new Date();
   }
 
-// Ví dụ trong model User
-static async findById(uuid) {
-  try {
-    console.log("[findById] uuid:", uuid, "| typeof:", typeof uuid);
-    // KHÔNG ĐỂ params = undefined hoặc null!
-    const [rows, fields] = await db.execute(
-      'SELECT * FROM `user` WHERE `uuid` = ?',
-      [uuid]
-    );
-    console.log("==> rows:", rows);
-    if (!rows || rows.length === 0) return null;
-    return new User(rows[0]);
-  } catch (err) {
-    console.error('Lỗi truy vấn findById:', err);
-    return null;
+  // Ví dụ trong model User
+  static async findById(uuid) {
+    try {
+      console.log("[findById] uuid:", uuid, "| typeof:", typeof uuid);
+      // KHÔNG ĐỂ params = undefined hoặc null!
+      const [rows, fields] = await db.execute(
+        "SELECT * FROM `user` WHERE `uuid` = ?",
+        [uuid]
+      );
+      console.log("==> rows:", rows);
+      if (!rows || rows.length === 0) return null;
+      return new User(rows[0]);
+    } catch (err) {
+      console.error("Lỗi truy vấn findById:", err);
+      return null;
+    }
   }
-}
-
-
 
   async save() {
     try {

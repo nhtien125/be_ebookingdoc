@@ -13,7 +13,7 @@ class MedicalServiceController {
 
   static async getById(req, res) {
     try {
-      const data = await MedicalServiceService.getById(req.params.id);
+      const data = await MedicalServiceService.getById(req.params.uuid);
       if (!data)
         return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
       res.json({ code: 200, msg: "Thành công", status: "success", data });

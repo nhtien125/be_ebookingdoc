@@ -33,8 +33,8 @@ class ReviewController {
         stars,
         comment,
       });
-      res.status(201).json({
-        code: 201,
+      res.status(200).json({
+        code: 200,
         msg: "Tạo thành công",
         status: "success",
         data: result,
@@ -87,6 +87,40 @@ class ReviewController {
       res.json({ code: 200, data: reviews });
     } catch (e) {
       res.status(500).json({ code: 500, message: e.message });
+    }
+  }
+
+  static async getByAppointmentId(req, res) {
+    try {
+      const appointment_id = req.params.appointmentId;
+      if (!appointment_id) {
+        return res
+          .status(400)
+          .json({
+            code: 400,
+            message: "Missing appointment_id",
+            status: "error",
+          });
+      }
+      const reviews = await ReviewService.getByAppointmentId(appointment_id);
+      if (!reviews || reviews.length === 0) {
+        // Không có review nào
+        return res.json({
+          code: 200,
+          msg: "Không có bình luận",
+          status: "success",
+          data: [],
+        });
+      }
+      // Có review
+      res.json({
+        code: 200,
+        msg: "Thành công",
+        status: "success",
+        data: reviews,
+      });
+    } catch (error) {
+      res.status(500).json({ code: 500, msg: error.message, status: "error" });
     }
   }
 }

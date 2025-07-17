@@ -30,8 +30,22 @@ class AppointmentService {
     date,
     status,
     health_status,
-    user_id, // Thêm user_id
+    user_id,
   }) {
+    // Kiểm tra user đã đặt lịch cùng khung giờ chưa
+    const [exist] = await db.execute(
+      `SELECT uuid FROM appointments WHERE schedule_id = ? AND user_id = ? LIMIT 1`,
+      [schedule_id, user_id]
+    );
+    if (exist.length > 0) {
+      const error = new Error(
+        "Bạn đã đặt lịch ở khung giờ này. Vui lòng chọn khung giờ khác!"
+      );
+      error.statusCode = 409;
+      error.status = "duplicate_schedule";
+      throw error;
+    }
+
     const uuid = uuidv4().replace(/-/g, "").slice(0, 32);
     await db.execute(
       `INSERT INTO appointments 
@@ -49,7 +63,7 @@ class AppointmentService {
         date,
         status,
         health_status,
-        user_id, // Gửi user_id vào database
+        user_id,
       ]
     );
     return {
@@ -64,7 +78,7 @@ class AppointmentService {
       date,
       status,
       health_status,
-      user_id, // Trả về user_id
+      user_id,
     };
   }
 
@@ -122,13 +136,13 @@ class AppointmentService {
     return Appointment.fromRows(rows);
   }
 
-   static async getByDoctorId(doctorId) {
-      const [rows] = await db.execute(
-        "SELECT * FROM appointments WHERE doctor_id = ? ORDER BY created_at DESC",
-        [doctorId]
-      );
-      return Appointment.fromRows(rows);
-    }
+  static async getByDoctorId(doctorId) {
+    const [rows] = await db.execute(
+      "SELECT * FROM appointments WHERE doctor_id = ? ORDER BY created_at DESC",
+      [doctorId]
+    );
+    return Appointment.fromRows(rows);
+  }
   static async updateStatus(uuid, status) {
     const [result] = await db.execute(
       "UPDATE appointments SET status = ?, updated_at = NOW() WHERE uuid = ?",

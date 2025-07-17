@@ -14,7 +14,9 @@ class ArticleController {
     try {
       const data = await ArticleService.getById(req.params.id);
       if (!data)
-        return res.status(404).json({ code: 404, msg: "Không tìm thấy", status: "error" });
+        return res
+          .status(404)
+          .json({ code: 404, msg: "Không tìm thấy", status: "error" });
       res.json({ code: 200, msg: "Thành công", status: "success", data });
     } catch (error) {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });
@@ -30,11 +32,31 @@ class ArticleController {
         image: imageValue,
         author,
       });
-      res.status(201).json({ code: 201, msg: "Tạo thành công", status: "success", data: result });
+      res
+        .status(201)
+        .json({
+          code: 201,
+          msg: "Tạo thành công",
+          status: "success",
+          data: result,
+        });
     } catch (error) {
-      res.status(error.statusCode || 400).json({ code: error.statusCode || 400, msg: error.message, status: "error" });
+      console.error("Article create error:", error);
+      // Luôn trả về JSON và status hợp lý
+      res
+        .status(
+          error.statusCode && typeof error.statusCode === "number"
+            ? error.statusCode
+            : 500
+        )
+        .json({
+          code: error.statusCode || 500,
+          msg: error.message || "Lỗi server",
+          status: "error",
+        });
     }
   }
+
   static async update(req, res) {
     try {
       const { title, content, image, author } = req.body;
@@ -46,17 +68,31 @@ class ArticleController {
         author,
       });
       if (!updated)
-        return res.status(404).json({ code: 404, msg: "Không tìm thấy để cập nhật", status: "error" });
+        return res
+          .status(404)
+          .json({
+            code: 404,
+            msg: "Không tìm thấy để cập nhật",
+            status: "error",
+          });
       res.json({ code: 200, msg: "Cập nhật thành công", status: "success" });
     } catch (error) {
-      res.status(error.statusCode || 400).json({ code: error.statusCode || 400, msg: error.message, status: "error" });
+      res
+        .status(error.statusCode || 400)
+        .json({
+          code: error.statusCode || 400,
+          msg: error.message,
+          status: "error",
+        });
     }
   }
   static async delete(req, res) {
     try {
       const deleted = await ArticleService.remove(req.params.id);
       if (!deleted)
-        return res.status(404).json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
+        return res
+          .status(404)
+          .json({ code: 404, msg: "Không tìm thấy để xóa", status: "error" });
       res.json({ code: 200, msg: "Xóa thành công", status: "success" });
     } catch (error) {
       res.status(500).json({ code: 500, msg: error.message, status: "error" });

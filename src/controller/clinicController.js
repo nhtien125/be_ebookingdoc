@@ -53,7 +53,7 @@ class ClinicController {
 
       const imageValue = await getImageValue(req.file, image, "clinics");
 
-      const updated = await ClinicService.update(req.params.uuid, {
+      const updated = await ClinicService.update(req.params.id, {
         name,
         address,
         phone,

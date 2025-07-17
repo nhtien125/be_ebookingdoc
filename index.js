@@ -1,15 +1,15 @@
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs").promises; // Use promises for async file operations
+const fs = require("fs").promises;
 const path = require("path");
 require("dotenv").config();
 const main = require("./route/router");
 const logger = require("morgan");
 const cookieParser = require('cookie-parser');
 const updateUnpaidPayments = require('./src/service/paymentService').cancelUnpaidPayosPayments;
+const AppointmentReminderCron = require('./src/cron/appointmentReminder');
 const app = express();
 const cron = require("node-cron");
-
 
 app.use(express.json());
 app.use(cors());
@@ -26,9 +26,7 @@ const logFile = path.join(logDir, "log.txt");
 
 async function ensureLogFile() {
   try {
-    // Create log directory if it doesn't exist
     await fs.mkdir(logDir, { recursive: true });
-    // Check if log file exists, create it if not
     try {
       await fs.access(logFile);
     } catch (error) {
@@ -45,6 +43,7 @@ async function ensureLogFile() {
   }
 }
 
+// Existing cron job for payment
 cron.schedule('* * * * *', async () => {
   console.log("Checking for unpaid payments...");
   await updateUnpaidPayments();
@@ -83,6 +82,9 @@ stack: ${err.stack}\n`
     const port = process.env.PORT || 3000;
     app.listen(port, () => {
       console.log(`Server is running at http://localhost:${port}/`);
+      
+      // Start appointment reminder cron job
+      AppointmentReminderCron.start();
     });
   })
   .catch((err) => {

@@ -1,4 +1,3 @@
-const db = require("../helper/database");
 const UserService = require("../service/authservice");
 
 class UserController {
@@ -13,19 +12,16 @@ class UserController {
       });
     }
   }
+
   static async register(req, res) {
     try {
-      console.log("Full request object:", req.body);
-
-      // Không truyền req.file, chỉ lấy body
       const result = await UserService.register(req.body);
-      return res.status(200).json(result); // Trả về 200 khi thành công
+      return res.status(200).json(result);
     } catch (error) {
-      console.error("Error in UserController.register:", error);
       return res.status(200).json({
         code: error.statusCode || 500,
         message: error.message,
-      }); // Trả về 200 với thông tin lỗi
+      });
     }
   }
 
@@ -39,7 +35,6 @@ class UserController {
         message: result.message,
       });
     } catch (error) {
-      console.error("Error in UserController.getDetailInfo:", error);
       return res.status(500).json({
         code: 500,
         data: null,
@@ -48,27 +43,9 @@ class UserController {
     }
   }
 
-  static async getDetailInfo(req, res, next) {
+  static async updateProfile(req, res) {
     try {
-      const result = await UserService.getDetailInfo(req.payload.id);
-      res.json(result);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  static async refreshToken(req, res, next) {
-    try {
-      const result = await UserService.refreshToken(req.body);
-      res.json(result);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  static async updateProfile(req, res, next) {
-    try {
-      const uuid = req.params.uuid; // Lấy uuid từ param URL
+      const uuid = req.params.uuid;
       if (!uuid) {
         return res.status(400).json({
           code: 400,
@@ -84,7 +61,6 @@ class UserController {
         data: result.data,
       });
     } catch (error) {
-      console.error("Lỗi ở controller updateProfile:", error);
       res.status(error.statusCode || 500).json({
         code: error.statusCode || 500,
         message: error.message || "Đã có lỗi xảy ra!",
@@ -92,6 +68,7 @@ class UserController {
       });
     }
   }
+
   static async getAll(req, res) {
     try {
       const premission_id = req.query.premission_id
@@ -113,7 +90,6 @@ class UserController {
         message: result.message,
       });
     } catch (error) {
-      console.error("Error in UserController.getAll:", error);
       return res.status(error.statusCode || 500).json({
         code: error.statusCode || 500,
         message: error.message || "Lỗi server khi lấy danh sách người dùng",
@@ -127,31 +103,12 @@ class UserController {
       const result = await UserService.getById(id);
       return res.status(result.code).json(result);
     } catch (error) {
-      console.error("Error in UserController.getById:", error);
       return res.status(error.statusCode || 500).json({
         code: error.statusCode || 500,
         message: error.message || "Lỗi server khi lấy thông tin user",
       });
     }
   }
-
-  // static async changePassword(req, res, next) {
-  //   try {
-  //     const result = await UserService.changePassword(req.payload.id, req.body);
-  //     res.json(result);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
-
-  // static async changeStatus(req, res, next) {
-  //   try {
-  //     const result = await UserService.changeStatus(req.payload.id, req.body);
-  //     res.json(result);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
 }
 
 module.exports = UserController;

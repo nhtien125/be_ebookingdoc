@@ -20,6 +20,9 @@ const ArticleController = require("../src/controller/ArticleController");
 const CarouselItemController = require("../src/controller/CarouselItemController");
 const vaccinationCenterController = require("../src/controller/vaccinationCenterController");
 const PaymentController = require("../src/controller/paymentController");
+const notificationController = require("../src/controller/NotificationController");
+const DoctorRevenueController = require('../src/controller/DoctorRevenueController');
+
 const payment = require("./payment");
 const asyncHandler = (fn) => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
@@ -33,21 +36,10 @@ router.get("/", function (req, res, next) {
 const auth = "auth";
 router.post(`/${auth}/login`, asyncHandler(UserController.login));
 router.post(`/${auth}/register`, asyncHandler(UserController.register));
-router.post(
-  `/${auth}/me`,
-  checkLogin,
-  asyncHandler(UserController.getDetailInfo)
-);
-router.post(
-  `/${auth}/refresh-token`,
-  asyncHandler(UserController.refreshToken)
-);
+router.post(`/${auth}/me`, asyncHandler(UserController.getDetailInfo));
 router.put(`/${auth}/update/:uuid`, asyncHandler(UserController.updateProfile));
-router.get(`/${auth}/getById/:id`, UserController.getById);
-
-// router.put(`/${auth}/change-password`, checkLogin, asyncHandler(UserController.changePassword));
-// router.put(`/${auth}/change-status`, checkLogin, asyncHandler(UserController.changeStatus));
-router.get(`/${auth}/getAll`, UserController.getAll);
+router.get(`/${auth}/getById/:id`, asyncHandler(UserController.getById));
+router.get(`/${auth}/getAll`, asyncHandler(UserController.getAll));
 
 // Doctor
 const doctor = "doctor";
@@ -57,6 +49,9 @@ router.post(`/${doctor}/add`, doctorController.create);
 router.put(`/${doctor}/update/:id`, doctorController.update);
 router.delete(`/${doctor}/delete/:id`, doctorController.delete);
 router.get(`/${doctor}/getByUserId/:userId`, doctorController.getByUserId);
+router.put(`/${doctor}/updateStatus/:uuid`, doctorController.updateStatus);
+router.get(`/${doctor}/getStatus/:status`, doctorController.getByStatus);
+
 // Payment
 const pay = "payment";
 router.get(`/${pay}/getAll`, PaymentController.getAll);
@@ -66,6 +61,10 @@ router.put(`/${pay}/update/:id`, PaymentController.update);
 router.delete(`/${pay}/delete/:id`, PaymentController.delete);
 router.post(`/${pay}/update-status/:uuid`, PaymentController.updateStatus);
 router.get(`/${pay}/getByUserId/:userId`, PaymentController.getByUserId);
+router.get(
+  `/${pay}/getByAppointmentId/:appointmentId`,
+  PaymentController.getByAppointmentId
+);
 
 // Specialization
 const specialization = "specialization";
@@ -155,6 +154,10 @@ router.get(
   `/${review}/getByDoctorId/:doctorId`,
   reviewController.getByDoctorId
 );
+router.get(
+  `/${review}/getByAppointmentId/:appointmentId`,
+  reviewController.getByAppointmentId
+)
 
 // Schedule
 const schedule = "schedule";
@@ -250,5 +253,29 @@ router.delete(`/${carousel_item}/delete/:id`, CarouselItemController.delete);
 
 //
 router.use("/payment", payment);
+
+const notifications = "notifications";
+
+router.get(`/${notifications}`, (req, res) => {
+  notificationController.getNotifications(req, res);
+});
+router.post(`/${notifications}`, (req, res) => {
+  notificationController.createNotification(req, res);
+});
+router.post(`/${notifications}/markAsRead/`, (req, res) => {
+  notificationController.markAsRead(req, res);
+});
+router.post(`/${notifications}/markAllAsRead/`, (req, res) => {
+  notificationController.markAllAsRead(req, res);
+});
+router.get(`/${notifications}/unreadCount/`, (req, res) => {
+  notificationController.getUnreadCount(req, res);
+});
+router.delete(`/${notifications}/delete/:notificationId`, (req, res) => {
+  notificationController.deleteNotification(req, res);
+});
+
+
+router.get('/:doctorId/revenue', DoctorRevenueController.getRevenueByDoctorId);
 
 module.exports = router;
