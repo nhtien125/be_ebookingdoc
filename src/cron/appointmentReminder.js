@@ -9,7 +9,16 @@ class AppointmentReminderCron {
       console.log("Checking for upcoming appointments...");
 
       try {
-        const upcomingAppointments = await this.getUpcomingAppointments();
+        // Tính toán startDate và endDate cho 24 giờ tới
+        const now = new Date();
+        const startDate = new Date(now); // Thời gian hiện tại
+        const endDate = new Date(now.setHours(now.getHours() + 24)); // 24 giờ sau
+
+        // Chuyển đổi sang định dạng phù hợp với MySQL (YYYY-MM-DD HH:mm:ss)
+        const formattedStartDate = startDate.toISOString().slice(0, 19).replace('T', ' ');
+        const formattedEndDate = endDate.toISOString().slice(0, 19).replace('T', ' ');
+
+        const upcomingAppointments = await this.getUpcomingAppointments(formattedStartDate, formattedEndDate);
 
         for (const appointment of upcomingAppointments) {
           if (appointment.user_id) {

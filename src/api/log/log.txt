@@ -474,3 +474,59 @@ stack: TypeError: fn is not a function
     at param (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:376:14)
     at Function.process_params (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:421:3)
     at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:280:10)
+============================================================================
+2025-07-18T12:58:15.326Z
+message: fn is not a function
+stack: TypeError: fn is not a function
+    at D:\ProjectTien\be_ebookingdoc\route\router.js:28:19
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:175:3)
+    at router (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:47:12)
+============================================================================
+2025-07-18T12:58:16.341Z
+message: fn is not a function
+stack: TypeError: fn is not a function
+    at D:\ProjectTien\be_ebookingdoc\route\router.js:28:19
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at param (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:365:14)
+    at param (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:376:14)
+    at Function.process_params (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:421:3)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:280:10)
+============================================================================
+2025-07-18T13:08:26.002Z
+message: fn is not a function
+stack: TypeError: fn is not a function
+    at D:\ProjectTien\be_ebookingdoc\route\router.js:28:19
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:175:3)
+    at router (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:47:12)
+============================================================================
+2025-07-18T13:08:26.006Z
+message: fn is not a function
+stack: TypeError: fn is not a function
+    at D:\ProjectTien\be_ebookingdoc\route\router.js:28:19
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\layer.js:95:5)
+    at D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:284:15
+    at param (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:365:14)
+    at param (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:376:14)
+    at Function.process_params (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:421:3)
+    at next (D:\ProjectTien\be_ebookingdoc\node_modules\express\lib\router\index.js:280:10)

@@ -4,21 +4,44 @@ const { v4: uuidv4 } = require("uuid");
 const db = require("../helper/database");
 const { socketService } = require("../../index");
 
+function getTypeByStatus(status) {
+  switch (Number(status)) {
+    case 0:
+      return "appointment_completed";
+    case 1:
+      return "appointment_created";
+    case 2:
+      return "appointment_confirmed";
+    case 3:
+      return "appointment_rejected";
+    case 4:
+      return "appointment_cancelled";
+    default:
+      return "appointment_updated";
+  }
+}
+
 class NotificationService {
   static async getNotifications(userId, page = 1, limit = 20) {
     try {
       if (!userId) throw new Error("Thiếu userId");
-      const notifications = await Notification.findByUserId(userId, page, limit);
+      const notifications = await Notification.findByUserId(
+        userId,
+        page,
+        limit
+      );
       const total = await Notification.countByUserId(userId);
       const totalPages = Math.ceil(total / limit);
 
       return {
-        notifications,
-        pagination: {
-          current_page: parseInt(page),
-          total_pages: totalPages,
-          total_items: total,
-          has_more: page < totalPages,
+        data: {
+          notifications,
+          pagination: {
+            current_page: parseInt(page),
+            total_pages: totalPages,
+            total_items: total,
+            has_more: page < totalPages,
+          },
         },
       };
     } catch (error) {
@@ -32,12 +55,13 @@ class NotificationService {
       if (!data.user_id || !data.title || !data.type) {
         throw new Error("Thiếu user_id, title hoặc type");
       }
-
-      // Validate user_id existence
-      const [user] = await db.execute("SELECT uuid FROM user WHERE uuid = ?", [data.user_id]);
-      if (user.length === 0) {
-        throw new Error(`user_id ${data.user_id} không tồn tại trong bảng user`);
-      }
+      const [user] = await db.execute("SELECT uuid FROM user WHERE uuid = ?", [
+        data.user_id,
+      ]);
+      if (user.length === 0)
+        throw new Error(
+          `user_id ${data.user_id} không tồn tại trong bảng user`
+        );
 
       const uuid = uuidv4().replace(/-/g, "");
       const created_at = new Date();
@@ -57,11 +81,13 @@ class NotificationService {
 
       const notification = await Notification.create(notificationData);
 
-      // Send notification via Socket.IO
-      if (socketService && typeof socketService.sendNotificationToUser === "function") {
+      if (
+        socketService &&
+        typeof socketService.sendNotificationToUser === "function"
+      ) {
         socketService.sendNotificationToUser(data.user_id, notification);
       } else {
-        console.warn("socketService chưa được khởi tạo, không gửi thông báo qua Socket.IO");
+        console.warn("socketService chưa được khởi tạo");
       }
 
       return notification;
@@ -90,7 +116,9 @@ class NotificationService {
       return affectedRows;
     } catch (error) {
       console.error("Lỗi đánh dấu tất cả đã đọc:", error);
-      throw new Error(`Không thể đánh dấu tất cả thông báo đã đọc: ${error.message}`);
+      throw new Error(
+        `Không thể đánh dấu tất cả thông báo đã đọc: ${error.message}`
+      );
     }
   }
 
@@ -98,7 +126,7 @@ class NotificationService {
     try {
       if (!userId) throw new Error("Thiếu userId");
       const count = await Notification.countUnreadByUserId(userId);
-      return count;
+      return { data: { count } };
     } catch (error) {
       console.error("Lỗi lấy số thông báo chưa đọc:", error);
       throw new Error(`Không thể lấy số thông báo chưa đọc: ${error.message}`);
@@ -117,64 +145,98 @@ class NotificationService {
     }
   }
 
-  static async createAppointmentNotification(appointmentId, userId, doctorId, type) {
+  static async createAppointmentNotification(appointmentId) {
     try {
-      if (!appointmentId || !userId || !type) {
-        throw new Error("Thiếu appointmentId, userId hoặc type");
-      }
+      if (!appointmentId) throw new Error("Thiếu appointmentId");
 
-      // Validate userId
-      const [user] = await db.execute("SELECT uuid FROM user WHERE uuid = ?", [userId]);
-      if (user.length === 0) {
-        throw new Error(`userId ${userId} không tồn tại trong bảng user`);
-      }
-
-      // Validate appointment
       const [appointmentRows] = await db.execute(
-        `SELECT a.date, a.status, s.start_time, s.work_date, u.name AS patient_name, d.name AS doctor_name
+        `SELECT a.*, s.start_time, s.work_date
          FROM appointments a
          LEFT JOIN schedules s ON a.schedule_id = s.uuid
-         LEFT JOIN user u ON a.user_id = u.uuid
-         LEFT JOIN doctors d ON a.doctor_id = d.id
          WHERE a.uuid = ?`,
         [appointmentId]
       );
-
-      if (appointmentRows.length === 0) {
+      if (!appointmentRows || appointmentRows.length === 0) {
         throw new Error("Không tìm thấy cuộc hẹn");
       }
 
       const appointment = appointmentRows[0];
+      const patientUserId = appointment.user_id;
+      const doctorUuid = appointment.doctor_id;
+
+      let doctorUserId = null;
+      if (doctorUuid) {
+        const [doctorRows] = await db.execute(
+          "SELECT user_id FROM doctors WHERE uuid = ?",
+          [doctorUuid]
+        );
+        if (doctorRows.length > 0 && doctorRows[0].user_id) {
+          doctorUserId = doctorRows[0].user_id;
+        }
+      }
+
+      let doctorName = "bác sĩ";
+      let patientName = "bạn";
+      if (doctorUserId) {
+        const [docRows] = await db.execute(
+          "SELECT name FROM user WHERE uuid = ?",
+          [doctorUserId]
+        );
+        if (docRows.length > 0) doctorName = docRows[0].name || "bác sĩ";
+      }
+      if (patientUserId) {
+        const [patRows] = await db.execute(
+          "SELECT name FROM user WHERE uuid = ?",
+          [patientUserId]
+        );
+        if (patRows.length > 0) patientName = patRows[0].name || "bạn";
+      }
+
       const appointmentTime = appointment.start_time
         ? `${appointment.work_date} ${appointment.start_time}`
-        : appointment.date;
+        : appointment.date || "không xác định";
+
+      const type = getTypeByStatus(appointment.status);
 
       const titles = {
         appointment_created: "Lịch hẹn mới",
         appointment_confirmed: "Lịch hẹn đã xác nhận",
         appointment_cancelled: "Lịch hẹn đã hủy",
         appointment_rejected: "Lịch hẹn bị từ chối",
-        appointment_reminder: "Nhắc nhở lịch hẹn",
+        appointment_completed: "Lịch hẹn đã khám",
+        appointment_updated: "Cập nhật lịch hẹn",
       };
 
       const contents = {
-        appointment_created: `Bạn có lịch hẹn mới với ${appointment.doctor_name || "bác sĩ"} vào ${appointmentTime}`,
-        appointment_confirmed: `Lịch hẹn với ${appointment.doctor_name || "bác sĩ"} vào ${appointmentTime} đã được xác nhận`,
-        appointment_cancelled: `Lịch hẹn với ${appointment.doctor_name || "bác sĩ"} vào ${appointmentTime} đã bị hủy`,
-        appointment_rejected: `Lịch hẹn với ${appointment.doctor_name || "bác sĩ"} vào ${appointmentTime} đã bị từ chối`,
-        appointment_reminder: `Bạn có lịch hẹn với ${appointment.doctor_name || "bác sĩ"} vào ${appointmentTime} trong 30 phút tới`,
+        appointment_created: `Bạn (${patientName}) vừa đặt lịch hẹn mới với ${doctorName} vào ${appointmentTime}`,
+        appointment_confirmed: `Lịch hẹn với ${doctorName} vào ${appointmentTime} đã được xác nhận`,
+        appointment_cancelled: `Lịch hẹn với ${doctorName} vào ${appointmentTime} đã bị hủy`,
+        appointment_rejected: `Lịch hẹn với ${doctorName} vào ${appointmentTime} đã bị từ chối`,
+        appointment_completed: `Lịch hẹn với ${doctorName} vào ${appointmentTime} đã hoàn thành (đã khám)`,
+        appointment_updated: `Lịch hẹn với ${doctorName} vào ${appointmentTime} đã được cập nhật`,
       };
 
-      const notificationData = {
-        title: titles[type] || "Thông báo lịch hẹn",
-        content: contents[type] || "Có cập nhật mới về lịch hẹn",
-        user_id: userId,
-        doctor_id: doctorId || null,
-        appointment_id: appointmentId,
-        type,
-      };
+      if (patientUserId) {
+        await this.createNotification({
+          title: titles[type] || "Thông báo lịch hẹn",
+          content: contents[type] || "Có cập nhật mới về lịch hẹn",
+          user_id: patientUserId,
+          appointment_id: appointmentId,
+          type,
+        });
+      }
 
-      return await this.createNotification(notificationData);
+      if (doctorUserId) {
+        await this.createNotification({
+          title: titles[type] || "Thông báo lịch hẹn",
+          content: contents[type] || "Có cập nhật mới về lịch hẹn",
+          user_id: doctorUserId,
+          appointment_id: appointmentId,
+          type,
+        });
+      }
+
+      return true;
     } catch (error) {
       console.error("Lỗi tạo thông báo cuộc hẹn:", error);
       throw new Error(`Không thể tạo thông báo cuộc hẹn: ${error.message}`);
@@ -186,17 +248,19 @@ class NotificationService {
       if (!paymentId || !userId || !type) {
         throw new Error("Thiếu paymentId, userId hoặc type");
       }
-
       const [paymentRows] = await db.execute(
-        `SELECT amount, payment_time FROM payments WHERE uuid = ?`,
+        `SELECT amount, payment_time, payment_method FROM payments WHERE uuid = ?`,
         [paymentId]
       );
-
-      if (paymentRows.length === 0) {
+      if (!paymentRows || paymentRows.length === 0) {
         throw new Error("Không tìm thấy thanh toán");
       }
-
       const payment = paymentRows[0];
+
+      // Skip creating "payment_pending" notification for cash payments
+      if (type === "payment_pending" && payment.payment_method === "cash") {
+        return null; // No notification created for cash payments in pending state
+      }
 
       const titles = {
         payment_success: "Thanh toán thành công",

@@ -254,13 +254,12 @@ router.delete(`/${carousel_item}/delete/:id`, CarouselItemController.delete);
 //
 router.use("/payment", payment);
 
-const notifications = "notifications";
-router.get(`/${notifications}`, asyncHandler(notificationController.getNotifications));
-router.post(`/${notifications}`, asyncHandler(notificationController.createNotification));
-router.put(`/${notifications}/markAsRead/:notificationId`, asyncHandler(notificationController.markAsRead));
-router.put(`/${notifications}/markAllAsRead/:userId`, asyncHandler(notificationController.markAllAsRead));
-router.get(`/${notifications}/unreadCount/:userId`, asyncHandler(notificationController.getUnreadCount));
-router.delete(`/${notifications}/delete/:notificationId`, asyncHandler(notificationController.deleteNotification));
+router.get('/notifications', asyncHandler(notificationController.getNotifications));
+router.post('/notifications', asyncHandler(notificationController.createNotification));
+router.put('/notifications/markAsRead/:notificationId', asyncHandler(notificationController.markAsRead));
+router.put('/notifications/markAllAsRead/:userId', asyncHandler(notificationController.markAllAsRead));
+router.get('/notifications/unreadCount/:userId', asyncHandler(notificationController.getUnreadCount));
+router.delete('/notifications/delete/:notificationId', asyncHandler(notificationController.deleteNotification))
 
 router.get('/:doctorId/revenue', DoctorRevenueController.getRevenueByDoctorId);
 

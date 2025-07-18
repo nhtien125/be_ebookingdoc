@@ -79,7 +79,7 @@ class AppointmentController {
       // Validate doctor_id and get corresponding user_id if available
       let doctorUserId = null;
       if (doctor_id) {
-        const [doctor] = await db.execute("SELECT id, user_id FROM doctors WHERE id = ?", [doctor_id]);
+        const [doctor] = await db.execute("SELECT uuid, user_id FROM doctors WHERE uuid = ?", [doctor_id]);
         if (doctor.length === 0) {
           return res.status(400).json({
             code: 400,
@@ -196,7 +196,7 @@ class AppointmentController {
       // Validate doctor_id and get corresponding user_id if available
       let doctorUserId = null;
       if (doctor_id) {
-        const [doctor] = await db.execute("SELECT id, user_id FROM doctors WHERE id = ?", [doctor_id]);
+        const [doctor] = await db.execute("SELECT uuid, user_id FROM doctors WHERE uuid = ?", [doctor_id]);
         if (doctor.length === 0) {
           return res.status(400).json({
             code: 400,
