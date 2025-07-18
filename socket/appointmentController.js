@@ -2,7 +2,6 @@
 const AppointmentService = require("../service/appointmentService");
 const NotificationService = require("../service/NotificationService");
 const db = require("../helper/database");
-
 class AppointmentController {
   static async getAll(req, res) {
     try {
@@ -66,38 +65,7 @@ class AppointmentController {
         });
       }
 
-      // Validate user_id existence
-      const [user] = await db.execute("SELECT uuid FROM user WHERE uuid = ?", [user_id]);
-      if (user.length === 0) {
-        return res.status(400).json({
-          code: 400,
-          msg: "user_id không tồn tại trong bảng user",
-          status: "error",
-        });
-      }
-
-      // Validate doctor_id and get corresponding user_id if available
-      let doctorUserId = null;
-      if (doctor_id) {
-        const [doctor] = await db.execute("SELECT id, user_id FROM doctors WHERE id = ?", [doctor_id]);
-        if (doctor.length === 0) {
-          return res.status(400).json({
-            code: 400,
-            msg: `doctor_id ${doctor_id} không tồn tại trong bảng doctors`,
-            status: "error",
-          });
-        }
-        doctorUserId = doctor[0].user_id;
-        if (doctorUserId) {
-          const [doctorUser] = await db.execute("SELECT uuid FROM user WHERE uuid = ?", [doctorUserId]);
-          if (doctorUser.length === 0) {
-            console.warn(`user_id ${doctorUserId} của bác sĩ ${doctor_id} không tồn tại trong bảng user`);
-            doctorUserId = null;
-          }
-        }
-      }
-
-      // Create appointment
+      // Gọi service tạo appointment
       const result = await AppointmentService.create({
         doctor_id,
         patient_id,
@@ -114,7 +82,7 @@ class AppointmentController {
 
       console.log("Cuộc hẹn được tạo:", result);
 
-      // Create notification for patient
+      // Tạo thông báo cho user/patient
       try {
         await NotificationService.createAppointmentNotification(
           result.uuid,
@@ -122,26 +90,33 @@ class AppointmentController {
           doctor_id,
           "appointment_created"
         );
-        console.log("Thông báo appointment_created gửi thành công cho user_id:", user_id);
+        console.log(
+          "Thông báo appointment_created gửi thành công cho user_id:",
+          user_id
+        );
       } catch (notificationError) {
         console.error("Lỗi tạo thông báo cho user:", notificationError.message);
       }
 
-      // Create notification for doctor (if they have a user_id)
-      if (doctorUserId) {
+      // Tạo thông báo cho doctor (nếu có doctor_id)
+      if (doctor_id) {
         try {
           await NotificationService.createAppointmentNotification(
             result.uuid,
-            doctorUserId,
             doctor_id,
+            null,
             "appointment_created"
           );
-          console.log("Thông báo appointment_created gửi thành công cho doctor_user_id:", doctorUserId);
+          console.log(
+            "Thông báo appointment_created gửi thành công cho doctor_id:",
+            doctor_id
+          );
         } catch (notificationError) {
-          console.error("Lỗi tạo thông báo cho doctor:", notificationError.message);
+          console.error(
+            "Lỗi tạo thông báo cho doctor:",
+            notificationError.message
+          );
         }
-      } else if (doctor_id) {
-        console.log(`Không gửi thông báo cho doctor_id ${doctor_id} vì không có user_id tương ứng`);
       }
 
       res.status(201).json({
@@ -181,39 +156,6 @@ class AppointmentController {
       const appointmentId = req.params.id;
       const oldAppointment = await AppointmentService.getById(appointmentId);
 
-      // Validate user_id if provided
-      if (user_id) {
-        const [user] = await db.execute("SELECT uuid FROM user WHERE uuid = ?", [user_id]);
-        if (user.length === 0) {
-          return res.status(400).json({
-            code: 400,
-            msg: "user_id không tồn tại trong bảng user",
-            status: "error",
-          });
-        }
-      }
-
-      // Validate doctor_id and get corresponding user_id if available
-      let doctorUserId = null;
-      if (doctor_id) {
-        const [doctor] = await db.execute("SELECT id, user_id FROM doctors WHERE id = ?", [doctor_id]);
-        if (doctor.length === 0) {
-          return res.status(400).json({
-            code: 400,
-            msg: `doctor_id ${doctor_id} không tồn tại trong bảng doctors`,
-            status: "error",
-          });
-        }
-        doctorUserId = doctor[0].user_id;
-        if (doctorUserId) {
-          const [doctorUser] = await db.execute("SELECT uuid FROM user WHERE uuid = ?", [doctorUserId]);
-          if (doctorUser.length === 0) {
-            console.warn(`user_id ${doctorUserId} của bác sĩ ${doctor_id} không tồn tại trong bảng user`);
-            doctorUserId = null;
-          }
-        }
-      }
-
       const updated = await AppointmentService.update(appointmentId, {
         doctor_id,
         patient_id,
@@ -236,7 +178,7 @@ class AppointmentController {
         });
       }
 
-      // Create notification when status changes
+      // Tạo thông báo khi có thay đổi về status
       try {
         if (oldAppointment && oldAppointment.status !== status) {
           let notificationType = null;
@@ -253,14 +195,14 @@ class AppointmentController {
               await NotificationService.createAppointmentNotification(
                 appointmentId,
                 user_id,
-                doctor_id,
+                null,
                 notificationType
               );
             }
-            if (doctorUserId) {
+            if (doctor_id) {
               await NotificationService.createAppointmentNotification(
                 appointmentId,
-                doctorUserId,
+                null,
                 doctor_id,
                 notificationType
               );
@@ -268,7 +210,10 @@ class AppointmentController {
           }
         }
       } catch (notificationError) {
-        console.error("Error creating update notifications:", notificationError);
+        console.error(
+          "Error creating update notifications:",
+          notificationError
+        );
       }
 
       res.json({ code: 200, msg: "Cập nhật thành công", status: "success" });
@@ -292,41 +237,31 @@ class AppointmentController {
         });
       }
 
-      // Create notification for deletion
+      // Tạo thông báo hủy appointment
       try {
-        let doctorUserId = null;
-        if (appointment.doctor_id) {
-          const [doctor] = await db.execute("SELECT user_id FROM doctors WHERE id = ?", [appointment.doctor_id]);
-          if (doctor.length > 0) {
-            doctorUserId = doctor[0].user_id;
-            if (doctorUserId) {
-              const [doctorUser] = await db.execute("SELECT uuid FROM user WHERE uuid = ?", [doctorUserId]);
-              if (doctorUser.length === 0) {
-                console.warn(`user_id ${doctorUserId} của bác sĩ ${appointment.doctor_id} không tồn tại trong bảng user`);
-                doctorUserId = null;
-              }
-            }
+        if (appointment) {
+          if (appointment.user_id) {
+            await NotificationService.createAppointmentNotification(
+              appointmentId,
+              appointment.user_id,
+              null,
+              "appointment_cancelled"
+            );
+          }
+          if (appointment.doctor_id) {
+            await NotificationService.createAppointmentNotification(
+              appointmentId,
+              null,
+              appointment.doctor_id,
+              "appointment_cancelled"
+            );
           }
         }
-
-        if (appointment.user_id) {
-          await NotificationService.createAppointmentNotification(
-            appointmentId,
-            appointment.user_id,
-            appointment.doctor_id,
-            "appointment_cancelled"
-          );
-        }
-        if (doctorUserId) {
-          await NotificationService.createAppointmentNotification(
-            appointmentId,
-            doctorUserId,
-            appointment.doctor_id,
-            "appointment_cancelled"
-          );
-        }
       } catch (notificationError) {
-        console.error("Error creating deletion notifications:", notificationError);
+        console.error(
+          "Error creating deletion notifications:",
+          notificationError
+        );
       }
 
       res.json({
@@ -389,23 +324,8 @@ class AppointmentController {
         });
       }
 
-      // Create notification when status changes
+      // Tạo thông báo khi thay đổi status
       try {
-        let doctorUserId = null;
-        if (oldAppointment.doctor_id) {
-          const [doctor] = await db.execute("SELECT user_id FROM doctors WHERE id = ?", [oldAppointment.doctor_id]);
-          if (doctor.length > 0) {
-            doctorUserId = doctor[0].user_id;
-            if (doctorUserId) {
-              const [doctorUser] = await db.execute("SELECT uuid FROM user WHERE uuid = ?", [doctorUserId]);
-              if (doctorUser.length === 0) {
-                console.warn(`user_id ${doctorUserId} của bác sĩ ${oldAppointment.doctor_id} không tồn tại trong bảng user`);
-                doctorUserId = null;
-              }
-            }
-          }
-        }
-
         if (oldAppointment && oldAppointment.status !== status) {
           let notificationType = null;
           if (status === "confirmed") {
@@ -421,14 +341,14 @@ class AppointmentController {
               await NotificationService.createAppointmentNotification(
                 uuid,
                 oldAppointment.user_id,
-                oldAppointment.doctor_id,
+                null,
                 notificationType
               );
             }
-            if (doctorUserId) {
+            if (oldAppointment.doctor_id) {
               await NotificationService.createAppointmentNotification(
                 uuid,
-                doctorUserId,
+                null,
                 oldAppointment.doctor_id,
                 notificationType
               );
@@ -436,7 +356,10 @@ class AppointmentController {
           }
         }
       } catch (notificationError) {
-        console.error("Error creating status update notifications:", notificationError);
+        console.error(
+          "Error creating status update notifications:",
+          notificationError
+        );
       }
 
       res.json({

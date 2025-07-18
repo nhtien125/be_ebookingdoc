@@ -1,3 +1,4 @@
+
 const PaymentService = require("../service/paymentService");
 
 class PaymentController {
@@ -133,7 +134,7 @@ class PaymentController {
   static async getByUserId(req, res) {
     try {
       const userId = req.params.userId;
-      const data = await PaymentService.getByUserId(userId);
+      const data = await PaymentService.getByUserId(userId); // Sửa lỗi: thay purchases bằng PaymentService
       if (data.length === 0) {
         return res.status(404).json({
           code: 404,

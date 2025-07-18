@@ -12,7 +12,7 @@ class Notification {
       );
       return rows;
     } catch (error) {
-      console.error("Lỗi lấy thông báo theo userId:", error);
+      console.error('Lỗi lấy thông báo theo userId:', error);
       throw error;
     }
   }
@@ -26,7 +26,7 @@ class Notification {
       );
       return rows[0].count;
     } catch (error) {
-      console.error("Lỗi đếm thông báo:", error);
+      console.error('Lỗi đếm thông báo:', error);
       throw error;
     }
   }
@@ -40,7 +40,7 @@ class Notification {
       );
       return rows[0].count;
     } catch (error) {
-      console.error("Lỗi đếm thông báo chưa đọc:", error);
+      console.error('Lỗi đếm thông báo chưa đọc:', error);
       throw error;
     }
   }
@@ -66,7 +66,7 @@ class Notification {
       );
       return { ...data, id: result.insertId };
     } catch (error) {
-      console.error("Lỗi tạo thông báo:", error);
+      console.error('Lỗi tạo thông báo:', error);
       throw error;
     }
   }
@@ -80,7 +80,7 @@ class Notification {
       );
       return result.affectedRows > 0;
     } catch (error) {
-      console.error("Lỗi đánh dấu đã đọc:", error);
+      console.error('Lỗi đánh dấu đã đọc:', error);
       throw error;
     }
   }
@@ -94,7 +94,7 @@ class Notification {
       );
       return result.affectedRows;
     } catch (error) {
-      console.error("Lỗi đánh dấu tất cả đã đọc:", error);
+      console.error('Lỗi đánh dấu tất cả đã đọc:', error);
       throw error;
     }
   }
@@ -108,7 +108,7 @@ class Notification {
       );
       return result.affectedRows > 0;
     } catch (error) {
-      console.error("Lỗi xóa thông báo:", error);
+      console.error('Lỗi xóa thông báo:', error);
       throw error;
     }
   }

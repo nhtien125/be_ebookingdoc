@@ -19,7 +19,7 @@ class AppointmentService {
     return rows.length > 0 ? rows[0] : null;
   }
 
-  static async create({
+ static async create({
     doctor_id,
     patient_id,
     clinic_id,
@@ -59,7 +59,8 @@ class AppointmentService {
         params
       );
       console.log("Kết quả insert:", result);
-      if (result.affectedRows !== 1) throw new Error("Insert không thành công!");
+      // result.affectedRows phải = 1 nếu insert thành công
+      if (result.affectedRows !== 1) throw new Error('Insert không thành công!');
       return {
         uuid,
         doctor_id,
@@ -81,6 +82,7 @@ class AppointmentService {
       throw error;
     }
   }
+
 
   static async update(
     uuid,

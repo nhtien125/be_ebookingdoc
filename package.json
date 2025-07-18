@@ -26,6 +26,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.6.0",
     "node-cron": "^4.1.1",
+    "socket.io": "^4.8.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "uuid": "^11.1.0"

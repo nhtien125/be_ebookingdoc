@@ -1,4 +1,3 @@
-// index.js
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs").promises;
@@ -16,14 +15,11 @@ const app = express();
 const server = require("http").createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "*", // Cấu hình CORS phù hợp với frontend
     methods: ["GET", "POST"],
   },
 });
-
-// Initialize SocketService
-const socketService = new SocketService(io);
-console.log("SocketService initialized:", socketService ? "Success" : "Failed");
+const socketService = new SocketService(io); // Khởi tạo SocketService
 
 app.use(express.json());
 app.use(cors());
@@ -57,12 +53,14 @@ async function ensureLogFile() {
   }
 }
 
+// Cron job cho payment
 const cron = require("node-cron");
 cron.schedule("* * * * *", async () => {
   console.log("Checking for unpaid payments...");
   await updateUnpaidPayments();
 });
 
+// Khởi tạo log file và server
 ensureLogFile()
   .then(() => {
     app.get("/", (req, res) => {
@@ -72,6 +70,7 @@ ensureLogFile()
     app.use("/resources", express.static(path.join(__dirname, "resources")));
     app.use("/api", main);
 
+    // Error handling middleware
     app.use(async (err, req, res, next) => {
       const statusCode = err.statusCode || 500;
       try {
@@ -102,4 +101,4 @@ stack: ${err.stack}\n`
     process.exit(1);
   });
 
-module.exports = { app, socketService };
+module.exports = { app, socketService }; // Export socketService để sử dụng ở NotificationService

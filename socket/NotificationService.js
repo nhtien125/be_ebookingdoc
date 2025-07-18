@@ -22,7 +22,7 @@ class NotificationService {
         },
       };
     } catch (error) {
-      console.error("Lỗi lấy thông báo:", error);
+      console.error('Lỗi lấy thông báo:', error);
       throw new Error(`Không thể lấy thông báo: ${error.message}`);
     }
   }
@@ -33,10 +33,13 @@ class NotificationService {
         throw new Error("Thiếu user_id, title hoặc type");
       }
 
-      // Validate user_id existence
-      const [user] = await db.execute("SELECT uuid FROM user WHERE uuid = ?", [data.user_id]);
-      if (user.length === 0) {
-        throw new Error(`user_id ${data.user_id} không tồn tại trong bảng user`);
+      // Kiểm tra doctor_id tồn tại trong bảng user
+      let doctorId = null;
+      if (data.doctor_id) {
+        const [user] = await db.execute('SELECT uuid FROM user WHERE uuid = ?', [data.doctor_id]);
+        if (user.length > 0) {
+          doctorId = data.doctor_id;
+        }
       }
 
       const uuid = uuidv4().replace(/-/g, "");
@@ -47,7 +50,7 @@ class NotificationService {
         title: data.title,
         content: data.content || null,
         user_id: data.user_id,
-        doctor_id: data.doctor_id || null,
+        doctor_id: doctorId,
         appointment_id: data.appointment_id || null,
         payment_id: data.payment_id || null,
         type: data.type,
@@ -57,16 +60,17 @@ class NotificationService {
 
       const notification = await Notification.create(notificationData);
 
-      // Send notification via Socket.IO
-      if (socketService && typeof socketService.sendNotificationToUser === "function") {
-        socketService.sendNotificationToUser(data.user_id, notification);
+      // Kiểm tra socketService trước khi gửi
+      if (socketService && typeof socketService.sendNotificationToUser === 'function') {
+        if (data.user_id) socketService.sendNotificationToUser(data.user_id, notification);
+        if (doctorId) socketService.sendNotificationToUser(doctorId, notification);
       } else {
-        console.warn("socketService chưa được khởi tạo, không gửi thông báo qua Socket.IO");
+        console.warn('socketService chưa được khởi tạo, không gửi thông báo qua Socket.IO');
       }
 
       return notification;
     } catch (error) {
-      console.error("Lỗi tạo thông báo:", error);
+      console.error('Lỗi tạo thông báo:', error);
       throw new Error(`Không thể tạo thông báo: ${error.message}`);
     }
   }
@@ -78,7 +82,7 @@ class NotificationService {
       if (!success) throw new Error("Không tìm thấy thông báo");
       return true;
     } catch (error) {
-      console.error("Lỗi đánh dấu đã đọc:", error);
+      console.error('Lỗi đánh dấu đã đọc:', error);
       throw new Error(`Không thể đánh dấu thông báo đã đọc: ${error.message}`);
     }
   }
@@ -89,7 +93,7 @@ class NotificationService {
       const affectedRows = await Notification.markAllAsReadByUserId(userId);
       return affectedRows;
     } catch (error) {
-      console.error("Lỗi đánh dấu tất cả đã đọc:", error);
+      console.error('Lỗi đánh dấu tất cả đã đọc:', error);
       throw new Error(`Không thể đánh dấu tất cả thông báo đã đọc: ${error.message}`);
     }
   }
@@ -100,7 +104,7 @@ class NotificationService {
       const count = await Notification.countUnreadByUserId(userId);
       return count;
     } catch (error) {
-      console.error("Lỗi lấy số thông báo chưa đọc:", error);
+      console.error('Lỗi lấy số thông báo chưa đọc:', error);
       throw new Error(`Không thể lấy số thông báo chưa đọc: ${error.message}`);
     }
   }
@@ -112,37 +116,26 @@ class NotificationService {
       if (!success) throw new Error("Không tìm thấy thông báo");
       return true;
     } catch (error) {
-      console.error("Lỗi xóa thông báo:", error);
+      console.error('Lỗi xóa thông báo:', error);
       throw new Error(`Không thể xóa thông báo: ${error.message}`);
     }
   }
 
   static async createAppointmentNotification(appointmentId, userId, doctorId, type) {
     try {
-      if (!appointmentId || !userId || !type) {
-        throw new Error("Thiếu appointmentId, userId hoặc type");
-      }
+      if (!appointmentId || !userId || !type) throw new Error("Thiếu appointmentId, userId hoặc type");
 
-      // Validate userId
-      const [user] = await db.execute("SELECT uuid FROM user WHERE uuid = ?", [userId]);
-      if (user.length === 0) {
-        throw new Error(`userId ${userId} không tồn tại trong bảng user`);
-      }
-
-      // Validate appointment
       const [appointmentRows] = await db.execute(
         `SELECT a.date, a.status, s.start_time, s.work_date, u.name AS patient_name, d.name AS doctor_name
          FROM appointments a
          LEFT JOIN schedules s ON a.schedule_id = s.uuid
          LEFT JOIN user u ON a.user_id = u.uuid
-         LEFT JOIN doctors d ON a.doctor_id = d.id
+         LEFT JOIN user d ON a.doctor_id = d.uuid
          WHERE a.uuid = ?`,
         [appointmentId]
       );
 
-      if (appointmentRows.length === 0) {
-        throw new Error("Không tìm thấy cuộc hẹn");
-      }
+      if (appointmentRows.length === 0) throw new Error("Không tìm thấy cuộc hẹn");
 
       const appointment = appointmentRows[0];
       const appointmentTime = appointment.start_time
@@ -176,25 +169,21 @@ class NotificationService {
 
       return await this.createNotification(notificationData);
     } catch (error) {
-      console.error("Lỗi tạo thông báo cuộc hẹn:", error);
+      console.error('Lỗi tạo thông báo cuộc hẹn:', error);
       throw new Error(`Không thể tạo thông báo cuộc hẹn: ${error.message}`);
     }
   }
 
   static async createPaymentNotification(paymentId, userId, type) {
     try {
-      if (!paymentId || !userId || !type) {
-        throw new Error("Thiếu paymentId, userId hoặc type");
-      }
+      if (!paymentId || !userId || !type) throw new Error("Thiếu paymentId, userId hoặc type");
 
       const [paymentRows] = await db.execute(
         `SELECT amount, payment_time FROM payments WHERE uuid = ?`,
         [paymentId]
       );
 
-      if (paymentRows.length === 0) {
-        throw new Error("Không tìm thấy thanh toán");
-      }
+      if (paymentRows.length === 0) throw new Error("Không tìm thấy thanh toán");
 
       const payment = paymentRows[0];
 
@@ -224,7 +213,7 @@ class NotificationService {
 
       return await this.createNotification(notificationData);
     } catch (error) {
-      console.error("Lỗi tạo thông báo thanh toán:", error);
+      console.error('Lỗi tạo thông báo thanh toán:', error);
       throw new Error(`Không thể tạo thông báo thanh toán: ${error.message}`);
     }
   }
